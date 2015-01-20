@@ -67,13 +67,18 @@ int main (int argc, char const *argv[])
     NumMatrix3d IsTacheInColonne(env);
     // Varialbes probleme maitre
     BoolVarMatrix Colonne(env);
+    for (int i = 0; i < NbMachines; i++) {
+      CoutColonne.add(IloNumArray(env));
+      IsTacheInColonne.add(NumMatrix(env));
+      Colonne.add(IloBoolVarArray(env));
+    }
     //Contraintes probleme maitre
     IloRangeArray constrmaitre(env);
     for (int k=0;k<NbTaches;k++){
       IloExpr Egalite(env);
       for (int i=0;i<CoutColonne.getSize();i++){
         for (int j=0;j<CoutColonne[i].getSize();j++){
-          Egalite+=IsTacheInColonne[i][j]*Colonne[i][j];
+          Egalite+=IsTacheInColonne[i][j][k]*Colonne[i][j];
         }
       }
       constrmaitre.add(Egalite == 1);
@@ -83,10 +88,10 @@ int main (int argc, char const *argv[])
     for (int i=0;i<CoutColonne.getSize();i++){
       IloExpr Inegalite(env);
       for (int j=0;j<CoutColonne[i].getSize();i++){
-          Inegalite+=Colonne[i][j];
-        }
+        Inegalite+=Colonne[i][j];
+      }
       constrmaitre.add(Inegalite <= 1);
-     Inegalite.end();
+      Inegalite.end();
     }
     ModelMaitre.add(constrmaitre);
 
@@ -106,26 +111,30 @@ int main (int argc, char const *argv[])
 
     //determination des colonnes initiales
     IloCplex cplex(ModelCompact);
-    // cplex.IntParam.IntSolLim=1;
+
+    cplex.setParam(IloCplex::IntSolLim, 1); // Valeur par defaut : 2100000000
+    cplex.setParam(IloCplex::NodeSel, 0); // Valeur par defaut : 1
     cplex.solve();
-    for (i =0;i<NbMachines;i++){
-      IloIntArray vals(env);
+    for (int i =0;i<NbMachines;i++){
+      IloNumArray vals(env);
       cplex.getValues(vals,x[i]);
      
       Colonne[i].add(IloBoolVar(env));
       
       IsTacheInColonne[i].add(vals);
      
-      IloInt Cout(env);
-      for (j=0;j<NbTaches;j++){
+      IloInt Cout(0);
+      for (int j=0;j<NbTaches;j++){
         Cout+=vals[j]*c[i][j];
       }
       CoutColonne[i].add(Cout);
-
-      //------------------------------
-
-
     }
+    cout << "Affichage de IsTacheInColonne\n";
+    PrintArray(IsTacheInColonne);
+    cout << "Affichage des couts de chaque colonne\n";
+    PrintArray(CoutColonne);
+
+    //------------------------------
   }
   catch (IloException& e) {
     cerr << "Concert exception caught: " << e << endl;

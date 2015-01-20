@@ -7,6 +7,11 @@ typedef IloArray<IloNumArray> NumMatrix;
 typedef IloArray<IloBoolVarArray> BoolVarMatrix;
 typedef IloArray<NumMatrix> NumMatrix3d;
 
+/* Affiche le contenu des matrices */
+void PrintArray(NumMatrix &iNumMatrix);
+void PrintArray(BoolVarMatrix &iBoolVarMatrix);
+void PrintArray(NumMatrix3d &iNumMatrix3d);
+
 #endif
 
 
