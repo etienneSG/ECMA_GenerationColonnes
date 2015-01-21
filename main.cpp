@@ -73,8 +73,9 @@ int main (int argc, char const *argv[])
       Colonne.add(IloBoolVarArray(env));
     }
     //Contraintes probleme maitre
-    IloRangeArray constrmaitre(env);
-    for (int k=0;k<NbTaches;k++){
+    //TODO
+    IloRangeArray ConstrMaitreEqual = IloAdd(ModelMaitre, IloRangeArray(env, NbTaches, 1, 1));
+    /*for (int k=0;k<NbTaches;k++){
       IloExpr Egalite(env);
       for (int i=0;i<CoutColonne.getSize();i++){
         for (int j=0;j<CoutColonne[i].getSize();j++){
@@ -83,27 +84,27 @@ int main (int argc, char const *argv[])
       }
       constrmaitre.add(Egalite == 1);
       Egalite.end();
-    }
+    }*/
 
-    for (int i=0;i<CoutColonne.getSize();i++){
+    IloRangeArray ConstrMaitreInequal = IloAdd(ModelMaitre, IloRangeArray(env, NbMachines, 0, 1));
+    /*for (int i=0;i<CoutColonne.getSize();i++){
       IloExpr Inegalite(env);
       for (int j=0;j<CoutColonne[i].getSize();i++){
         Inegalite+=Colonne[i][j];
       }
       constrmaitre.add(Inegalite <= 1);
       Inegalite.end();
-    }
-    ModelMaitre.add(constrmaitre);
+    }*/
+    ModelMaitre.add(ConstrMaitreInequal);
 
     //Objectif probleme maitre
-    IloExpr ObjectifMaitre(env);
-    for (int i=0;i<CoutColonne.getSize();i++){
+    IloObjective ObjectifMaitre = IloAdd(ModelMaitre, IloMinimize(env));
+    /*for (int i=0;i<CoutColonne.getSize();i++){
       for (int j=0;j<CoutColonne[i].getSize();i++){
         ObjectifMaitre+=CoutColonne[i][j]*Colonne[i][j];
       }
-    }
-    ModelMaitre.add(IloMinimize(env,ObjectifMaitre));
-    ObjectifMaitre.end();
+    }*/
+    ModelMaitre.add(IloMinimize(env, ObjectifMaitre));
 
 
     //------------------------------
@@ -119,7 +120,7 @@ int main (int argc, char const *argv[])
       IloNumArray vals(env);
       cplex.getValues(vals,x[i]);
      
-      Colonne[i].add(IloBoolVar(env));
+      Colonne[i].add(IloBoolVar(   ));
       
       IsTacheInColonne[i].add(vals);
      
@@ -129,12 +130,18 @@ int main (int argc, char const *argv[])
       }
       CoutColonne[i].add(Cout);
     }
+    
+    
     cout << "Affichage de IsTacheInColonne\n";
     PrintArray(IsTacheInColonne);
     cout << "Affichage des couts de chaque colonne\n";
     PrintArray(CoutColonne);
 
     //------------------------------
+
+    ConstrMaitreEqual.end();
+    ConstrMaitreInequal.end();
+    ObjectifMaitre.end();
   }
   catch (IloException& e) {
     cerr << "Concert exception caught: " << e << endl;
