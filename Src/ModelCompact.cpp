@@ -1,4 +1,4 @@
-#include "ReadData.h"
+#include "ModelCompact.h"
 
 #include <stdio.h>   // Standard Input/Output Header
 #include <stdlib.h>  // C Standard General Utilities Library
@@ -9,6 +9,15 @@
 
 using namespace std;
 
+
+/**
+ * Lit un fichier de donnees au format OPL et remplit les attributs de la classe
+ * @param iFile: fichier de donnees
+ * @param model: Modele
+ * @param c:     Matrice des couts d'affectation
+ * @param a:     Matrice des capacites consommees
+ * @param b:     Vecteur des capacites des machines
+ */
 void ReadData (string iFile, IloModel model, NumMatrix c, NumMatrix a, IloIntArray b)
 {
   IloEnv env = model.getEnv();
@@ -87,3 +96,19 @@ void ReadData (string iFile, IloModel model, NumMatrix c, NumMatrix a, IloIntArr
   }
   
 }
+
+
+ModelCompact::ModelCompact(std::string iFile, IloEnv iEnv):
+  _Model(iEnv),
+  _c(iEnv),
+  _a(iEnv),
+  _b(iEnv)
+{
+  ReadData(iFile, _Model, _c, _a, _b);
+}
+
+
+ModelCompact::~ModelCompact()
+{
+}
+

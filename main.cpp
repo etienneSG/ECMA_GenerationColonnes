@@ -1,6 +1,6 @@
 #include <stdio.h>   // Standard Input/Output Header
 #include <stdlib.h>  // C Standard General Utilities Library
-#include "ReadData.h"
+#include "ModelCompact.h"
 #include "ConstantsAndTypes.h"
 
 using namespace std;
@@ -14,50 +14,46 @@ int main (int argc, char const *argv[])
   try {
 
     // parametres formulation compacte
-    IloModel ModelCompact(env);
-    NumMatrix c(env);
-    NumMatrix a(env);
-    IloIntArray b(env);
+    ModelCompact myCompact("GAP/GAP-a05100.dat", env);
     // Lecture du fichier de donnees
-    ReadData("GAP/GAP-a05100.dat", ModelCompact, c, a, b);
-    int NbMachines=c.getSize();
-    int NbTaches=c[0].getSize();
+    int NbMachines = myCompact._c.getSize();
+    int NbTaches = myCompact._c[0].getSize();
     // creation des variables formulation compacte
     BoolVarMatrix x(env);
-    for (int i=0;i<NbMachines;i++){
+    for (int i = 0; i < NbMachines; i++){
       IloBoolVarArray E(env);
-      for (int j=0;j<NbTaches;j++){
+      for (int j = 0; j < NbTaches; j++){
         E.add(IloBoolVar(env));
       }
       x.add(E);
     }
     // Creation des contraintes formulation compacte
     IloRangeArray constrcompacte(env);
-    for (int i=0;i<NbMachines;i++){
+    for (int i = 0; i < NbMachines; i++){
       IloExpr Capacite(env);
-      for (int j=0;j<NbTaches;j++){
-        Capacite+=a[i][j]*x[i][j];
+      for (int j = 0; j < NbTaches; j++){
+        Capacite+=myCompact._a[i][j]*x[i][j];
       }
-      constrcompacte.add(Capacite<=b[i]);
+      constrcompacte.add( Capacite<=myCompact._b[i] );
       Capacite.end();
     }
-    for (int i=0;i<NbTaches;i++){
+    for (int i = 0; i < NbTaches; i++){
       IloExpr UniciteAffectation(env);
-      for (int j=0;j<NbMachines;j++){
+      for (int j = 0; j < NbMachines; j++){
         UniciteAffectation+=x[j][i];
       }
-      constrcompacte.add(UniciteAffectation == 1);
+      constrcompacte.add( UniciteAffectation == 1 );
       UniciteAffectation.end();
     }
-    ModelCompact.add(constrcompacte);
+    myCompact._Model.add(constrcompacte);
     //Objectif formulation compacte
     IloExpr ObjectifCompacte(env);
     for (int i=0;i<NbMachines;i++){
       for (int j=0;j<NbTaches;j++){
-        ObjectifCompacte+=c[i][j]*x[i][j];
+        ObjectifCompacte+=myCompact._c[i][j]*x[i][j];
       }
     }
-    ModelCompact.add(IloMinimize(env,ObjectifCompacte));
+    myCompact._Model.add( IloMinimize(env, ObjectifCompacte) );
     ObjectifCompacte.end();
 
 
@@ -111,12 +107,12 @@ int main (int argc, char const *argv[])
     // Generation de colonnes
 
     //determination des colonnes initiales
-    IloCplex cplex(ModelCompact);
+    IloCplex cplex(myCompact._Model);
 
     cplex.setParam(IloCplex::IntSolLim, 1); // Valeur par defaut : 2100000000
     cplex.setParam(IloCplex::NodeSel, 0); // Valeur par defaut : 1
     cplex.solve();
-    for (int i =0;i<NbMachines;i++){
+    for (int i = 0; i < NbMachines; i++){
       IloNumArray vals(env);
       cplex.getValues(vals,x[i]);
      
@@ -126,7 +122,7 @@ int main (int argc, char const *argv[])
      
       IloInt Cout(0);
       for (int j=0;j<NbTaches;j++){
-        Cout+=vals[j]*c[i][j];
+        Cout+=vals[j]*myCompact._c[i][j];
       }
       CoutColonne[i].add(Cout);
     }
