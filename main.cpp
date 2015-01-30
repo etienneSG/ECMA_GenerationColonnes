@@ -58,7 +58,7 @@ int main (int argc, char const *argv[])
 
 
     // Paramètres probleme maitre
-    IloModel ModelMaitre(env);
+    IloModel ModelMaster(env);
     NumMatrix CoutColonne(env);
     NumMatrix3d IsTacheInColonne(env);
     // Varialbes probleme maitre
@@ -68,76 +68,112 @@ int main (int argc, char const *argv[])
       IsTacheInColonne.add(NumMatrix(env));
       Colonne.add(IloBoolVarArray(env));
     }
-    //Contraintes probleme maitre
-    //TODO
-    IloRangeArray ConstrMaitreEqual = IloAdd(ModelMaitre, IloRangeArray(env, NbTaches, 1, 1));
-    /*for (int k=0;k<NbTaches;k++){
-      IloExpr Egalite(env);
-      for (int i=0;i<CoutColonne.getSize();i++){
-        for (int j=0;j<CoutColonne[i].getSize();j++){
-          Egalite+=IsTacheInColonne[i][j][k]*Colonne[i][j];
-        }
-      }
-      constrmaitre.add(Egalite == 1);
-      Egalite.end();
-    }*/
-
-    IloRangeArray ConstrMaitreInequal = IloAdd(ModelMaitre, IloRangeArray(env, NbMachines, 0, 1));
-    /*for (int i=0;i<CoutColonne.getSize();i++){
-      IloExpr Inegalite(env);
-      for (int j=0;j<CoutColonne[i].getSize();i++){
-        Inegalite+=Colonne[i][j];
-      }
-      constrmaitre.add(Inegalite <= 1);
-      Inegalite.end();
-    }*/
-    ModelMaitre.add(ConstrMaitreInequal);
 
     //Objectif probleme maitre
-    IloObjective ObjectifMaitre = IloAdd(ModelMaitre, IloMinimize(env));
-    /*for (int i=0;i<CoutColonne.getSize();i++){
-      for (int j=0;j<CoutColonne[i].getSize();i++){
-        ObjectifMaitre+=CoutColonne[i][j]*Colonne[i][j];
-      }
-    }*/
-    ModelMaitre.add(IloMinimize(env, ObjectifMaitre));
+    IloObjective ObjectifMaster = IloAdd(ModelMaster, IloMinimize(env));
+    ModelMaster.add(IloMinimize(env, ObjectifMaster));
+
+    //Contraintes probleme maitre
+    IloRangeArray ConstrMasterEqual = IloAdd(ModelMaster, IloRangeArray(env, NbTaches, 1, 1));
+    ModelMaster.add(ConstrMasterEqual);
+
+    IloRangeArray ConstrMasterInequal = IloAdd(ModelMaster, IloRangeArray(env, NbMachines, 0, 1));
+    ModelMaster.add(ConstrMasterInequal);
 
 
     //------------------------------
     // Generation de colonnes
 
     //determination des colonnes initiales
-    IloCplex cplex(myCompact._Model);
+    IloCplex cplexCompact(myCompact._Model);
 
-    cplex.setParam(IloCplex::IntSolLim, 1); // Valeur par defaut : 2100000000
-    cplex.setParam(IloCplex::NodeSel, 0); // Valeur par defaut : 1
-    cplex.solve();
-    for (int i = 0; i < NbMachines; i++){
+    cplexCompact.setParam(IloCplex::IntSolLim, 1); // Valeur par defaut : 2100000000 (arret apres la premiere solution entiere)
+    cplexCompact.setParam(IloCplex::NodeSel, 0);   // Valeur par defaut : 1 (parcours en profondeur)
+    cplexCompact.solve();
+    for (int j = 0; j < NbMachines; j++){
       IloNumArray vals(env);
-      cplex.getValues(vals,x[i]);
-     
-      Colonne[i].add(IloBoolVar(   ));
-      
-      IsTacheInColonne[i].add(vals);
-     
+      cplexCompact.getValues(vals,x[j]);
+
       IloInt Cout(0);
-      for (int j=0;j<NbTaches;j++){
-        Cout+=vals[j]*myCompact._c[i][j];
+      for (int i = 0; i < NbTaches; i++){
+        Cout+=vals[i]*myCompact._c[j][i];
       }
-      CoutColonne[i].add(Cout);
+
+      Colonne[j].add(IloBoolVar( ObjectifMaster(Cout) + ConstrMasterEqual(vals) + ConstrMasterInequal[j](1) ));
+      
+      //IsTacheInColonne[j].add(vals);
+     
+      //CoutColonne[j].add(Cout);
     }
     
     
-    cout << "Affichage de IsTacheInColonne\n";
-    PrintArray(IsTacheInColonne);
-    cout << "Affichage des couts de chaque colonne\n";
-    PrintArray(CoutColonne);
+    //cout << "Affichage de IsTacheInColonne\n";
+    //PrintArray(IsTacheInColonne);
+    //cout << "Affichage des couts de chaque colonne\n";
+    //PrintArray(CoutColonne);
+    cout << "Affichage des colonnes\n";
+    PrintArray(Colonne);
+    cout << "Affichage de l'objectif\n";
+    cout << ObjectifMaster.getExpr() << "\n";
+
+    IloCplex cplexMaster(ModelMaster);
+    while(true)
+    {
+      cplexMaster.solve();
+      IloNumArray valDualEqual(env);
+      cplexMaster.getDuals(valDualEqual, ConstrMasterEqual);
+      IloNumArray valDualInequal(env);
+      cplexMaster.getDuals(valDualInequal, ConstrMasterInequal);
+      int NbReductCostPositive = 0;
+
+      for(int j = 0; j < NbMachines; j++)
+      {
+        IloModel ModelAux(env);
+        IloBoolVarArray z(env);
+        IloExpr ObjAux(env);
+        for(int i = 0; i < NbTaches; i++)
+          ObjAux += (myCompact._c[j][i] - valDualEqual[i])*z[i];
+        ModelAux.add(IloMinimize(env, ObjAux));
+        ObjAux.end();
+        IloExpr ConstrAux(env);
+        for(int i = 0; i < NbTaches; i++)
+          ConstrAux += myCompact._a[j][i]*z[i];
+        ModelAux.add(ConstrAux <= myCompact._b[j]);
+        ConstrAux.end();
+        IloCplex cplexAux(ModelAux);
+        cplexAux.solve();
+
+        IloNum ObjAuxOpt(0);
+        cplexAux.getObjValue(ObjAuxOpt);
+        if (ObjAuxOpt < valDualInequal[j])
+        {
+          IloNumArray vals(env);
+          cplexAux.getValues(vals, z);
+          IloInt Cout(0);
+          for (int i = 0; i < NbTaches; i++){
+            Cout+=vals[i]*myCompact._c[j][i];
+          }
+          Colonne[j].add(IloBoolVar( ObjectifMaster(Cout) + ConstrMasterEqual(vals) + ConstrMasterInequal[j](1) ));
+        }
+        else
+          NbReductCostPositive++;
+
+        ModelAux.end();
+      }
+
+      if (NbReductCostPositive==NbMachines)
+        break;
+    }
+
+    IloNum ObjMasterOpt(0);
+    cplexMaster.getObjValue(ObjMasterOpt);
+    cout << "Valeur de l'optimum obtenu par generation de colonnes : " << ObjMasterOpt << "\n";
 
     //------------------------------
 
-    ConstrMaitreEqual.end();
-    ConstrMaitreInequal.end();
-    ObjectifMaitre.end();
+    ConstrMasterEqual.end();
+    ConstrMasterInequal.end();
+    ObjectifMaster.end();
   }
   catch (IloException& e) {
     cerr << "Concert exception caught: " << e << endl;

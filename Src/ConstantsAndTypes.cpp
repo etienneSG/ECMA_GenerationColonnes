@@ -41,4 +41,10 @@ void PrintArray(NumMatrix3d &iNumMatrix3d)
   }
 }
 
-
+void PrintArray(IloNumArray &iNumArray)
+{
+  int n = iNumArray.getSize();
+  for (int i = 0; i < n; i++)
+    cout << iNumArray[i] << "\t";
+  cout << "\n";
+}

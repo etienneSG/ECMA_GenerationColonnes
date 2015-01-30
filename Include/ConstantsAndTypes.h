@@ -11,6 +11,7 @@ typedef IloArray<NumMatrix> NumMatrix3d;
 void PrintArray(NumMatrix &iNumMatrix);
 void PrintArray(BoolVarMatrix &iBoolVarMatrix);
 void PrintArray(NumMatrix3d &iNumMatrix3d);
+void PrintArray(IloNumArray &iNumArray);
 
 #endif
 
