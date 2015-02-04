@@ -6,6 +6,13 @@
 #include <fstream>
 #include <vector>
 #include <string.h>
+#include <algorithm>
+#include "kcombinationiterator.h"
+#include "HcubeIterator.h"
+
+#ifdef __linux__
+#include <omp.h> // Open Multi-Processing Library (Linux only)
+#endif
 
 using namespace std;
 
@@ -14,15 +21,15 @@ using namespace std;
  * Lit un fichier de donnees au format OPL et remplit les attributs de la classe
  * @param iFile: fichier de donnees
  * @param model: Modele
+ * @param m:     Nombre de machines
+ * @param n:     Nombre de taches
  * @param c:     Matrice des couts d'affectation
  * @param a:     Matrice des capacites consommees
  * @param b:     Vecteur des capacites des machines
  */
-void ReadData (string iFile, IloModel model, NumMatrix c, NumMatrix a, IloIntArray b)
+void ReadData (string iFile, IloModel model, NumMatrix c, IloInt& m, IloInt& n, NumMatrix a, IloIntArray b)
 {
   IloEnv env = model.getEnv();
-
-  IloInt n = 0; IloInt m = 0;
 
   char * buffer = 0;
   long length;
@@ -100,11 +107,129 @@ void ReadData (string iFile, IloModel model, NumMatrix c, NumMatrix a, IloIntArr
 
 ModelCompact::ModelCompact(std::string iFile, IloEnv iEnv):
   _Model(iEnv),
+  _m(0),
+  _n(0),
   _c(iEnv),
   _a(iEnv),
-  _b(iEnv)
+  _b(iEnv),
+  _ActualCost(0),
+  _ActualCapacity(iEnv)
 {
-  ReadData(iFile, _Model, _c, _a, _b);
+  ReadData(iFile, _Model, _c, _m, _n, _a, _b);
+  _x.Resize(_m, _n);
+  _ActualCapacity.add(_m, 0);
+}
+
+
+double ModelCompact::ComputeCost()
+{
+  _ActualCost = 0;
+  int idx_l;
+  //#ifdef __linux__
+  //#pragma omp parallel for reduction(+:_ActualCost) schedule(static,1)
+  //#endif
+  for (idx_l = 0; idx_l < _m; idx_l++) {
+    _ActualCapacity[idx_l] = 0;
+  }
+  //#ifdef __linux__
+  //#pragma omp parallel for reduction(+:_ActualCost) schedule(static,1)
+  //#endif
+  for (idx_l = 0; idx_l < _m; idx_l++) {
+    int idx_c;
+    for (idx_c = 0; idx_c < _n; idx_c++) {
+      if (_x(idx_l, idx_c)) {
+        _ActualCost = _ActualCost + _c[idx_l][idx_c];
+        _ActualCapacity[idx_l] = _ActualCapacity[idx_l] + _a[idx_l][idx_c];
+      }
+    }
+  }
+  return _ActualCost;
+}
+
+
+bool ModelCompact::NeighbourhoodSearch(int iNSize)
+{
+  if (iNSize <= 0 || iNSize > std::min(3, (int)_n) ) {
+    std::cout << "It is a stupid use of this method !" << std::endl;
+    return false;
+  }
+
+  bool FindABetterSolution = false;
+
+  // Calcul du cout de l'affectation courante
+  _ActualCost = ComputeCost();
+/*
+  int * aBestTache = new int[iNSize];
+  int * aBestMachine = new int[iNSize];
+  for (int i = 0; i < iNSize; i++) {
+    aBestTache[i] = -1;
+    aBestMachine[i] = -1;
+  }
+*/
+  // Iterateur sur les solutions voisines
+  KcombinationIterator NeighbourhoodIt(iNSize, _n);
+  while (!NeighbourhoodIt.IsEnded())
+  {
+    // Recuperation des machines ou sont affectees les taches
+    int * aActualMachine = new int[iNSize];
+    for (int i = 0; i < iNSize; i++) {
+      aActualMachine[i] = 0;
+      while (aActualMachine[i] < _m && !_x(aActualMachine[i], NeighbourhoodIt(i)))
+        aActualMachine[i]++;
+      assert(aActualMachine[i] < _m);
+    }
+    // Calcul du cout sans les affectations precedentes
+    double PartialCost = _ActualCost;
+    for (int i = 0; i < iNSize; i++) {
+      PartialCost -= _c[aActualMachine[i]][NeighbourhoodIt(i)];
+    }
+    // Calcul des ressources consommees sans les affectations precedentes
+    IloNumArray PartialRessource(_ActualCapacity);
+    for (int i = 0; i < iNSize; i++) {
+      PartialRessource[aActualMachine[i]] -= _a[aActualMachine[i]][NeighbourhoodIt(i)];
+    }
+
+    HcubeIterator MachinesIt(_m, iNSize);
+    while (!FindABetterSolution && !MachinesIt.IsEnded())
+    {
+      double NewCost = PartialCost;
+      for (int i = 0; i < iNSize; i++) {
+        NewCost += _c[MachinesIt(i)][NeighbourhoodIt(i)];
+      }
+      if (NewCost < _ActualCost)
+      {
+        // On verifie que la solution est admissible
+        IloNumArray NewRessource(PartialRessource);
+        for (int i = 0; i < iNSize; i++) {
+          NewRessource[MachinesIt(i)] += _a[MachinesIt(i)][NeighbourhoodIt(i)];
+        }
+        bool IsAdmissible = true;
+        for (int j = 0; j < _m; j++) {
+          if (NewRessource[j] > _b[j]) {
+            IsAdmissible = false;
+            break;
+          }
+        }
+        if (IsAdmissible) {
+          _ActualCost = NewCost;
+          for (int j = 0; j < _m; j++) {
+            _ActualCapacity[j] = NewRessource[j];
+          }
+          FindABetterSolution = true;
+          break;
+        }
+      }
+    }
+    if (aActualMachine)
+      delete [] aActualMachine; aActualMachine = 0;
+  }
+/*
+  if (aBestTache)
+    delete [] aBestTache; aBestTache = 0;
+  if (aBestMachine)
+    delete [] aBestMachine; aBestMachine = 0;
+*/
+  return FindABetterSolution;
 }
 
 
