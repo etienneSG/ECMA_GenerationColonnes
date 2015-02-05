@@ -15,31 +15,29 @@ int main (int argc, char const *argv[])
 
     // parametres formulation compacte
     ModelCompact myCompact("GAP/GAP-a05100.dat", env);
-    // Lecture du fichier de donnees
-    int NbMachines = myCompact._c.getSize();
-    int NbTaches = myCompact._c[0].getSize();
+
     // creation des variables formulation compacte
     BoolVarMatrix x(env);
-    for (int i = 0; i < NbMachines; i++){
+    for (int i = 0; i < myCompact._m; i++){
       IloBoolVarArray E(env);
-      for (int j = 0; j < NbTaches; j++){
+      for (int j = 0; j < myCompact._n; j++){
         E.add(IloBoolVar(env));
       }
       x.add(E);
     }
     // Creation des contraintes formulation compacte
     IloRangeArray constrcompacte(env);
-    for (int i = 0; i < NbMachines; i++){
+    for (int i = 0; i < myCompact._m; i++){
       IloExpr Capacite(env);
-      for (int j = 0; j < NbTaches; j++){
+      for (int j = 0; j < myCompact._n; j++){
         Capacite+=myCompact._a[i][j]*x[i][j];
       }
       constrcompacte.add( Capacite<=myCompact._b[i] );
       Capacite.end();
     }
-    for (int i = 0; i < NbTaches; i++){
+    for (int i = 0; i < myCompact._n; i++){
       IloExpr UniciteAffectation(env);
-      for (int j = 0; j < NbMachines; j++){
+      for (int j = 0; j < myCompact._m; j++){
         UniciteAffectation+=x[j][i];
       }
       constrcompacte.add( UniciteAffectation == 1 );
@@ -48,8 +46,8 @@ int main (int argc, char const *argv[])
     myCompact._Model.add(constrcompacte);
     //Objectif formulation compacte
     IloExpr ObjectifCompacte(env);
-    for (int i=0;i<NbMachines;i++){
-      for (int j=0;j<NbTaches;j++){
+    for (int i=0;i<myCompact._m;i++){
+      for (int j=0;j<myCompact._n;j++){
         ObjectifCompacte+=myCompact._c[i][j]*x[i][j];
       }
     }
@@ -63,7 +61,7 @@ int main (int argc, char const *argv[])
     NumMatrix3d IsTacheInColonne(env);
     // Varialbes probleme maitre
     BoolVarMatrix Colonne(env);
-    for (int i = 0; i < NbMachines; i++) {
+    for (int i = 0; i < myCompact._m; i++) {
       CoutColonne.add(IloNumArray(env));
       IsTacheInColonne.add(NumMatrix(env));
       Colonne.add(IloBoolVarArray(env));
@@ -74,10 +72,10 @@ int main (int argc, char const *argv[])
     ModelMaster.add(IloMinimize(env, ObjectifMaster));
 
     //Contraintes probleme maitre
-    IloRangeArray ConstrMasterEqual = IloAdd(ModelMaster, IloRangeArray(env, NbTaches, 1, 1));
+    IloRangeArray ConstrMasterEqual = IloAdd(ModelMaster, IloRangeArray(env, myCompact._n, 1, 1));
     ModelMaster.add(ConstrMasterEqual);
 
-    IloRangeArray ConstrMasterInequal = IloAdd(ModelMaster, IloRangeArray(env, NbMachines, 0, 1));
+    IloRangeArray ConstrMasterInequal = IloAdd(ModelMaster, IloRangeArray(env, myCompact._m, 0, 1));
     ModelMaster.add(ConstrMasterInequal);
 
 
@@ -90,12 +88,12 @@ int main (int argc, char const *argv[])
     cplexCompact.setParam(IloCplex::IntSolLim, 1); // Valeur par defaut : 2100000000 (arret apres la premiere solution entiere)
     cplexCompact.setParam(IloCplex::NodeSel, 0);   // Valeur par defaut : 1 (parcours en profondeur)
     cplexCompact.solve();
-    for (int j = 0; j < NbMachines; j++){
+    for (int j = 0; j < myCompact._m; j++){
       IloNumArray vals(env);
       cplexCompact.getValues(vals,x[j]);
 
       IloInt Cout(0);
-      for (int i = 0; i < NbTaches; i++){
+      for (int i = 0; i < myCompact._n; i++){
         Cout+=vals[i]*myCompact._c[j][i];
       }
 
@@ -126,17 +124,17 @@ int main (int argc, char const *argv[])
       cplexMaster.getDuals(valDualInequal, ConstrMasterInequal);
       int NbReductCostPositive = 0;
 
-      for(int j = 0; j < NbMachines; j++)
+      for(int j = 0; j < myCompact._m; j++)
       {
         IloModel ModelAux(env);
         IloBoolVarArray z(env);
         IloExpr ObjAux(env);
-        for(int i = 0; i < NbTaches; i++)
+        for(int i = 0; i < myCompact._n; i++)
           ObjAux += (myCompact._c[j][i] - valDualEqual[i])*z[i];
         ModelAux.add(IloMinimize(env, ObjAux));
         ObjAux.end();
         IloExpr ConstrAux(env);
-        for(int i = 0; i < NbTaches; i++)
+        for(int i = 0; i < myCompact._n; i++)
           ConstrAux += myCompact._a[j][i]*z[i];
         ModelAux.add(ConstrAux <= myCompact._b[j]);
         ConstrAux.end();
@@ -150,7 +148,7 @@ int main (int argc, char const *argv[])
           IloNumArray vals(env);
           cplexAux.getValues(vals, z);
           IloInt Cout(0);
-          for (int i = 0; i < NbTaches; i++){
+          for (int i = 0; i < myCompact._n; i++){
             Cout+=vals[i]*myCompact._c[j][i];
           }
           Colonne[j].add(IloBoolVar( ObjectifMaster(Cout) + ConstrMasterEqual(vals) + ConstrMasterInequal[j](1) ));
@@ -161,7 +159,7 @@ int main (int argc, char const *argv[])
         ModelAux.end();
       }
 
-      if (NbReductCostPositive==NbMachines)
+      if (NbReductCostPositive==myCompact._m)
         break;
     }
 

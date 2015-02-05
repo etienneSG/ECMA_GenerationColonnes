@@ -233,6 +233,32 @@ bool ModelCompact::NeighbourhoodSearch(int iNSize)
 }
 
 
+void ModelCompact::LocalSearchAlgorithm(int iMaxSize)
+{
+  if (iMaxSize < 1)
+    return;
+  
+  int NeighbourhoodSize = 1;
+  while (true)
+  {
+    if (NeighbourhoodSearch(NeighbourhoodSize))
+    {
+      NeighbourhoodSize = 1;
+      continue;
+    }
+    else if (NeighbourhoodSize < iMaxSize)
+    {
+      NeighbourhoodSize++;
+      continue;
+    }
+    else
+    {
+      break;
+    }
+  }
+}
+
+
 ModelCompact::~ModelCompact()
 {
 }
