@@ -2,6 +2,8 @@
 #include <stdlib.h>  // C Standard General Utilities Library
 #include "ModelCompact.h"
 #include "ConstantsAndTypes.h"
+#include "LocalSearch.h"
+
 
 using namespace std;
 
@@ -92,6 +94,8 @@ int main (int argc, char const *argv[])
       IloNumArray vals(env);
       cplexCompact.getValues(vals,x[j]);
 
+      myCompact.InsertSolutionOnMachine(vals, j);
+
       IloInt Cout(0);
       for (int i = 0; i < myCompact._n; i++){
         Cout+=vals[i]*myCompact._c[j][i];
@@ -104,6 +108,7 @@ int main (int argc, char const *argv[])
       //CoutColonne[j].add(Cout);
     }
     
+    LocalSearch(myCompact);
     
     //cout << "Affichage de IsTacheInColonne\n";
     //PrintArray(IsTacheInColonne);

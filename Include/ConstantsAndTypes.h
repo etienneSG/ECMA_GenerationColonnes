@@ -7,11 +7,14 @@ typedef IloArray<IloNumArray> NumMatrix;
 typedef IloArray<IloBoolVarArray> BoolVarMatrix;
 typedef IloArray<NumMatrix> NumMatrix3d;
 
-/* Affiche le contenu des matrices */
+/** Affiche le contenu des matrices */
 void PrintArray(NumMatrix &iNumMatrix);
 void PrintArray(BoolVarMatrix &iBoolVarMatrix);
 void PrintArray(NumMatrix3d &iNumMatrix3d);
 void PrintArray(IloNumArray &iNumArray);
+
+/** Constantes du programme */
+#define CST_EPS 1e-7
 
 #endif
 

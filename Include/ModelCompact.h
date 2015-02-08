@@ -33,6 +33,19 @@ public:
   double ComputeCost();
   
   /**
+   * Change la solution courante
+   * @param iSolution: Nouvelle solution
+   */
+  void InsertSolution(NumMatrix & iSolution);
+
+  /**
+   * Change la solution courante sur la machine iIdxMachine
+   * @param iSolution:   Nouvelle solution
+   * @param iIdxMachine: Indice de la machine dont on doit changer l'affectation
+   */
+  void InsertSolutionOnMachine(IloNumArray & iSolution, int iIdxMachine);
+  
+  /**
    * Effectue une recherche locale dans un voisinage de taille iNSize
    * et s'arrete a la premiere solution ameliorante trouvee
    * @param iNSize: taille du voisinage à considerer

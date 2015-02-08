@@ -7,6 +7,7 @@
 #include <vector>
 #include <string.h>
 #include <algorithm>
+#include <math.h>
 #include "kcombinationiterator.h"
 #include "HcubeIterator.h"
 
@@ -147,6 +148,21 @@ double ModelCompact::ComputeCost()
 }
 
 
+void ModelCompact::InsertSolution(NumMatrix & iSolution)
+{
+  for (int idx_l = 0; idx_l < _m; idx_l++)
+    for (int idx_c = 0; idx_c < _n; idx_c++)
+      _x(idx_l, idx_c) = fabs(iSolution[idx_l][idx_c]) < CST_EPS ? false : true;
+}
+
+
+void ModelCompact::InsertSolutionOnMachine(IloNumArray & iSolution, int iIdxMachine)
+{
+  for (int idx_c = 0; idx_c < _n; idx_c++)
+    _x(iIdxMachine, idx_c) = fabs(iSolution[idx_c]) < CST_EPS ? false : true;
+}
+
+
 bool ModelCompact::NeighbourhoodSearch(int iNSize)
 {
   if (iNSize <= 0 || iNSize > std::min(3, (int)_n) ) {
@@ -168,8 +184,9 @@ bool ModelCompact::NeighbourhoodSearch(int iNSize)
 */
   // Iterateur sur les solutions voisines
   KcombinationIterator NeighbourhoodIt(iNSize, _n);
-  while (!NeighbourhoodIt.IsEnded())
+  while (!FindABetterSolution && !NeighbourhoodIt.IsEnded())
   {
+    NeighbourhoodIt.Print();
     // Recuperation des machines ou sont affectees les taches
     int * aActualMachine = new int[iNSize];
     for (int i = 0; i < iNSize; i++) {
@@ -212,6 +229,10 @@ bool ModelCompact::NeighbourhoodSearch(int iNSize)
         }
         if (IsAdmissible) {
           _ActualCost = NewCost;
+	  for (int i = 0; i < iNSize; i++) {
+	    _x(MachinesIt(i), NeighbourhoodIt(i)) = true;
+	    _x(aActualMachine[i], NeighbourhoodIt(i)) = false;
+	  }
           for (int j = 0; j < _m; j++) {
             _ActualCapacity[j] = NewRessource[j];
           }
@@ -219,9 +240,12 @@ bool ModelCompact::NeighbourhoodSearch(int iNSize)
           break;
         }
       }
+      else
+	++MachinesIt;
     }
     if (aActualMachine)
       delete [] aActualMachine; aActualMachine = 0;
+    ++NeighbourhoodIt;
   }
 /*
   if (aBestTache)
