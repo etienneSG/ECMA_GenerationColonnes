@@ -48,8 +48,8 @@ int main (int argc, char const *argv[])
     myCompact._Model.add(constrcompacte);
     //Objectif formulation compacte
     IloExpr ObjectifCompacte(env);
-    for (int i=0;i<myCompact._m;i++){
-      for (int j=0;j<myCompact._n;j++){
+    for (int i = 0; i < myCompact._m; i++) {
+      for (int j = 0; j < myCompact._n ; j++) {
         ObjectifCompacte+=myCompact._c[i][j]*x[i][j];
       }
     }
@@ -71,14 +71,10 @@ int main (int argc, char const *argv[])
 
     //Objectif probleme maitre
     IloObjective ObjectifMaster = IloAdd(ModelMaster, IloMinimize(env));
-    ModelMaster.add(IloMinimize(env, ObjectifMaster));
 
     //Contraintes probleme maitre
     IloRangeArray ConstrMasterEqual = IloAdd(ModelMaster, IloRangeArray(env, myCompact._n, 1, 1));
-    ModelMaster.add(ConstrMasterEqual);
-
     IloRangeArray ConstrMasterInequal = IloAdd(ModelMaster, IloRangeArray(env, myCompact._m, 0, 1));
-    ModelMaster.add(ConstrMasterInequal);
 
 
     //------------------------------
@@ -87,8 +83,8 @@ int main (int argc, char const *argv[])
     //determination des colonnes initiales
     IloCplex cplexCompact(myCompact._Model);
 
-    //cplexCompact.setParam(IloCplex::IntSolLim, 1); // Valeur par defaut : 2100000000 (arret apres la premiere solution entiere)
-    //cplexCompact.setParam(IloCplex::NodeSel, 0);   // Valeur par defaut : 1 (parcours en profondeur)
+    cplexCompact.setParam(IloCplex::IntSolLim, 1); // Valeur par defaut : 2100000000 (arret apres la premiere solution entiere)
+    cplexCompact.setParam(IloCplex::NodeSel, 0);   // Valeur par defaut : 1 (parcours en profondeur)
     cplexCompact.solve();
     for (int j = 0; j < myCompact._m; j++){
       IloNumArray vals(env);
@@ -108,15 +104,15 @@ int main (int argc, char const *argv[])
      
       //CoutColonne[j].add(Cout);
     }
-    
-    LocalSearch(myCompact);
+
+    //LocalSearch(myCompact);
     
     //cout << "Affichage de l'objectif\n";
     //cout << cplexCompact.getObjective() << "\n";
 
-    IloNum ObjCompact(0);
-    cplexCompact.getObjValue(ObjCompact);
-    cout << "Valeur de l'objectif : " << ObjCompact << "\n";
+    //IloNum ObjCompact(0);
+    //cplexCompact.getObjValue(ObjCompact);
+    //cout << "Valeur de l'objectif : " << ObjCompact << "\n";
 
     //cout << "Affichage de IsTacheInColonne\n";
     //PrintArray(IsTacheInColonne);
@@ -125,37 +121,55 @@ int main (int argc, char const *argv[])
     cout << "Affichage des colonnes\n";
     PrintArray(Colonne);
     cout << "Affichage de l'objectif\n";
-    cout << ObjectifMaster.getExpr() << "\n";
-
+    //cout << ObjectifMaster.getExpr() << "\n";
+    
+    // Solveur du modele maitre
     IloCplex cplexMaster(ModelMaster);
+
+    // Modele auxiliaire
+    IloModel ModelAux(env);
+    IloBoolVarArray z(env, myCompact._n);
+    IloObjective ObjAux = IloAdd(ModelAux, IloMaximize(env,1));
+    IloRange ConstrAux = IloAdd(ModelAux, IloScalProd(IloNumArray(env, myCompact._n) , z) <= 0);
+    IloCplex cplexAux(ModelAux);
+
+    cout << "********** bouh1 **********\n";
+
     while(true)
     {
       cplexMaster.solve();
+      cplexMaster.solveFixed();
       IloNumArray valDualEqual(env);
       cplexMaster.getDuals(valDualEqual, ConstrMasterEqual);
       IloNumArray valDualInequal(env);
       cplexMaster.getDuals(valDualInequal, ConstrMasterInequal);
       int NbReductCostPositive = 0;
 
+      cout << "********** bouh2 **********\n";
+
       for(int j = 0; j < myCompact._m; j++)
       {
-        IloModel ModelAux(env);
-        IloBoolVarArray z(env);
-        IloExpr ObjAux(env);
-        for(int i = 0; i < myCompact._n; i++)
-          ObjAux += (myCompact._c[j][i] - valDualEqual[i])*z[i];
-        ModelAux.add(IloMinimize(env, ObjAux));
-        ObjAux.end();
-        IloExpr ConstrAux(env);
-        for(int i = 0; i < myCompact._n; i++)
-          ConstrAux += myCompact._a[j][i]*z[i];
-        ModelAux.add(ConstrAux <= myCompact._b[j]);
-        ConstrAux.end();
-        IloCplex cplexAux(ModelAux);
+        IloNumArray CoefConstrAux(env, myCompact._n);
+        for (int i = 0; i < myCompact._n; i++)
+          CoefConstrAux[i] = myCompact._c[j][i] - valDualEqual[i];
+        ObjAux.setExpr(IloScalProd(CoefConstrAux, z));
+        ConstrAux.setExpr(IloScalProd(myCompact._a[j], z));
+        ConstrAux.setUB(myCompact._b[j]);
+        //for(int i = 0; i < myCompact._n; i++)
+        //  ObjAux += (myCompact._c[j][i] - valDualEqual[i])*z[i];
+        //ModelAux.add(IloMinimize(env, ObjAux));
+        //ObjAux.end();
+        //IloExpr ConstrAux(env);
+        //for(int i = 0; i < myCompact._n; i++)
+        //  ConstrAux += myCompact._a[j][i]*z[i];
+        //ModelAux.add(ConstrAux <= myCompact._b[j]);
+        //ConstrAux.end();
+        
         cplexAux.solve();
 
         IloNum ObjAuxOpt(0);
         cplexAux.getObjValue(ObjAuxOpt);
+        cout << "Valeur optimale du probleme auxiliaire " << j << ": " << ObjAuxOpt - valDualInequal[j] << "\n";
         if (ObjAuxOpt < valDualInequal[j])
         {
           IloNumArray vals(env);
@@ -168,8 +182,7 @@ int main (int argc, char const *argv[])
         }
         else
           NbReductCostPositive++;
-
-        ModelAux.end();
+       
       }
 
       if (NbReductCostPositive==myCompact._m)
@@ -182,9 +195,12 @@ int main (int argc, char const *argv[])
 
     //------------------------------
 
-    ConstrMasterEqual.end();
+    ModelAux.end();
+
     ConstrMasterInequal.end();
+    ConstrMasterEqual.end();
     ObjectifMaster.end();
+
   }
   catch (IloException& e) {
     cerr << "Concert exception caught: " << e << endl;
