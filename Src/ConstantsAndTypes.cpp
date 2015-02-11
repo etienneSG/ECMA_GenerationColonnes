@@ -74,3 +74,12 @@ void PrintArray(IloNumArray &iNumArray)
     cout << iNumArray[i] << "\t";
   cout << "\n";
 }
+
+void PrintArray(IloIntArray &iIntArray)
+{
+  int n = iIntArray.getSize();
+  for (int i = 0; i < n; i++)
+    cout << iIntArray[i] << "\t";
+  cout << "\n";
+}
+

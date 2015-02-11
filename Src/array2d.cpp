@@ -57,8 +57,8 @@ void Array2d::Print()
           std::cout << "1 ";
         else
           std::cout << "0 ";
-        std::cout << "\n";
       }
+      std::cout << "\n";
     }
   }
 }

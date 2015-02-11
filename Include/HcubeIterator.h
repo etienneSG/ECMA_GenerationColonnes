@@ -45,6 +45,9 @@ public:
   /** Return false while the iterator has not iterate on every element */
   inline bool IsEnded();
   
+  /** Reset the iterator at the begining */
+  void Reset();
+  
 private:
   int _n;               // dimension of the hypercube
   int _k;               // number of subdivision of the hypercube

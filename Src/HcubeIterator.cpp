@@ -42,4 +42,11 @@ void HcubeIterator::Print()
   std::cout<<"\n";   
 }
 
+void HcubeIterator::Reset()
+{
+  _v[0]=-1;
+  unsigned int i;
+  for(i = 1; i < _v.size(); i++)
+    _v[i] = 0;
+}
 

@@ -105,7 +105,7 @@ int main (int argc, char const *argv[])
       //CoutColonne[j].add(Cout);
     }
 
-    //LocalSearch(myCompact);
+    LocalSearch(myCompact);
     
     //cout << "Affichage de l'objectif\n";
     //cout << cplexCompact.getObjective() << "\n";

@@ -8,8 +8,9 @@
 #include <string.h>
 #include <algorithm>
 #include <math.h>
-#include "kcombinationiterator.h"
-#include "HcubeIterator.h"
+//#include "kcombinationiterator.h"
+//#include "HcubeIterator.h"
+#include "ModelCompactIterator.h"
 
 #ifdef __linux__
 #include <omp.h> // Open Multi-Processing Library (Linux only)
@@ -182,6 +183,36 @@ bool ModelCompact::NeighbourhoodSearch(int iNSize)
     aBestMachine[i] = -1;
   }
 */
+  
+  // Iterateur sur les solutions voisines
+  ModelCompactIterator ModelCompactIt(*this, iNSize);
+  while (!ModelCompactIt.IsEnded())
+  {
+    if (_ActualCost > ModelCompactIt._Cost && ModelCompactIt.IsAdmissible())
+    {
+      // Modification de la solution courante
+      for (int i = 0; i < iNSize; i++)
+      {
+        int ActualMachine = 0;
+        while (ActualMachine < _m && !_x(ActualMachine, ModelCompactIt._KcombIt(i)))
+          ActualMachine++;
+        assert(ActualMachine < _m);
+       _x(ActualMachine, ModelCompactIt._KcombIt(i)) = false;
+       _x(ModelCompactIt._HcubeIt(i), ModelCompactIt._KcombIt(i)) = true;
+      }
+      
+      _ActualCost = ModelCompactIt._Cost;
+      
+      for (int j = 0; j < _m; j++) {
+        _ActualCapacity[j] = ModelCompactIt._aCapacity[j];
+      }
+      
+      FindABetterSolution = true;
+    }
+    
+    ++ModelCompactIt;
+  }
+/*
   // Iterateur sur les solutions voisines
   KcombinationIterator NeighbourhoodIt(iNSize, _n);
   while (!FindABetterSolution && !NeighbourhoodIt.IsEnded())
@@ -201,11 +232,19 @@ bool ModelCompact::NeighbourhoodSearch(int iNSize)
       PartialCost -= _c[aActualMachine[i]][NeighbourhoodIt(i)];
     }
     // Calcul des ressources consommees sans les affectations precedentes
-    IloIntArray PartialRessource(_ActualCapacity);
+    int * aPartialRessource = new int[_m];
+    for (int j = 0; j < _m; j++)
+      aPartialRessource[j] = _ActualCapacity[j];
+    std::cout << "ActualCapacity\n";
+    PrintArray(_ActualCapacity);
     for (int i = 0; i < iNSize; i++) {
       PartialRessource[aActualMachine[i]] -= _a[aActualMachine[i]][NeighbourhoodIt(i)];
     }
-
+    std::cout << "Ressource partielle\n";
+    PrintArray(PartialRessource);
+    std::cout << "Affectation choisie\n";
+    _x.Print();
+    
     HcubeIterator MachinesIt(_m, iNSize);
     while (!FindABetterSolution && !MachinesIt.IsEnded())
     {
@@ -229,10 +268,10 @@ bool ModelCompact::NeighbourhoodSearch(int iNSize)
         }
         if (IsAdmissible) {
           _ActualCost = NewCost;
-	  for (int i = 0; i < iNSize; i++) {
-	    _x(MachinesIt(i), NeighbourhoodIt(i)) = true;
-	    _x(aActualMachine[i], NeighbourhoodIt(i)) = false;
-	  }
+          for (int i = 0; i < iNSize; i++) {
+            _x(MachinesIt(i), NeighbourhoodIt(i)) = true;
+            _x(aActualMachine[i], NeighbourhoodIt(i)) = false;
+          }
           for (int j = 0; j < _m; j++) {
             _ActualCapacity[j] = NewRessource[j];
           }
@@ -241,12 +280,17 @@ bool ModelCompact::NeighbourhoodSearch(int iNSize)
         }
       }
       else
-	++MachinesIt;
+        ++MachinesIt;
     }
+    
+    if (aPartialRessource)
+      delete [] aPartialRessource; aPartialRessource = 0;
     if (aActualMachine)
       delete [] aActualMachine; aActualMachine = 0;
+    
     ++NeighbourhoodIt;
   }
+*/
 /*
   if (aBestTache)
     delete [] aBestTache; aBestTache = 0;

@@ -15,6 +15,7 @@ void PrintArray(NumMatrix &iNumMatrix);
 void PrintArray(BoolVarMatrix &iBoolVarMatrix);
 void PrintArray(IntMatrix3d &iIntMatrix3d);
 void PrintArray(NumMatrix3d &iNumMatrix3d);
+void PrintArray(IloIntArray &iIntArray);
 void PrintArray(IloNumArray &iNumArray);
 
 /** Constantes du programme */
