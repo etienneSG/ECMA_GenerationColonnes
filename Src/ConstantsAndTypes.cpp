@@ -6,6 +6,20 @@
 
 using namespace std;
 
+
+void PrintArray(IntMatrix &iIntMatrix)
+{
+  int n = iIntMatrix.getSize();
+  for (int i = 0; i < n; i++)
+  {
+    int m = iIntMatrix[i].getSize();
+    for (int j = 0; j < m; j++)
+      cout << iIntMatrix[i][j] << "\t";
+    cout << "\n";
+  }
+}
+
+
 void PrintArray(NumMatrix &iNumMatrix)
 {
   int n = iNumMatrix.getSize();
@@ -30,6 +44,18 @@ void PrintArray(BoolVarMatrix &iBoolVarMatrix)
     cout << "\n";
   }
 }
+
+
+void PrintArray(IntMatrix3d &iIntMatrix3d)
+{
+  int n = iIntMatrix3d.getSize();
+  for (int i = 0; i < n; i++)
+  {
+    cout << "Matrice " << i << "\n";
+    PrintArray(iIntMatrix3d[i]);
+  }
+}
+
 
 void PrintArray(NumMatrix3d &iNumMatrix3d)
 {

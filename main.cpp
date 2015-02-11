@@ -16,7 +16,7 @@ int main (int argc, char const *argv[])
   try {
 
     // parametres formulation compacte
-    ModelCompact myCompact("GAP/GAP-a05100.dat", env);
+    ModelCompact myCompact("GAP/GAP-test.dat", env);
 
     // creation des variables formulation compacte
     BoolVarMatrix x(env);
@@ -59,13 +59,13 @@ int main (int argc, char const *argv[])
 
     // Paramètres probleme maitre
     IloModel ModelMaster(env);
-    NumMatrix CoutColonne(env);
-    NumMatrix3d IsTacheInColonne(env);
-    // Varialbes probleme maitre
+    IntMatrix CoutColonne(env);
+    IntMatrix3d IsTacheInColonne(env);
+    // Variables probleme maitre
     BoolVarMatrix Colonne(env);
     for (int i = 0; i < myCompact._m; i++) {
-      CoutColonne.add(IloNumArray(env));
-      IsTacheInColonne.add(NumMatrix(env));
+      CoutColonne.add(IloIntArray(env));
+      IsTacheInColonne.add(IntMatrix(env));
       Colonne.add(IloBoolVarArray(env));
     }
 
@@ -87,13 +87,14 @@ int main (int argc, char const *argv[])
     //determination des colonnes initiales
     IloCplex cplexCompact(myCompact._Model);
 
-    cplexCompact.setParam(IloCplex::IntSolLim, 1); // Valeur par defaut : 2100000000 (arret apres la premiere solution entiere)
-    cplexCompact.setParam(IloCplex::NodeSel, 0);   // Valeur par defaut : 1 (parcours en profondeur)
+    //cplexCompact.setParam(IloCplex::IntSolLim, 1); // Valeur par defaut : 2100000000 (arret apres la premiere solution entiere)
+    //cplexCompact.setParam(IloCplex::NodeSel, 0);   // Valeur par defaut : 1 (parcours en profondeur)
     cplexCompact.solve();
     for (int j = 0; j < myCompact._m; j++){
       IloNumArray vals(env);
       cplexCompact.getValues(vals,x[j]);
-
+      cout << "Affichage de la machine " << j << "\n";
+      PrintArray(vals);
       myCompact.InsertSolutionOnMachine(vals, j);
 
       IloInt Cout(0);
@@ -110,6 +111,13 @@ int main (int argc, char const *argv[])
     
     LocalSearch(myCompact);
     
+    //cout << "Affichage de l'objectif\n";
+    //cout << cplexCompact.getObjective() << "\n";
+
+    IloNum ObjCompact(0);
+    cplexCompact.getObjValue(ObjCompact);
+    cout << "Valeur de l'objectif : " << ObjCompact << "\n";
+
     //cout << "Affichage de IsTacheInColonne\n";
     //PrintArray(IsTacheInColonne);
     //cout << "Affichage des couts de chaque colonne\n";

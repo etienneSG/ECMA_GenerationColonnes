@@ -39,6 +39,9 @@ public:
   /** Return the number of columns of the array */
   inline int GetNbColumn();
 
+  /** Print the array */
+  void Print();
+
   /**
    * Reading and writing access to coefficients
    * @param i: row's index
@@ -50,7 +53,7 @@ public:
 protected:
   int _NbRow;     // Number of rows
   int _NbColumn;  // Number of columns
-  bool* _aTab;  // Array of double
+  bool* _aTab;    // Array of double
 };
 
 

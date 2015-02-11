@@ -30,7 +30,7 @@ public:
   ~ModelCompact();
 
   /** Calcule le cout de la solution courante et actualise les capacites consommees */
-  double ComputeCost();
+  int ComputeCost();
   
   /**
    * Change la solution courante
@@ -62,14 +62,14 @@ public:
   IloModel _Model;  // Modele
   IloInt _m;        // Nombre de machines
   IloInt _n;        // Nombre de taches
-  NumMatrix _c;     // matrice des couts d'affectation
-  NumMatrix _a;     // matrice des capacites consommees
+  IntMatrix _c;     // matrice des couts d'affectation
+  IntMatrix _a;     // matrice des capacites consommees
   IloIntArray _b;   // vecteur des capacites des machines
   
   /** Variables */
   Array2d _x;                   // Solution courante
-  double _ActualCost;           // Prix de la solution courante
-  IloNumArray _ActualCapacity;  // Capacite occupee sur chaque machine
+  int _ActualCost;              // Prix de la solution courante
+  IloIntArray _ActualCapacity;  // Capacite occupee sur chaque machine
 
 
 private:

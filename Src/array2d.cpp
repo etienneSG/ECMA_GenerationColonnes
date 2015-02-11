@@ -1,6 +1,7 @@
 #include "array2d.h"
 
 #include <string.h>
+#include <iostream>
 
 
 Array2d::Array2d():
@@ -44,4 +45,22 @@ void Array2d::Resize(int iNbRow, int iNbColumn)
     memset(_aTab, 0, nbBox*sizeof(bool));
   }
 }
+
+
+void Array2d::Print()
+{
+  if (_aTab)
+  {
+    for (int i = 0; i < _NbRow; i++) {
+      for (int j = 0; j < _NbColumn; j++) {
+        if (_aTab[_NbColumn*i+j])
+          std::cout << "1 ";
+        else
+          std::cout << "0 ";
+        std::cout << "\n";
+      }
+    }
+  }
+}
+
 

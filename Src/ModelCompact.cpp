@@ -28,7 +28,7 @@ using namespace std;
  * @param a:     Matrice des capacites consommees
  * @param b:     Vecteur des capacites des machines
  */
-void ReadData (string iFile, IloModel model, NumMatrix c, IloInt& m, IloInt& n, NumMatrix a, IloIntArray b)
+void ReadData (string iFile, IloModel model, IntMatrix c, IloInt& m, IloInt& n, IntMatrix a, IloIntArray b)
 {
   IloEnv env = model.getEnv();
 
@@ -78,7 +78,7 @@ void ReadData (string iFile, IloModel model, NumMatrix c, IloInt& m, IloInt& n, 
     int idx = 2;
     for (int idx_l = 0; idx_l < m; idx_l++)
     {
-      IloNumArray ligne(env);
+      IloIntArray ligne(env);
       for (int idx_c = 0; idx_c < n; idx_c++)
       {
         ligne.add(data[idx]);
@@ -88,7 +88,7 @@ void ReadData (string iFile, IloModel model, NumMatrix c, IloInt& m, IloInt& n, 
     }
     for (int idx_l = 0; idx_l < m; idx_l++)
     {
-      IloNumArray ligne(env);
+      IloIntArray ligne(env);
       for (int idx_c = 0; idx_c < n; idx_c++)
       {
         ligne.add(data[idx]);
@@ -122,7 +122,7 @@ ModelCompact::ModelCompact(std::string iFile, IloEnv iEnv):
 }
 
 
-double ModelCompact::ComputeCost()
+int ModelCompact::ComputeCost()
 {
   _ActualCost = 0;
   int idx_l;
@@ -152,14 +152,14 @@ void ModelCompact::InsertSolution(NumMatrix & iSolution)
 {
   for (int idx_l = 0; idx_l < _m; idx_l++)
     for (int idx_c = 0; idx_c < _n; idx_c++)
-      _x(idx_l, idx_c) = fabs(iSolution[idx_l][idx_c]) < CST_EPS ? false : true;
+      _x(idx_l, idx_c) = fabs(iSolution[idx_l][idx_c]) > CST_EPS ? true : false;
 }
 
 
 void ModelCompact::InsertSolutionOnMachine(IloNumArray & iSolution, int iIdxMachine)
 {
   for (int idx_c = 0; idx_c < _n; idx_c++)
-    _x(iIdxMachine, idx_c) = fabs(iSolution[idx_c]) < CST_EPS ? false : true;
+    _x(iIdxMachine, idx_c) = fabs(iSolution[idx_c]) > CST_EPS ? true : false;
 }
 
 
@@ -196,12 +196,12 @@ bool ModelCompact::NeighbourhoodSearch(int iNSize)
       assert(aActualMachine[i] < _m);
     }
     // Calcul du cout sans les affectations precedentes
-    double PartialCost = _ActualCost;
+    int PartialCost = _ActualCost;
     for (int i = 0; i < iNSize; i++) {
       PartialCost -= _c[aActualMachine[i]][NeighbourhoodIt(i)];
     }
     // Calcul des ressources consommees sans les affectations precedentes
-    IloNumArray PartialRessource(_ActualCapacity);
+    IloIntArray PartialRessource(_ActualCapacity);
     for (int i = 0; i < iNSize; i++) {
       PartialRessource[aActualMachine[i]] -= _a[aActualMachine[i]][NeighbourhoodIt(i)];
     }
@@ -209,14 +209,14 @@ bool ModelCompact::NeighbourhoodSearch(int iNSize)
     HcubeIterator MachinesIt(_m, iNSize);
     while (!FindABetterSolution && !MachinesIt.IsEnded())
     {
-      double NewCost = PartialCost;
+      int NewCost = PartialCost;
       for (int i = 0; i < iNSize; i++) {
         NewCost += _c[MachinesIt(i)][NeighbourhoodIt(i)];
       }
       if (NewCost < _ActualCost)
       {
         // On verifie que la solution est admissible
-        IloNumArray NewRessource(PartialRessource);
+        IloIntArray NewRessource(PartialRessource);
         for (int i = 0; i < iNSize; i++) {
           NewRessource[MachinesIt(i)] += _a[MachinesIt(i)][NeighbourhoodIt(i)];
         }
