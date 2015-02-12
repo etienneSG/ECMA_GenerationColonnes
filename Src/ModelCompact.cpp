@@ -170,19 +170,20 @@ bool ModelCompact::NeighbourhoodSearch(int iNSize)
     std::cout << "It is a stupid use of this method !" << std::endl;
     return false;
   }
-
+  
   bool FindABetterSolution = false;
 
   // Calcul du cout de l'affectation courante
   _ActualCost = ComputeCost();
-/*
-  int * aBestTache = new int[iNSize];
-  int * aBestMachine = new int[iNSize];
-  for (int i = 0; i < iNSize; i++) {
-    aBestTache[i] = -1;
-    aBestMachine[i] = -1;
+  
+  // FOR DEBUG : TO REMOVE !
+  std::cout << "Cout de la solution ameliorante : " << _ActualCost << "\n";
+  std::cout << "Affectation et capacite\n";
+  for (int j = 0; j < _m; j++) {
+    for (int i = 0; i < _n; i++)
+      std::cout << _x(j,i) << " ";
+    std::cout << "\t|  " << _ActualCapacity[j] << "\n";
   }
-*/
   
   // Iterateur sur les solutions voisines
   ModelCompactIterator ModelCompactIt(*this, iNSize);
@@ -207,96 +208,21 @@ bool ModelCompact::NeighbourhoodSearch(int iNSize)
         _ActualCapacity[j] = ModelCompactIt._aCapacity[j];
       }
       
+      // FOR DEBUG : TO REMOVE !
+      std::cout << "Cout de la solution ameliorante : " << _ActualCost << "\n";
+      std::cout << "Affectation et capacite\n";
+      for (int j = 0; j < _m; j++) {
+        for (int i = 0; i < _n; i++)
+          std::cout << _x(j,i) << " ";
+        std::cout << "\t|  " << _ActualCapacity[j] << "\n";
+      }
+      
       FindABetterSolution = true;
     }
     
     ++ModelCompactIt;
   }
-/*
-  // Iterateur sur les solutions voisines
-  KcombinationIterator NeighbourhoodIt(iNSize, _n);
-  while (!FindABetterSolution && !NeighbourhoodIt.IsEnded())
-  {
-    NeighbourhoodIt.Print();
-    // Recuperation des machines ou sont affectees les taches
-    int * aActualMachine = new int[iNSize];
-    for (int i = 0; i < iNSize; i++) {
-      aActualMachine[i] = 0;
-      while (aActualMachine[i] < _m && !_x(aActualMachine[i], NeighbourhoodIt(i)))
-        aActualMachine[i]++;
-      assert(aActualMachine[i] < _m);
-    }
-    // Calcul du cout sans les affectations precedentes
-    int PartialCost = _ActualCost;
-    for (int i = 0; i < iNSize; i++) {
-      PartialCost -= _c[aActualMachine[i]][NeighbourhoodIt(i)];
-    }
-    // Calcul des ressources consommees sans les affectations precedentes
-    int * aPartialRessource = new int[_m];
-    for (int j = 0; j < _m; j++)
-      aPartialRessource[j] = _ActualCapacity[j];
-    std::cout << "ActualCapacity\n";
-    PrintArray(_ActualCapacity);
-    for (int i = 0; i < iNSize; i++) {
-      PartialRessource[aActualMachine[i]] -= _a[aActualMachine[i]][NeighbourhoodIt(i)];
-    }
-    std::cout << "Ressource partielle\n";
-    PrintArray(PartialRessource);
-    std::cout << "Affectation choisie\n";
-    _x.Print();
-    
-    HcubeIterator MachinesIt(_m, iNSize);
-    while (!FindABetterSolution && !MachinesIt.IsEnded())
-    {
-      int NewCost = PartialCost;
-      for (int i = 0; i < iNSize; i++) {
-        NewCost += _c[MachinesIt(i)][NeighbourhoodIt(i)];
-      }
-      if (NewCost < _ActualCost)
-      {
-        // On verifie que la solution est admissible
-        IloIntArray NewRessource(PartialRessource);
-        for (int i = 0; i < iNSize; i++) {
-          NewRessource[MachinesIt(i)] += _a[MachinesIt(i)][NeighbourhoodIt(i)];
-        }
-        bool IsAdmissible = true;
-        for (int j = 0; j < _m; j++) {
-          if (NewRessource[j] > _b[j]) {
-            IsAdmissible = false;
-            break;
-          }
-        }
-        if (IsAdmissible) {
-          _ActualCost = NewCost;
-          for (int i = 0; i < iNSize; i++) {
-            _x(MachinesIt(i), NeighbourhoodIt(i)) = true;
-            _x(aActualMachine[i], NeighbourhoodIt(i)) = false;
-          }
-          for (int j = 0; j < _m; j++) {
-            _ActualCapacity[j] = NewRessource[j];
-          }
-          FindABetterSolution = true;
-          break;
-        }
-      }
-      else
-        ++MachinesIt;
-    }
-    
-    if (aPartialRessource)
-      delete [] aPartialRessource; aPartialRessource = 0;
-    if (aActualMachine)
-      delete [] aActualMachine; aActualMachine = 0;
-    
-    ++NeighbourhoodIt;
-  }
-*/
-/*
-  if (aBestTache)
-    delete [] aBestTache; aBestTache = 0;
-  if (aBestMachine)
-    delete [] aBestMachine; aBestMachine = 0;
-*/
+
   return FindABetterSolution;
 }
 

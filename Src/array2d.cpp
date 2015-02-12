@@ -26,6 +26,21 @@ _aTab(0)
 }
 
 
+
+Array2d::Array2d(Array2d & iArray2d)
+: _NbRow(iArray2d._NbRow),
+  _NbColumn(iArray2d._NbColumn),
+  _aTab(0)
+{
+  int nbBox = _NbRow*_NbColumn;
+  if (nbBox>0)
+  {
+    _aTab = new bool[nbBox];
+    memcpy(_aTab, iArray2d._aTab, nbBox*sizeof(bool));
+  }
+}
+
+
 Array2d::~Array2d()
 {
   if (_aTab)

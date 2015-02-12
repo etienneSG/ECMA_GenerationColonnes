@@ -23,6 +23,10 @@ public:
    */
   Array2d(int iNbRow, int iNbColumn);
   
+  /** Constructor by copy */
+  Array2d(Array2d & iArray2d);
+  
+  
   /** Destructor */
   ~Array2d();
   

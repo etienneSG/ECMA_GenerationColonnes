@@ -54,6 +54,11 @@ public:
   int _Cost;        // Cout de la solution courante
   int * _aCapacity; // Capacite courante occupee sur chaque machine
   
+  /** Solution initiale */
+  int * _aMachineInitiale;  // Machines sur lesquelles se trouvaient initialement chaque tache
+  int _InitialCost;         // Prix de la solution initiale
+  int * _aInitialCapacity;  // Capacite occupee initialement sur chaque machine
+  
 private:
   ModelCompactIterator(){};
 };

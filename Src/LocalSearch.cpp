@@ -6,7 +6,7 @@ using namespace std;
 
 void LocalSearch(ModelCompact & iModelCompact)
 {
-  iModelCompact.LocalSearchAlgorithm(1);
+  iModelCompact.LocalSearchAlgorithm(3);
   cout << "//--- Recherche locale ---\n";
   cout << "Valeur de la solution trouvee: " << iModelCompact._ActualCost << "\n";
   cout << "Affectation trouvee:\n";
