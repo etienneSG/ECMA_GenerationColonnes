@@ -12,11 +12,13 @@ ILOSTLBEGIN
 
 int main (int argc, char const *argv[])
 {
+  std::string Argument1 = argc>1 ? argv[1] : "GAP/GAP-a10100.dat";
+
   IloEnv env;
   try {
 
     // parametres formulation compacte
-    ModelCompact myCompact("GAP/GAP-test.dat", env);
+    ModelCompact myCompact(Argument1, env);
 
     // creation des variables formulation compacte
     BoolVarMatrix x(env);

@@ -25,13 +25,7 @@ ModelCompactIterator::ModelCompactIterator(ModelCompact & iModelCompact, int iVo
   
   // Recuperation des machines ou sont affectees les taches
   _aMachineInitiale = new int[iModelCompact._n];
-  for (int i = 0; i < iModelCompact._n; i++)
-  {
-    _aMachineInitiale[i] = 0;
-    while (_aMachineInitiale[i] < _m && !iModelCompact._x(_aMachineInitiale[i], i))
-      _aMachineInitiale[i]++;
-    assert(_aMachineInitiale[i] < _m);
-  }
+  memcpy(_aMachineInitiale, iModelCompact._x, _n*sizeof(int));
     
   // Initialisation necessaire car l'iterateur ne part pas de la position actuelle
   if (_VSize)

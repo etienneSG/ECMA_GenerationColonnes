@@ -58,6 +58,9 @@ public:
    */
   void LocalSearchAlgorithm(int iMaxSize);
   
+  /** Affiche la solution courante */
+  void PrintCurrentSolution();
+  
   /** Donnees */
   IloModel _Model;  // Modele
   IloInt _m;        // Nombre de machines
@@ -67,7 +70,7 @@ public:
   IloIntArray _b;   // vecteur des capacites des machines
   
   /** Variables */
-  Array2d _x;                   // Solution courante
+  int * _x;                     // Solution courante (pour chaque tache est stocke le numero de la machine)
   int _ActualCost;              // Prix de la solution courante
   IloIntArray _ActualCapacity;  // Capacite occupee sur chaque machine
 

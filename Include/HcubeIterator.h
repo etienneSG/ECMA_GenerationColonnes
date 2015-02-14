@@ -21,8 +21,8 @@ public:
   
   /**
    * Constructor
-   * @param iK: number of elements to chose
-   * @param iN: number of elements in the set
+   * @param iK: number of subdivision of the hypercube
+   * @param iN: dimension of the hypercube
    */
   HcubeIterator(int iK,int iN);
   
@@ -64,7 +64,7 @@ inline bool HcubeIterator::IsEnded() {
 }
 
 inline int HcubeIterator::operator()(int iIdx) {
-  assert(0 <= iIdx && iIdx < _k);
+  assert(0 <= iIdx && iIdx < _n);
   return _v[iIdx+1];
 }
 

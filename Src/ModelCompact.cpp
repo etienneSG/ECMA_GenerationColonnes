@@ -114,11 +114,13 @@ ModelCompact::ModelCompact(std::string iFile, IloEnv iEnv):
   _c(iEnv),
   _a(iEnv),
   _b(iEnv),
+  _x(0),
   _ActualCost(0),
   _ActualCapacity(iEnv)
 {
   ReadData(iFile, _Model, _c, _m, _n, _a, _b);
-  _x.Resize(_m, _n);
+  _x = new int[_n];
+  memset(_x, 0, _n*sizeof(int));
   _ActualCapacity.add(_m, 0);
 }
 
@@ -136,14 +138,10 @@ int ModelCompact::ComputeCost()
   //#ifdef __linux__
   //#pragma omp parallel for reduction(+:_ActualCost) schedule(static,1)
   //#endif
-  for (idx_l = 0; idx_l < _m; idx_l++) {
-    int idx_c;
-    for (idx_c = 0; idx_c < _n; idx_c++) {
-      if (_x(idx_l, idx_c)) {
-        _ActualCost = _ActualCost + _c[idx_l][idx_c];
-        _ActualCapacity[idx_l] = _ActualCapacity[idx_l] + _a[idx_l][idx_c];
-      }
-    }
+  int idx_c;
+  for (idx_c = 0; idx_c < _n; idx_c++) {
+    _ActualCost += _c[_x[idx_c]][idx_c];
+    _ActualCapacity[_x[idx_c]] +=+ _a[_x[idx_c]][idx_c];
   }
   return _ActualCost;
 }
@@ -151,16 +149,38 @@ int ModelCompact::ComputeCost()
 
 void ModelCompact::InsertSolution(NumMatrix & iSolution)
 {
-  for (int idx_l = 0; idx_l < _m; idx_l++)
-    for (int idx_c = 0; idx_c < _n; idx_c++)
-      _x(idx_l, idx_c) = fabs(iSolution[idx_l][idx_c]) > CST_EPS ? true : false;
+  for (int i = 0; i < _n; i++)
+  {
+    int ActualMachine = 0;
+    while (ActualMachine < _m && fabs(iSolution[ActualMachine][i]) < CST_EPS)
+      ActualMachine++;
+    assert(ActualMachine < _m);
+    _x[i] = ActualMachine;
+  }
 }
 
 
 void ModelCompact::InsertSolutionOnMachine(IloNumArray & iSolution, int iIdxMachine)
 {
   for (int idx_c = 0; idx_c < _n; idx_c++)
-    _x(iIdxMachine, idx_c) = fabs(iSolution[idx_c]) > CST_EPS ? true : false;
+    if (fabs(iSolution[idx_c]) > CST_EPS)
+      _x[idx_c] = iIdxMachine;
+}
+
+
+void ModelCompact::PrintCurrentSolution()
+{
+  std::cout << "Cout de la solution ameliorante : " << _ActualCost << "\n";
+/*  std::cout << "Affectation et capacite\n";
+  for (int j = 0; j < _m; j++) {
+    for (int i = 0; i < _n; i++) {
+      if (_x[i] == j)
+        std::cout << "1 ";
+      else
+        std::cout << "0 ";
+    }
+    std::cout << "\t|  " << _ActualCapacity[j] << "\n";
+  }*/
 }
 
 
@@ -177,13 +197,7 @@ bool ModelCompact::NeighbourhoodSearch(int iNSize)
   _ActualCost = ComputeCost();
   
   // FOR DEBUG : TO REMOVE !
-  std::cout << "Cout de la solution ameliorante : " << _ActualCost << "\n";
-  std::cout << "Affectation et capacite\n";
-  for (int j = 0; j < _m; j++) {
-    for (int i = 0; i < _n; i++)
-      std::cout << _x(j,i) << " ";
-    std::cout << "\t|  " << _ActualCapacity[j] << "\n";
-  }
+  //PrintCurrentSolution();
   
   // Iterateur sur les solutions voisines
   ModelCompactIterator ModelCompactIt(*this, iNSize);
@@ -193,30 +207,17 @@ bool ModelCompact::NeighbourhoodSearch(int iNSize)
     {
       // Modification de la solution courante
       for (int i = 0; i < iNSize; i++)
-      {
-        int ActualMachine = 0;
-        while (ActualMachine < _m && !_x(ActualMachine, ModelCompactIt._KcombIt(i)))
-          ActualMachine++;
-        assert(ActualMachine < _m);
-       _x(ActualMachine, ModelCompactIt._KcombIt(i)) = false;
-       _x(ModelCompactIt._HcubeIt(i), ModelCompactIt._KcombIt(i)) = true;
-      }
+        _x[ModelCompactIt._KcombIt(i)] = ModelCompactIt._HcubeIt(i);
       
       _ActualCost = ModelCompactIt._Cost;
       
-      for (int j = 0; j < _m; j++) {
+      for (int j = 0; j < _m; j++)
         _ActualCapacity[j] = ModelCompactIt._aCapacity[j];
-      }
       
       // FOR DEBUG : TO REMOVE !
-      std::cout << "Cout de la solution ameliorante : " << _ActualCost << "\n";
-      std::cout << "Affectation et capacite\n";
-      for (int j = 0; j < _m; j++) {
-        for (int i = 0; i < _n; i++)
-          std::cout << _x(j,i) << " ";
-        std::cout << "\t|  " << _ActualCapacity[j] << "\n";
-      }
-      
+      cout << "Taille du voisinage explore : " << iNSize << "\n";
+      PrintCurrentSolution();
+
       FindABetterSolution = true;
     }
     
@@ -255,5 +256,7 @@ void ModelCompact::LocalSearchAlgorithm(int iMaxSize)
 
 ModelCompact::~ModelCompact()
 {
+  if (_x)
+    delete [] _x; _x = 0;
 }
 

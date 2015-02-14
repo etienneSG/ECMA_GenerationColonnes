@@ -21,7 +21,7 @@ CPLEXFLAGS = -I $(CPLEXDIR)/include -I $(CONCERTDIR)/include -L $(CPLEXLIBDIR) -
 # Les différentes options de compilations
 # -fopenmp : pour le multithreading
 # -g : mode debug  /  -O6 : optimisé
-CFLAGS=-I Include -g -Wall -ansi -pedantic -DIL_STD
+CFLAGS=-I Include -O6 -Wall -ansi -pedantic -DIL_STD
 # Les différents FrameWorks et bibliothèques pour le linkage
 GLLIBS= -lstdc++
 
