@@ -13,6 +13,7 @@
 #include <fstream>
 
 #include "ConstantsAndTypes.h"
+#include "ModelMaitre.h"
 #include "array2d.h"
 #include <ilcplex/ilocplex.h>
 
@@ -29,6 +30,16 @@ public:
   /** Destructeur */
   ~ModelCompact();
 
+  /** Cree la fonction objectif et les contraintes du modele compact */
+  void CreateObjectiveAndConstraintes();
+  
+  /**
+   * Trouve une solution realisable du probleme en effectuant un
+   * branch-and-bound avec un parcours en profondeur
+   * @param iModelMaitre: Model maitre a initialiser avec la solution
+   */
+  void FindFeasableSolution(ModelMaitre & iModelMaitre);
+  
   /** Calcule le cout de la solution courante et actualise les capacites consommees */
   int ComputeCost();
   
@@ -68,6 +79,9 @@ public:
   IntMatrix _c;     // matrice des couts d'affectation
   IntMatrix _a;     // matrice des capacites consommees
   IloIntArray _b;   // vecteur des capacites des machines
+  
+  /** Variables de decision du modele compact */
+  BoolVarMatrix _bvar;
   
   /** Variables */
   int * _x;                     // Solution courante (pour chaque tache est stocke le numero de la machine)

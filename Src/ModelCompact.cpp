@@ -114,14 +114,93 @@ ModelCompact::ModelCompact(std::string iFile, IloEnv iEnv):
   _c(iEnv),
   _a(iEnv),
   _b(iEnv),
+  _bvar(iEnv),
   _x(0),
   _ActualCost(0),
   _ActualCapacity(iEnv)
 {
+  // lecture des donnees
   ReadData(iFile, _Model, _c, _m, _n, _a, _b);
+  
+  // Initialisation de la solution vide
   _x = new int[_n];
   memset(_x, 0, _n*sizeof(int));
   _ActualCapacity.add(_m, 0);
+  
+  // creation des variables booleennes
+  for (int i = 0; i < _m; i++){
+    IloBoolVarArray E(_Model.getEnv());
+    for (int j = 0; j < _n; j++){
+      E.add(IloBoolVar(_Model.getEnv()));
+    }
+    _bvar.add(E);
+  }
+}
+
+
+ModelCompact::~ModelCompact()
+{
+  if (_x)
+    delete [] _x; _x = 0;
+  _Model.end();
+}
+
+
+void ModelCompact::CreateObjectiveAndConstraintes()
+{
+  // Creation des contraintes formulation compacte
+  IloRangeArray constrcompacte(_Model.getEnv());
+  for (int i = 0; i < _m; i++){
+    IloExpr Capacite(_Model.getEnv());
+    for (int j = 0; j < _n; j++){
+      Capacite+=_a[i][j]*_bvar[i][j];
+    }
+    constrcompacte.add( Capacite<=_b[i] );
+    Capacite.end();
+  }
+  
+  for (int i = 0; i < _n; i++){
+    IloExpr UniciteAffectation(_Model.getEnv());
+    for (int j = 0; j < _m; j++){
+      UniciteAffectation+=_bvar[j][i];
+    }
+    constrcompacte.add( UniciteAffectation == 1 );
+    UniciteAffectation.end();
+  }
+  _Model.add(constrcompacte);
+  
+  //Objectif formulation compacte
+  IloExpr ObjectifCompacte(_Model.getEnv());
+  for (int i = 0; i < _m; i++) {
+    for (int j = 0; j < _n ; j++) {
+      ObjectifCompacte+=_c[i][j]*_bvar[i][j];
+    }
+  }
+  _Model.add( IloMinimize(_Model.getEnv(), ObjectifCompacte) );
+  ObjectifCompacte.end();
+}
+
+
+void ModelCompact::FindFeasableSolution(ModelMaitre & iModelMaitre)
+{
+  IloCplex cplexCompact(_Model);
+
+  cplexCompact.setParam(IloCplex::IntSolLim, 1); // Valeur par defaut : 2100000000 (arret apres la premiere solution entiere)
+  cplexCompact.setParam(IloCplex::NodeSel, 0);   // Valeur par defaut : 1 (parcours en profondeur)
+  cplexCompact.solve();
+  for (int j = 0; j < _m; j++) {
+    IloNumArray vals(_Model.getEnv());
+    cplexCompact.getValues(vals, _bvar[j]);
+    cout << "Affichage de la machine " << j << "\n";
+    PrintArray(vals);
+    InsertSolutionOnMachine(vals, j);
+    
+    IloInt Cout(0);
+    for (int i = 0; i < _n; i++){
+      Cout+=vals[i]*_c[j][i];
+    }
+    iModelMaitre._Colonnes[j].add(IloBoolVar( iModelMaitre._Objectif(Cout) + iModelMaitre._ConstrEqual(vals) + iModelMaitre._ConstrInequal[j](1) ));
+  }
 }
 
 
@@ -253,10 +332,4 @@ void ModelCompact::LocalSearchAlgorithm(int iMaxSize)
   }
 }
 
-
-ModelCompact::~ModelCompact()
-{
-  if (_x)
-    delete [] _x; _x = 0;
-}
 
