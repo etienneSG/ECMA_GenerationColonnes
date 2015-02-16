@@ -6,17 +6,19 @@
 typedef IloArray<IloIntArray> IntMatrix;
 typedef IloArray<IloNumArray> NumMatrix;
 typedef IloArray<IloBoolVarArray> BoolVarMatrix;
+typedef IloArray<IloNumVarArray> NumVarMatrix;
 typedef IloArray<IntMatrix> IntMatrix3d;
 typedef IloArray<NumMatrix> NumMatrix3d;
 
 /** Affiche le contenu des matrices */
+void PrintArray(IloIntArray &iIntArray);
+void PrintArray(IloNumArray &iNumArray);
 void PrintArray(IntMatrix &iIntMatrix);
 void PrintArray(NumMatrix &iNumMatrix);
 void PrintArray(BoolVarMatrix &iBoolVarMatrix);
+void PrintArray(NumVarMatrix &NumVarMatrix);
 void PrintArray(IntMatrix3d &iIntMatrix3d);
 void PrintArray(NumMatrix3d &iNumMatrix3d);
-void PrintArray(IloIntArray &iIntArray);
-void PrintArray(IloNumArray &iNumArray);
 
 /** Constantes du programme */
 #define CST_EPS 1e-7

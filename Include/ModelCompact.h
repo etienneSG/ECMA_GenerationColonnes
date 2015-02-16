@@ -15,6 +15,7 @@
 #include "ConstantsAndTypes.h"
 #include "ModelMaitre.h"
 #include "array2d.h"
+#include <vector>
 #include <ilcplex/ilocplex.h>
 
 class ModelCompact
@@ -26,6 +27,12 @@ public:
    * @param iFile: fichier dans lequel charger les donnees d'entree
    */
   ModelCompact(std::string iFile, IloEnv iEnv);
+  
+  /**
+   * Constructeur par copie
+   * @param iCompact: Modele compact a copier
+   */
+  ModelCompact(const ModelCompact & iCompact);
   
   /** Destructeur */
   ~ModelCompact();
@@ -39,6 +46,11 @@ public:
    * @param iModelMaitre: Model maitre a initialiser avec la solution
    */
   void FindFeasableSolution(ModelMaitre & iModelMaitre);
+  
+  /**
+   * Algorithme d'initialisation glouton aleatoire
+   */
+  void GRASP(int iRCL);
   
   /** Calcule le cout de la solution courante et actualise les capacites consommees */
   int ComputeCost();
@@ -91,6 +103,17 @@ public:
 
 private:
   ModelCompact(){}; // Constructeur par defaut
+  
+  /**
+   * Trie un tableau d'indice par ordre croissant du cout d'affectation de la tache iTAche sur les machine
+   * @param iaIndex: Tableau d'indice a trier
+   * @param iBegin:  Indice de debut du tri
+   * @param iEnd:    Indice de fin du tri
+   * @param iTache:  Indice de la tache a considerer
+   * @param iLenght: on ne veut que les iLenght premiers elements
+   */
+  void SortIncreasingCost(int * iaIndex, int iBegin, int iEnd, int iTache, int iLenght);
+  
 };
 
 #endif

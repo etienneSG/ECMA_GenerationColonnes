@@ -13,23 +13,19 @@ void ColumnGeneration(ModelMaitre & iMaster, ModelCompact & iCompact)
   // Modele auxiliaire
   IloModel ModelAux(iMaster._Env);
   IloBoolVarArray z(iMaster._Env, iCompact._n);
-  IloObjective ObjAux = IloAdd(ModelAux, IloMaximize(iMaster._Env,1));
+  IloObjective ObjAux = IloAdd(ModelAux, IloMinimize(iMaster._Env,1));
   IloRange ConstrAux = IloAdd(ModelAux, IloScalProd(IloNumArray(iMaster._Env, iCompact._n) , z) <= 0);
   IloCplex cplexAux(ModelAux);
-
-  cout << "********** bouh1 **********\n";
+  cplexAux.setOut(iMaster._Env.getNullStream());
 
   while(true)
   {
     cplexMaster.solve();
-    cplexMaster.solveFixed();
     IloNumArray valDualEqual(iMaster._Env);
     cplexMaster.getDuals(valDualEqual, iMaster._ConstrEqual);
     IloNumArray valDualInequal(iMaster._Env);
     cplexMaster.getDuals(valDualInequal, iMaster._ConstrInequal);
     int NbReductCostPositive = 0;
-
-    cout << "********** bouh2 **********\n";
 
     for(int j = 0; j < iCompact._m; j++)
     {
@@ -42,9 +38,8 @@ void ColumnGeneration(ModelMaitre & iMaster, ModelCompact & iCompact)
       
       cplexAux.solve();
 
-      IloNum ObjAuxOpt(0);
-      cplexAux.getObjValue(ObjAuxOpt);
-      cout << "Valeur optimale du probleme auxiliaire " << j << ": " << ObjAuxOpt - valDualInequal[j] << "\n";
+      double ObjAuxOpt = cplexAux.getObjValue();
+      //cout << "Valeur optimale du probleme auxiliaire " << j << ": " << ObjAuxOpt - valDualInequal[j] << "\n";
       if (ObjAuxOpt < valDualInequal[j])
       {
         IloNumArray vals(iMaster._Env);
@@ -53,7 +48,7 @@ void ColumnGeneration(ModelMaitre & iMaster, ModelCompact & iCompact)
         for (int i = 0; i < iCompact._n; i++){
           Cout+=vals[i]*iCompact._c[j][i];
         }
-        iMaster._Colonnes[j].add(IloBoolVar( iMaster._Objectif(Cout) + iMaster._ConstrEqual(vals) + iMaster._ConstrInequal[j](1) ));
+        iMaster._Colonnes[j].add(IloNumVar( iMaster._Objectif(Cout) + iMaster._ConstrEqual(vals) + iMaster._ConstrInequal[j](1) ));
       }
       else
         NbReductCostPositive++;
@@ -64,8 +59,7 @@ void ColumnGeneration(ModelMaitre & iMaster, ModelCompact & iCompact)
       break;
   }
 
-  IloNum ObjMasterOpt(0);
-  cplexMaster.getObjValue(ObjMasterOpt);
+  double ObjMasterOpt = cplexMaster.getObjValue();
   cout << "Valeur de l'optimum obtenu par generation de colonnes : " << ObjMasterOpt << "\n";
 
   //------------------------------

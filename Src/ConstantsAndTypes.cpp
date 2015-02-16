@@ -46,6 +46,19 @@ void PrintArray(BoolVarMatrix &iBoolVarMatrix)
 }
 
 
+void PrintArray(NumVarMatrix &iNumVarMatrix)
+{
+  int n = iNumVarMatrix.getSize();
+  for (int i = 0; i < n; i++)
+  {
+    int m = iNumVarMatrix[i].getSize();
+    for (int j = 0; j < m; j++)
+      cout << iNumVarMatrix[i][j] << "\t";
+    cout << "\n";
+  }
+}
+
+
 void PrintArray(IntMatrix3d &iIntMatrix3d)
 {
   int n = iIntMatrix3d.getSize();

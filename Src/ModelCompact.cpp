@@ -8,8 +8,6 @@
 #include <string.h>
 #include <algorithm>
 #include <math.h>
-//#include "kcombinationiterator.h"
-//#include "HcubeIterator.h"
 #include "ModelCompactIterator.h"
 
 #ifdef __linux__
@@ -138,6 +136,33 @@ ModelCompact::ModelCompact(std::string iFile, IloEnv iEnv):
 }
 
 
+ModelCompact::ModelCompact(const ModelCompact & iCompact)
+: _m(iCompact._m),
+  _n(iCompact._n),
+  _c(iCompact._c),
+  _a(iCompact._a),
+  _b(iCompact._b),
+  _bvar(iCompact._Model.getEnv()),
+  _x(0),
+  _ActualCost(0),
+  _ActualCapacity(iCompact._Model.getEnv())
+{
+  // Initialisation de la solution vide
+  _x = new int[_n];
+  memset(_x, 0, _n*sizeof(int));
+  _ActualCapacity.add(_m, 0);
+  
+  // creation des variables booleennes
+  for (int i = 0; i < _m; i++){
+    IloBoolVarArray E(_Model.getEnv());
+    for (int j = 0; j < _n; j++){
+      E.add(IloBoolVar(_Model.getEnv()));
+    }
+    _bvar.add(E);
+  }
+}
+
+
 ModelCompact::~ModelCompact()
 {
   if (_x)
@@ -199,8 +224,60 @@ void ModelCompact::FindFeasableSolution(ModelMaitre & iModelMaitre)
     for (int i = 0; i < _n; i++){
       Cout+=vals[i]*_c[j][i];
     }
-    iModelMaitre._Colonnes[j].add(IloBoolVar( iModelMaitre._Objectif(Cout) + iModelMaitre._ConstrEqual(vals) + iModelMaitre._ConstrInequal[j](1) ));
+    iModelMaitre._Colonnes[j].add(IloNumVar( iModelMaitre._Objectif(Cout) + iModelMaitre._ConstrEqual(vals) + iModelMaitre._ConstrInequal[j](1) ));
   }
+}
+
+
+void exchange(int * tab, int a, int b)
+{
+  int temp = tab[a];
+  tab[a] = tab[b];
+  tab[b] = temp;
+}
+
+
+void ModelCompact::SortIncreasingCost(int * iaIndex, int iBegin, int iEnd, int iTache, int iLenght)
+{
+  int left = iBegin-1;
+  int right = iEnd+1;
+  int pivot = iaIndex[iBegin];
+  
+  if(iBegin >= iEnd)
+    return;
+  
+  while(1)
+  {
+    do right--; while( _c[pivot][iTache] < _c[iaIndex[right]][iTache] );
+    do left++; while( _c[iaIndex[left]][iTache] < _c[pivot][iTache] );
+    
+    if(left < right)
+      exchange(iaIndex, left, right);
+    else break;
+  }
+  
+  SortIncreasingCost(iaIndex, iBegin, right, iTache, iLenght);
+  if (right+1 < iLenght)
+    SortIncreasingCost(iaIndex, right+1, iEnd, iTache, iLenght);
+}
+
+
+void ModelCompact::GRASP(int iRCL)
+{
+  int RCL = std::min(iRCL,(int)_m);
+  
+  int * aIndex = new int[_m];
+  for (int j = 0; j < _m; j++)
+    aIndex[j] = j;
+  
+  for (int i = 0; i < _n; i++)
+  {
+    SortIncreasingCost(aIndex, 0, _m-1, i, RCL);
+    _x[i] = aIndex[rand()%RCL];
+  }
+  
+  if (aIndex)
+    delete [] aIndex; aIndex = 0;
 }
 
 

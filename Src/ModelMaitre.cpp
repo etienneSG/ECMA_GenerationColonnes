@@ -6,14 +6,14 @@ ModelMaitre::ModelMaitre(IloEnv iEnv,  ModelCompact & iCompact)
   _Model(iEnv),
   _CoutColonne(iEnv),
   _IsTacheInColonne(iEnv),
-  _Colonnes(iEnv),
-  _pCompact(&iCompact)
+  _pCompact(&iCompact),
+  _Colonnes(iEnv)
 {
   for (int i = 0; i < iCompact._m; i++)
   {
     _CoutColonne.add(IloIntArray(iEnv));
     _IsTacheInColonne.add(IntMatrix(iEnv));
-    _Colonnes.add(IloBoolVarArray(iEnv));
+    _Colonnes.add(IloNumVarArray(iEnv));
   }
 
   _Objectif = IloAdd(_Model, IloMinimize(iEnv));

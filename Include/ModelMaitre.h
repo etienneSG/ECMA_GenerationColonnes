@@ -29,14 +29,14 @@ public:
   ~ModelMaitre();
   
   /** Donnees */
-  IloEnv _Env;                  // Environnement Cplex
+  IloEnv _Env;                    // Environnement Cplex
   IloModel _Model;                // Modele
   IntMatrix _CoutColonne;         // Cout des colonnes du probleme maitre
   IntMatrix3d _IsTacheInColonne;  // Matrice permettant du dire si une tache se trouve dans une colonne
-  ModelCompact * _pCompact;        // Modele compact associe au modele maitre
+  ModelCompact * _pCompact;       // Modele compact associe au modele maitre
   
   /** Variables */
-  BoolVarMatrix _Colonnes;
+  NumVarMatrix _Colonnes;
   
   /** Objectif et contraintes */
   IloObjective _Objectif;         // Objectif

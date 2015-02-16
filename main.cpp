@@ -1,5 +1,6 @@
 #include <stdio.h>   // Standard Input/Output Header
 #include <stdlib.h>  // C Standard General Utilities Library
+#include <time.h>    //time
 #include "ModelCompact.h"
 #include "ModelMaitre.h"
 #include "ConstantsAndTypes.h"
@@ -14,6 +15,9 @@ ILOSTLBEGIN
 
 int main (int argc, char const *argv[])
 {
+  /* Initilisation de l'aleatoire */
+  srand (time(NULL));
+  
   std::string Argument1 = argc>1 ? argv[1] : "GAP/GAP-test.dat";
 
   IloEnv env;
@@ -35,7 +39,7 @@ int main (int argc, char const *argv[])
     LocalSearch(myCompact);
     
     // Generation de colonnes
-    ColumnGeneration(myMaster, myCompact);
+    //ColumnGeneration(myMaster, myCompact);
     
   }
   catch (IloException& e) {

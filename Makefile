@@ -48,10 +48,11 @@ $(LIBDIR)/%.o: $(SRCDIR)/%.cpp $(HEADDIR)/%.h
 
 # Nettoyage des objets => Tout sera recompilé !
 clean:
-	rm $(LIBDIR)/*.o
+	rm -R -f $(LIBDIR)/*.o
 	rmdir $(LIBDIR)
 
 # Nettoyage complet => clean + effacement du l'exécutable
 Clean: clean
-	rm $(BINDIR)/*
+	rm -R -f $(BINDIR)/*
 	rmdir $(BINDIR)
+
