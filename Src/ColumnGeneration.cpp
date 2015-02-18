@@ -21,6 +21,7 @@ void ColumnGeneration(ModelMaitre & iMaster, ModelCompact & iCompact)
   while(true)
   {
     cplexMaster.solve();
+    
     IloNumArray valDualEqual(iMaster._Env);
     cplexMaster.getDuals(valDualEqual, iMaster._ConstrEqual);
     IloNumArray valDualInequal(iMaster._Env);

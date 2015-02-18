@@ -23,6 +23,11 @@ void PrintArray(NumMatrix3d &iNumMatrix3d);
 /** Constantes du programme */
 #define CST_EPS 1e-7
 
+#ifdef __linux__
+#include <omp.h>
+#define NB_PROC omp_get_num_procs()
+#endif
+
 #endif
 
 

@@ -9,6 +9,7 @@
 #include <algorithm>
 #include <math.h>
 #include "ModelCompactIterator.h"
+#include "RandomIterator.h"
 
 #ifdef __linux__
 #include <omp.h> // Open Multi-Processing Library (Linux only)
@@ -72,7 +73,6 @@ void ReadData (string iFile, IloModel model, IntMatrix c, IloInt& m, IloInt& n, 
     // creation des parametres
     n = data[0];
     m = data[1];
-    cout << m << " " << n << "\n";
 
     int idx = 2;
     for (int idx_l = 0; idx_l < m; idx_l++)
@@ -105,6 +105,11 @@ void ReadData (string iFile, IloModel model, IntMatrix c, IloInt& m, IloInt& n, 
 }
 
 
+ModelCompact::ModelCompact()
+: _NbOfCopy(*(new int(0)))
+{}
+
+
 ModelCompact::ModelCompact(std::string iFile, IloEnv iEnv):
   _Model(iEnv),
   _m(0),
@@ -115,7 +120,9 @@ ModelCompact::ModelCompact(std::string iFile, IloEnv iEnv):
   _bvar(iEnv),
   _x(0),
   _ActualCost(0),
-  _ActualCapacity(iEnv)
+  _ActualCapacity(iEnv),
+  _IsAdmissible(false),
+  _NbOfCopy((*new int(0)))
 {
   // lecture des donnees
   ReadData(iFile, _Model, _c, _m, _n, _a, _b);
@@ -137,7 +144,8 @@ ModelCompact::ModelCompact(std::string iFile, IloEnv iEnv):
 
 
 ModelCompact::ModelCompact(const ModelCompact & iCompact)
-: _m(iCompact._m),
+: _Model(iCompact._Model),
+  _m(iCompact._m),
   _n(iCompact._n),
   _c(iCompact._c),
   _a(iCompact._a),
@@ -145,7 +153,9 @@ ModelCompact::ModelCompact(const ModelCompact & iCompact)
   _bvar(iCompact._Model.getEnv()),
   _x(0),
   _ActualCost(0),
-  _ActualCapacity(iCompact._Model.getEnv())
+  _ActualCapacity(iCompact._Model.getEnv()),
+  _IsAdmissible(false),
+  _NbOfCopy(iCompact._NbOfCopy)
 {
   // Initialisation de la solution vide
   _x = new int[_n];
@@ -160,6 +170,7 @@ ModelCompact::ModelCompact(const ModelCompact & iCompact)
     }
     _bvar.add(E);
   }
+  _NbOfCopy++;
 }
 
 
@@ -167,7 +178,10 @@ ModelCompact::~ModelCompact()
 {
   if (_x)
     delete [] _x; _x = 0;
-  _Model.end();
+  if (_NbOfCopy > 0)
+    _NbOfCopy--;
+  else
+    _Model.end();
 }
 
 
@@ -229,36 +243,52 @@ void ModelCompact::FindFeasableSolution(ModelMaitre & iModelMaitre)
 }
 
 
-void exchange(int * tab, int a, int b)
+int ModelCompact::partition(vector<int>& A, int iBegin, int iEnd, int iTache)
 {
-  int temp = tab[a];
-  tab[a] = tab[b];
-  tab[b] = temp;
+  int x = _c[A[iBegin]][iTache];
+  int i = iBegin;
+  int j;
+
+  for (j = iBegin+1; j < iEnd; j++) {
+    if (_c[A[j]][iTache] <= x) {
+      i = i+1;
+      swap(A[i], A[j]);
+    }
+  }
+
+  swap(A[i], A[iBegin]);
+  return i;
 }
 
 
-void ModelCompact::SortIncreasingCost(int * iaIndex, int iBegin, int iEnd, int iTache, int iLenght)
+void ModelCompact::SortIncreasingCost(vector<int>& A, int iBegin, int iEnd, int iTache)
 {
-  int left = iBegin-1;
-  int right = iEnd+1;
-  int pivot = iaIndex[iBegin];
-  
-  if(iBegin >= iEnd)
-    return;
-  
-  while(1)
+  int pivot;
+  if (iBegin < iEnd)
   {
-    do right--; while( _c[pivot][iTache] < _c[iaIndex[right]][iTache] );
-    do left++; while( _c[iaIndex[left]][iTache] < _c[pivot][iTache] );
+    pivot = partition(A, iBegin, iEnd, iTache);
+    SortIncreasingCost(A, iBegin, pivot, iTache);  
+    SortIncreasingCost(A, pivot+1, iEnd, iTache);
+  }
+}
+
+
+int ModelCompact::PushToEndInadmissibleMachines(vector<int>& vIndex, int iTache)
+{
+  int left = -1;
+  int right = vIndex.size();
+  
+  while (true)
+  {
+    do right--; while( left < right && _a[vIndex[right]][iTache] > _b[vIndex[right]] - _ActualCapacity[vIndex[right]] );
+    do left++; while( left < right && _a[vIndex[left]][iTache] <= _b[vIndex[left]] - _ActualCapacity[vIndex[left]] );
     
-    if(left < right)
-      exchange(iaIndex, left, right);
+    if (left < right)
+      swap(vIndex[left], vIndex[right]);
     else break;
   }
   
-  SortIncreasingCost(iaIndex, iBegin, right, iTache, iLenght);
-  if (right+1 < iLenght)
-    SortIncreasingCost(iaIndex, right+1, iEnd, iTache, iLenght);
+  return left;
 }
 
 
@@ -266,18 +296,24 @@ void ModelCompact::GRASP(int iRCL)
 {
   int RCL = std::min(iRCL,(int)_m);
   
-  int * aIndex = new int[_m];
+  vector<int> Index(_m, 0);
   for (int j = 0; j < _m; j++)
-    aIndex[j] = j;
+    Index[j] = j;
   
+  RandomIterator RdIt(_n);
   for (int i = 0; i < _n; i++)
   {
-    SortIncreasingCost(aIndex, 0, _m-1, i, RCL);
-    _x[i] = aIndex[rand()%RCL];
+    int pivot = PushToEndInadmissibleMachines(Index, RdIt.getNb());
+    SortIncreasingCost(Index, 0, pivot, RdIt.getNb());
+    if (pivot < RCL)
+      SortIncreasingCost(Index, pivot, _m, RdIt.getNb());
+    int ChosenMachine = rand()%RCL;
+    _x[i] = Index[ChosenMachine];
+    _ActualCapacity[ChosenMachine] += _a[ChosenMachine][RdIt.getNb()];
+    _ActualCost += _c[ChosenMachine][RdIt.getNb()];
+    ++RdIt;
   }
-  
-  if (aIndex)
-    delete [] aIndex; aIndex = 0;
+
 }
 
 
@@ -285,21 +321,29 @@ int ModelCompact::ComputeCost()
 {
   _ActualCost = 0;
   int idx_l;
-  //#ifdef __linux__
-  //#pragma omp parallel for reduction(+:_ActualCost) schedule(static,1)
-  //#endif
   for (idx_l = 0; idx_l < _m; idx_l++) {
     _ActualCapacity[idx_l] = 0;
   }
-  //#ifdef __linux__
-  //#pragma omp parallel for reduction(+:_ActualCost) schedule(static,1)
-  //#endif
   int idx_c;
   for (idx_c = 0; idx_c < _n; idx_c++) {
     _ActualCost += _c[_x[idx_c]][idx_c];
-    _ActualCapacity[_x[idx_c]] +=+ _a[_x[idx_c]][idx_c];
+    _ActualCapacity[_x[idx_c]] += _a[_x[idx_c]][idx_c];
   }
   return _ActualCost;
+}
+
+
+bool ModelCompact::IsAdmissible()
+{
+  if (!_IsAdmissible)
+  {
+    for (int j = 0; j < _m; j++) {
+      if (_ActualCapacity[j] > _b[j])
+        return false;
+    }
+    _IsAdmissible = true;
+  }
+  return _IsAdmissible;
 }
 
 
@@ -359,9 +403,11 @@ bool ModelCompact::NeighbourhoodSearch(int iNSize)
   ModelCompactIterator ModelCompactIt(*this, iNSize);
   while (!ModelCompactIt.IsEnded())
   {
-    if (_ActualCost > ModelCompactIt._Cost && ModelCompactIt.IsAdmissible())
+    bool Acceptation = IsAdmissible() ? (_ActualCost > ModelCompactIt._Cost && ModelCompactIt.IsAdmissible()) : ModelCompactIt.IsAdmissible();
+    if (Acceptation)
     {
       // Modification de la solution courante
+      memcpy(_x, ModelCompactIt._aMachineInitiale, _n*sizeof(int));
       for (int i = 0; i < iNSize; i++)
         _x[ModelCompactIt._KcombIt(i)] = ModelCompactIt._HcubeIt(i);
       
@@ -371,8 +417,8 @@ bool ModelCompact::NeighbourhoodSearch(int iNSize)
         _ActualCapacity[j] = ModelCompactIt._aCapacity[j];
       
       // FOR DEBUG : TO REMOVE !
-      cout << "Taille du voisinage explore : " << iNSize << "\n";
-      PrintCurrentSolution();
+      //cout << "Taille du voisinage explore : " << iNSize << "\n";
+      //PrintCurrentSolution();
 
       FindABetterSolution = true;
     }
@@ -409,4 +455,15 @@ void ModelCompact::LocalSearchAlgorithm(int iMaxSize)
   }
 }
 
+
+int ModelCompact::ComputeUBforObjective()
+{
+  int Cost = 0;
+  for (int j = 0; j < _m; j++) {
+    for (int i = 0; i < _n; i++) {
+      Cost += _c[j][i];
+    }
+  }
+  return Cost;
+}
 

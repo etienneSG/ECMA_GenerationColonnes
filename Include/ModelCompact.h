@@ -55,6 +55,9 @@ public:
   /** Calcule le cout de la solution courante et actualise les capacites consommees */
   int ComputeCost();
   
+  /** Retourne vrai si la solution courante est admissible et faux sinon */
+  bool IsAdmissible();
+  
   /**
    * Change la solution courante
    * @param iSolution: Nouvelle solution
@@ -99,20 +102,36 @@ public:
   int * _x;                     // Solution courante (pour chaque tache est stocke le numero de la machine)
   int _ActualCost;              // Prix de la solution courante
   IloIntArray _ActualCapacity;  // Capacite occupee sur chaque machine
-
+  bool _IsAdmissible;           // Vrai si la solution est admissible et faux sinon
+  
+  // FOR DEBUG ONLY !
+  /** Calcule une borne superieure de l'objectif en sommant tous les couts de _c */
+  int ComputeUBforObjective();
 
 private:
-  ModelCompact(){}; // Constructeur par defaut
+  int & _NbOfCopy;  // Nombre de copies construites
+  
+  ModelCompact(); // Constructeur par defaut
   
   /**
-   * Trie un tableau d'indice par ordre croissant du cout d'affectation de la tache iTAche sur les machine
-   * @param iaIndex: Tableau d'indice a trier
-   * @param iBegin:  Indice de debut du tri
-   * @param iEnd:    Indice de fin du tri
-   * @param iTache:  Indice de la tache a considerer
-   * @param iLenght: on ne veut que les iLenght premiers elements
+   * Trie un vecteur d'indice par ordre croissant du cout d'affectation de la tache iTache sur les machines
+   * @param A:      Vecteur d'indice a trier
+   * @param iBegin: Indice de debut du tri
+   * @param iEnd:   Indice de fin du tri
+   * @param iTache: Indice de la tache a considerer
    */
-  void SortIncreasingCost(int * iaIndex, int iBegin, int iEnd, int iTache, int iLenght);
+  void SortIncreasingCost(std::vector<int>& A, int iBegin, int iEnd, int iTache);
+  
+  /** Fonction auxiliaire du tri precedent */
+  int partition(std::vector<int>& A, int iBegin, int iEnd, int iTache);
+  
+  /**
+   * Range à la fin du vecteur les machines dont la capacite disponible ne peut recevoir la tache iTache
+   * @param vIndex: Vecteur d'indice du tableau
+   * @param iTAche: Indice de la tache
+   * @return: premiere position d'une machine inadmissible
+   */
+  int PushToEndInadmissibleMachines(std::vector<int>& vIndex, int iTache);
   
 };
 

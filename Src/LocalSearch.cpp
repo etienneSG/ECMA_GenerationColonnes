@@ -7,6 +7,10 @@
 #include <algorithm>
 #include <../../opt/ibm/ILOG/CPLEX_Studio125/concert/include/ilconcert/iloenv.h>
 
+#ifdef __linux__
+#include <omp.h> // Open Multi-Processing Library (Linux only)
+#endif
+
 using namespace std;
 
 void LocalSearch(ModelCompact & iModelCompact)
@@ -18,6 +22,8 @@ void LocalSearch(ModelCompact & iModelCompact)
   // Taille de l'exploration dans la construction gloutonne-aleatoire
   int RCL = std::max((int)iModelCompact._m / 5, 3);
   
+  ModelCompact testCompact(iModelCompact);
+  testCompact.GRASP(1);
   
   assert(PopSize > 0);
   vector<ModelCompact> aCompact(PopSize, ModelCompact(iModelCompact));
@@ -36,18 +42,29 @@ void LocalSearch(ModelCompact & iModelCompact)
   }
   
   // Algorithme de recherche locale autour de chaque solution
+  #ifdef __linux__
+  int nbThread = std::max(1, PopSize/NB_PROC);
+  #pragma omp parallel for schedule(dynamic,nbThread)
+  #endif
   for (i = 0; i < PopSize; i++) {
     aCompact[i].LocalSearchAlgorithm(VSize);
   }
   
   // Recherche de la meilleure solution trouvee
   int IdxBest = 0;
-  for (i = 1; i < PopSize; i++) {
-    if (aCompact[i]._ActualCost < aCompact[IdxBest]._ActualCost)
+  while (IdxBest < PopSize && !aCompact[IdxBest].IsAdmissible())
+    IdxBest++;
+  for (i = IdxBest+1; i < PopSize; i++) {
+    if (aCompact[i].IsAdmissible() && aCompact[i]._ActualCost < aCompact[IdxBest]._ActualCost)
       IdxBest = i;
   }
-  memcpy(iModelCompact._x, aCompact[IdxBest]._x, iModelCompact._n*sizeof(int));
-  
+  if (IdxBest < PopSize)
+  {
+    memcpy(iModelCompact._x, aCompact[IdxBest]._x, iModelCompact._n*sizeof(int));
+    iModelCompact._ActualCost = aCompact[IdxBest]._ActualCost;
+    for (int j = 0; j < iModelCompact._m; j++)
+      iModelCompact._ActualCapacity[j] = aCompact[IdxBest]._ActualCapacity[j];
+  }
   
   cout << "//--- Recherche locale ---\n";
   cout << "Valeur de la solution trouvee: " << iModelCompact._ActualCost << "\n";
