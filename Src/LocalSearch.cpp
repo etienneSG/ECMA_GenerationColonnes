@@ -67,8 +67,7 @@ void LocalSearch(ModelCompact & iModelCompact)
   }
   
   cout << "//--- Recherche locale ---\n";
-  cout << "Valeur de la solution trouvee: " << iModelCompact._ActualCost << "\n";
-  cout << "Affectation trouvee:\n";
+  iModelCompact.PrintCurrentSolution(2);
 }
 
 

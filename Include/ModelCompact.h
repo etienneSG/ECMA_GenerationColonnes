@@ -84,8 +84,15 @@ public:
    */
   void LocalSearchAlgorithm(int iMaxSize);
   
-  /** Affiche la solution courante */
-  void PrintCurrentSolution();
+  /**
+   * Affiche la solution courante
+   * @param iMode: Mode d'affichage. Valeurs possibles :
+   *    <br> 0 (Mode silencieux) : seulement le cout
+   *    <br> 1 (Mode etendu) : machine par machine avec la capacite occupe a droite
+   *    <br> 2 (Mode compact) : un seul vecteur contenant en indice i le numero de la machine j
+   *                            ou la tache i est affectee
+   */
+  void PrintCurrentSolution(int iMode = 0);
   
   /** Donnees */
   IloModel _Model;  // Modele

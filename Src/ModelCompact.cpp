@@ -11,10 +11,6 @@
 #include "ModelCompactIterator.h"
 #include "RandomIterator.h"
 
-#ifdef __linux__
-#include <omp.h> // Open Multi-Processing Library (Linux only)
-#endif
-
 using namespace std;
 
 
@@ -102,6 +98,8 @@ void ReadData (string iFile, IloModel model, IntMatrix c, IloInt& m, IloInt& n, 
     }
   }
   
+  if (buffer)
+    delete [] buffer; buffer = 0;
 }
 
 
@@ -122,7 +120,7 @@ ModelCompact::ModelCompact(std::string iFile, IloEnv iEnv):
   _ActualCost(0),
   _ActualCapacity(iEnv),
   _IsAdmissible(false),
-  _NbOfCopy((*new int(0)))
+  _NbOfCopy(*(new int(0)))
 {
   // lecture des donnees
   ReadData(iFile, _Model, _c, _m, _n, _a, _b);
@@ -170,7 +168,7 @@ ModelCompact::ModelCompact(const ModelCompact & iCompact)
     }
     _bvar.add(E);
   }
-  _NbOfCopy++;
+  ++_NbOfCopy;
 }
 
 
@@ -179,9 +177,11 @@ ModelCompact::~ModelCompact()
   if (_x)
     delete [] _x; _x = 0;
   if (_NbOfCopy > 0)
-    _NbOfCopy--;
-  else
+    --_NbOfCopy;
+  else {
     _Model.end();
+    delete &_NbOfCopy;
+  }
 }
 
 
@@ -227,11 +227,10 @@ void ModelCompact::FindFeasableSolution(ModelMaitre & iModelMaitre)
   cplexCompact.setParam(IloCplex::IntSolLim, 1); // Valeur par defaut : 2100000000 (arret apres la premiere solution entiere)
   cplexCompact.setParam(IloCplex::NodeSel, 0);   // Valeur par defaut : 1 (parcours en profondeur)
   cplexCompact.solve();
+  _ActualCost = (int)cplexCompact.getObjValue();
   for (int j = 0; j < _m; j++) {
     IloNumArray vals(_Model.getEnv());
     cplexCompact.getValues(vals, _bvar[j]);
-    cout << "Affichage de la machine " << j << "\n";
-    PrintArray(vals);
     InsertSolutionOnMachine(vals, j);
     
     IloInt Cout(0);
@@ -240,6 +239,8 @@ void ModelCompact::FindFeasableSolution(ModelMaitre & iModelMaitre)
     }
     iModelMaitre._Colonnes[j].add(IloNumVar( iModelMaitre._Objectif(Cout) + iModelMaitre._ConstrEqual(vals) + iModelMaitre._ConstrInequal[j](1) ));
   }
+  std::cout << "//--- Premiere solution entiere trouvee par Cplex ---\n";
+  PrintCurrentSolution(2);
 }
 
 
@@ -368,19 +369,38 @@ void ModelCompact::InsertSolutionOnMachine(IloNumArray & iSolution, int iIdxMach
 }
 
 
-void ModelCompact::PrintCurrentSolution()
+void ModelCompact::PrintCurrentSolution(int iMode)
 {
-  std::cout << "Cout de la solution ameliorante : " << _ActualCost << "\n";
-/*  std::cout << "Affectation et capacite\n";
-  for (int j = 0; j < _m; j++) {
-    for (int i = 0; i < _n; i++) {
-      if (_x[i] == j)
-        std::cout << "1 ";
-      else
-        std::cout << "0 ";
+  std::cout << "Cout de la solution courante : " << _ActualCost << "\n";
+  switch (iMode)
+  {
+  case 0:  // Mode silencieux : seulement le cout
+    break;
+
+  case 1:  // Mode etendu : machine par machine avec la capacite occupe a droite
+    std::cout << "Affectation et capacite\n";
+    for (int j = 0; j < _m; j++) {
+      for (int i = 0; i < _n; i++) {
+        if (_x[i] == j)
+          std::cout << "1 ";
+        else
+          std::cout << "0 ";
+      }
+      std::cout << "\t|  " << _ActualCapacity[j] << "\n";
     }
-    std::cout << "\t|  " << _ActualCapacity[j] << "\n";
-  }*/
+    break;
+
+  case 2:  // Mode compact : un seul vecteur contenant en indice i le numero de la machine j ou la tache i est affectee
+    std::cout << "Affectation\n";
+    for (int i = 0; i < _n; i++) {
+      std::cout << _x[i] << "\t";
+    }
+    std::cout << "\n";
+    break;
+
+  default:
+    break;
+  }
 }
 
 
@@ -396,6 +416,11 @@ bool ModelCompact::NeighbourhoodSearch(int iNSize)
   // Calcul du cout de l'affectation courante
   _ActualCost = ComputeCost();
   
+  // Memoire des dernieres taches dont l'affectation a change
+  int * aLastChanges = new int[iNSize];
+  for (int i = 0; i < iNSize; i++)
+    aLastChanges[i] = -1;
+
   // FOR DEBUG : TO REMOVE !
   //PrintCurrentSolution();
   
@@ -407,9 +432,14 @@ bool ModelCompact::NeighbourhoodSearch(int iNSize)
     if (Acceptation)
     {
       // Modification de la solution courante
-      memcpy(_x, ModelCompactIt._aMachineInitiale, _n*sizeof(int));
-      for (int i = 0; i < iNSize; i++)
+      if (aLastChanges[0] != -1) {
+        for (int i = 0; i < iNSize; i++)
+          _x[aLastChanges[i]] = ModelCompactIt._aMachineInitiale[aLastChanges[i]];
+      }
+      for (int i = 0; i < iNSize; i++) {
         _x[ModelCompactIt._KcombIt(i)] = ModelCompactIt._HcubeIt(i);
+        aLastChanges[i] = ModelCompactIt._KcombIt(i);
+      }
       
       _ActualCost = ModelCompactIt._Cost;
       
@@ -425,6 +455,9 @@ bool ModelCompact::NeighbourhoodSearch(int iNSize)
     
     ++ModelCompactIt;
   }
+
+  if (aLastChanges)
+    delete [] aLastChanges; aLastChanges = 0;
 
   return FindABetterSolution;
 }
