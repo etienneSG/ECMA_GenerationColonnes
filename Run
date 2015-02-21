@@ -1,0 +1,15 @@
+#!/bin/bash
+
+mkdir -p Output
+
+make Clean
+make
+
+for instance in GAP/*.dat
+do
+    echo "Recherche de l'instance" $instance
+    output=${instance/GAP/Output}
+    echo $instance
+    echo $output
+    ./Bin/MonExec ${instance} > ${output}
+done

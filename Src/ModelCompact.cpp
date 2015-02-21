@@ -38,7 +38,7 @@ void ReadData (string iFile, IloModel model, IntMatrix c, IloInt& m, IloInt& n, 
     fseek (f, 0, SEEK_END);
     length = ftell (f);
     fseek (f, 0, SEEK_SET);
-    buffer = new char[length];
+    buffer = length ? new char[length] : 0;
     if (buffer)
     {
       fread (buffer, 1, length, f);
@@ -96,6 +96,11 @@ void ReadData (string iFile, IloModel model, IntMatrix c, IloInt& m, IloInt& n, 
       b.add(data[idx]);
       idx++;
     }
+  }
+  else
+  {
+    std::cout << "Fichier de donnees vide !" << std::endl;
+    assert(false);
   }
   
   if (buffer)
