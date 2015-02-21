@@ -18,8 +18,14 @@ void ColumnGeneration(ModelMaitre & iMaster, ModelCompact & iCompact)
   IloCplex cplexAux(ModelAux);
   cplexAux.setOut(iMaster._Env.getNullStream());
 
+  // FOR DEBUG ! TO REMOVE
+  int NbOfIterations = 0;
   while(true)
   {
+    // FOR DEBUG ! TO REMOVE
+    NbOfIterations++;
+    cout << "//********** Iteration " << NbOfIterations << " **********//\n";
+    
     cplexMaster.solve();
     
     IloNumArray valDualEqual(iMaster._Env);
@@ -40,7 +46,7 @@ void ColumnGeneration(ModelMaitre & iMaster, ModelCompact & iCompact)
       cplexAux.solve();
 
       double ObjAuxOpt = cplexAux.getObjValue();
-      //cout << "Valeur optimale du probleme auxiliaire " << j << ": " << ObjAuxOpt - valDualInequal[j] << "\n";
+      cout << "** Valeur optimale du probleme auxiliaire " << j << ": " << ObjAuxOpt - valDualInequal[j] << "\n";
       if (ObjAuxOpt < valDualInequal[j])
       {
         IloNumArray vals(iMaster._Env);
@@ -50,6 +56,8 @@ void ColumnGeneration(ModelMaitre & iMaster, ModelCompact & iCompact)
           Cout+=vals[i]*iCompact._c[j][i];
         }
         iMaster._Colonnes[j].add(IloNumVar( iMaster._Objectif(Cout) + iMaster._ConstrEqual(vals) + iMaster._ConstrInequal[j](1) ));
+        cout << "Colonne ajoutee :\n";
+        PrintArray(vals);
       }
       else
         NbReductCostPositive++;

@@ -1,4 +1,5 @@
 #include "LocalSearch.h"
+#include "timetools.h"
 
 #include <iostream>
 #include <vector>
@@ -13,7 +14,8 @@
 
 using namespace std;
 
-void LocalSearch(ModelCompact & iModelCompact)
+
+void LocalSearchAlgorithm(ModelCompact & iModelCompact)
 {
   // Taille maximale des voisinages explores
   int VSize = 2;
@@ -21,9 +23,7 @@ void LocalSearch(ModelCompact & iModelCompact)
   int PopSize = 8;
   // Taille de l'exploration dans la construction gloutonne-aleatoire
   int RCL = std::max((int)iModelCompact._m / 5, 3);
-  
-  ModelCompact testCompact(iModelCompact);
-  testCompact.GRASP(1);
+
   
   assert(PopSize > 0);
   vector<ModelCompact> aCompact(PopSize, ModelCompact(iModelCompact));
@@ -37,13 +37,16 @@ void LocalSearch(ModelCompact & iModelCompact)
   
   int i;
   // Les suivants sont initialises avec de l'aleatoire
+  #ifdef __linux__
+  int nbThread = std::max(1, PopSize/NB_PROC);
+  #pragma omp parallel for schedule(dynamic,nbThread)
+  #endif
   for (i = 2; i < PopSize; i++) {
     aCompact[i].GRASP(RCL);
   }
   
   // Algorithme de recherche locale autour de chaque solution
   #ifdef __linux__
-  int nbThread = std::max(1, PopSize/NB_PROC);
   #pragma omp parallel for schedule(dynamic,nbThread)
   #endif
   for (i = 0; i < PopSize; i++) {
@@ -66,8 +69,28 @@ void LocalSearch(ModelCompact & iModelCompact)
       iModelCompact._ActualCapacity[j] = aCompact[IdxBest]._ActualCapacity[j];
   }
   
-  cout << "//--- Recherche locale ---\n";
-  iModelCompact.PrintCurrentSolution(2);
 }
 
+
+void LocalSearch(ModelCompact & iModelCompact)
+{
+  double BeginLocalSearch_UserTime = 0;
+  double BeginLocalSearch_CPUTime = 0;
+  double EndLocalSearch_CPUTime = 0;
+  double EndLocalSearch_UserTime = 0;
+  
+  BeginLocalSearch_UserTime = get_wall_time();
+  BeginLocalSearch_CPUTime = get_cpu_time();
+  LocalSearchAlgorithm(iModelCompact);
+  EndLocalSearch_CPUTime = get_cpu_time();
+  EndLocalSearch_UserTime = get_wall_time();
+
+  cout << "//---------- Recherche locale ----------\n";
+  iModelCompact.PrintCurrentSolution(2);
+  double LocalSearch_CPUTime = EndLocalSearch_CPUTime - BeginLocalSearch_CPUTime;
+  cout << "Temps CPU:\t" << LocalSearch_CPUTime << "s\n";
+  double LocalSearch_UserTime = EndLocalSearch_UserTime - BeginLocalSearch_UserTime;
+  cout << "Temps utilisateur:\t" << LocalSearch_UserTime << "s\n";
+  cout << "\n";
+}
 
