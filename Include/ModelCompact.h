@@ -49,8 +49,11 @@ public:
   
   /**
    * Algorithme d'initialisation glouton aleatoire
+   * @param iRCL:             Taille de la liste de machine dans laquelle choisir
+   * @param iHelpFeasability: Pour reunir les conditions favorables a l'emergence
+   *   d'une solution realisable (plus la valeur est elevee, plus on est exigeant) 
    */
-  void GRASP(int iRCL);
+  void GRASP(int iRCL, int iHelpFeasability = 0);
   
   /** Calcule le cout de la solution courante et actualise les capacites consommees */
   int ComputeCost();
@@ -131,6 +134,18 @@ private:
   
   /** Fonction auxiliaire du tri precedent */
   int partition(std::vector<int>& A, int iBegin, int iEnd, int iTache);
+
+  /**
+   * Trie un vecteur d'indice par ordre croissant de capacite occupee par la tache iTache sur les machines
+   * @param A:      Vecteur d'indice a trier
+   * @param iBegin: Indice de debut du tri
+   * @param iEnd:   Indice de fin du tri
+   * @param iTache: Indice de la tache a considerer
+   */
+  void SortIncreasingCapacity(std::vector<int>& A, int iBegin, int iEnd, int iTache);
+
+  /** Fonction auxiliaire du tri precedent */
+  int partitionCapacity(std::vector<int>& A, int iBegin, int iEnd, int iTache);
   
   /**
    * Range à la fin du vecteur les machines dont la capacite disponible ne peut recevoir la tache iTache

@@ -10,6 +10,7 @@
 #include <math.h>
 #include "ModelCompactIterator.h"
 #include "RandomIterator.h"
+#include "timetools.h"
 
 using namespace std;
 
@@ -279,6 +280,36 @@ void ModelCompact::SortIncreasingCost(vector<int>& A, int iBegin, int iEnd, int 
 }
 
 
+int ModelCompact::partitionCapacity(vector<int>& A, int iBegin, int iEnd, int iTache)
+{
+  int x = _a[A[iBegin]][iTache];
+  int i = iBegin;
+  int j;
+
+  for (j = iBegin+1; j < iEnd; j++) {
+    if (_a[A[j]][iTache] <= x) {
+      i = i+1;
+      swap(A[i], A[j]);
+    }
+  }
+
+  swap(A[i], A[iBegin]);
+  return i;
+}
+
+
+void ModelCompact::SortIncreasingCapacity(vector<int>& A, int iBegin, int iEnd, int iTache)
+{
+  int pivot;
+  if (iBegin < iEnd)
+  {
+    pivot = partitionCapacity(A, iBegin, iEnd, iTache);
+    SortIncreasingCost(A, iBegin, pivot, iTache);  
+    SortIncreasingCost(A, pivot+1, iEnd, iTache);
+  }
+}
+
+
 int ModelCompact::PushToEndInadmissibleMachines(vector<int>& vIndex, int iTache)
 {
   int left = -1;
@@ -298,7 +329,7 @@ int ModelCompact::PushToEndInadmissibleMachines(vector<int>& vIndex, int iTache)
 }
 
 
-void ModelCompact::GRASP(int iRCL)
+void ModelCompact::GRASP(int iRCL, int iHelpFeasability)
 {
   int RCL = std::min(iRCL,(int)_m);
   
@@ -310,16 +341,47 @@ void ModelCompact::GRASP(int iRCL)
   for (int i = 0; i < _n; i++)
   {
     int pivot = PushToEndInadmissibleMachines(Index, RdIt.getNb());
-    SortIncreasingCost(Index, 0, pivot, RdIt.getNb());
-    if (pivot < RCL)
-      SortIncreasingCost(Index, pivot, _m, RdIt.getNb());
-    int ChosenMachine = rand()%RCL;
+    int ChosenMachine = 0;
+
+    switch (iHelpFeasability)
+    {
+    case 0:
+      SortIncreasingCost(Index, 0, pivot, RdIt.getNb());
+      if (pivot < RCL)
+        SortIncreasingCost(Index, pivot, _m, RdIt.getNb());
+      ChosenMachine = rand()%RCL;
+      break;
+
+    case 1:
+      SortIncreasingCost(Index, 0, pivot, RdIt.getNb());
+      ChosenMachine = rand()%std::max(std::min(RCL,pivot),1);
+      break;
+
+    case 2:
+      SortIncreasingCost(Index, 0, pivot, RdIt.getNb());
+      SortIncreasingCapacity(Index, 0, std::min(RCL,pivot), RdIt.getNb());
+      ChosenMachine = 0;
+      break;
+
+    case 3:
+      SortIncreasingCapacity(Index, 0, pivot, RdIt.getNb());
+      ChosenMachine = 0;
+      break;
+
+    default:
+      SortIncreasingCapacity(Index, 0, pivot, RdIt.getNb());
+      ChosenMachine = rand()%std::max(std::min(RCL,pivot),1);
+      break;
+    }
+
     _x[i] = Index[ChosenMachine];
     _ActualCapacity[ChosenMachine] += _a[ChosenMachine][RdIt.getNb()];
     _ActualCost += _c[ChosenMachine][RdIt.getNb()];
     ++RdIt;
   }
 
+  // Calcul du cout de l'affectation obtenus
+  ComputeCost();
 }
 
 
@@ -411,30 +473,25 @@ void ModelCompact::PrintCurrentSolution(int iMode)
 
 bool ModelCompact::NeighbourhoodSearch(int iNSize)
 {
-  if (iNSize <= 0 || iNSize > std::min(3, (int)_n) ) {
+  if (iNSize <= 0 || iNSize > std::min(2, (int)_n) ) {
     std::cout << "It is a stupid use of this method !" << std::endl;
     return false;
   }
-  
-  bool FindABetterSolution = false;
+  // FOR DEBUG : TO REMOVE !
+  cout << "Tentative de voisinage de taille " << iNSize << "\n";
 
-  // Calcul du cout de l'affectation courante
-  _ActualCost = ComputeCost();
+  bool FindABetterSolution = false;
   
   // Memoire des dernieres taches dont l'affectation a change
   int * aLastChanges = new int[iNSize];
   for (int i = 0; i < iNSize; i++)
     aLastChanges[i] = -1;
-
-  // FOR DEBUG : TO REMOVE !
-  //PrintCurrentSolution();
   
   // Iterateur sur les solutions voisines
   ModelCompactIterator ModelCompactIt(*this, iNSize);
   while (!ModelCompactIt.IsEnded())
   {
-    bool Acceptation = IsAdmissible() ? (_ActualCost > ModelCompactIt._Cost && ModelCompactIt.IsAdmissible()) : ModelCompactIt.IsAdmissible();
-    if (Acceptation)
+    if ( _ActualCost > ModelCompactIt._Cost && ModelCompactIt.IsAdmissible() )
     {
       // Modification de la solution courante
       if (aLastChanges[0] != -1) {
@@ -452,9 +509,7 @@ bool ModelCompact::NeighbourhoodSearch(int iNSize)
         _ActualCapacity[j] = ModelCompactIt._aCapacity[j];
       
       // FOR DEBUG : TO REMOVE !
-      //cout << "Taille du voisinage explore : " << iNSize << "\n";
-      //PrintCurrentSolution();
-
+      PrintCurrentSolution();
       FindABetterSolution = true;
     }
     
@@ -470,11 +525,16 @@ bool ModelCompact::NeighbourhoodSearch(int iNSize)
 
 void ModelCompact::LocalSearchAlgorithm(int iMaxSize)
 {
-  if (iMaxSize < 1)
+  if (iMaxSize < 1 || !IsAdmissible())
     return;
-  
+
   int NeighbourhoodSize = 1;
+#ifdef MAX_TIME_FOR_LOCAL_SEARCH
+  double EndTime = get_wall_time() + MAX_TIME_FOR_LOCAL_SEARCH;
+  while (get_wall_time() < EndTime)
+#else
   while (true)
+#endif
   {
     if (NeighbourhoodSearch(NeighbourhoodSize))
     {

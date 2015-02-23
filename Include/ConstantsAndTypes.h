@@ -28,6 +28,9 @@ void PrintArray(NumMatrix3d &iNumMatrix3d);
 #define NB_PROC omp_get_num_procs()
 #endif
 
+/** Pour limiter le temps de la recherche locale */
+//#define MAX_TIME_FOR_LOCAL_SEARCH 60
+
 #endif
 
 
