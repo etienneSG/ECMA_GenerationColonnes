@@ -121,6 +121,7 @@ ModelCompact::ModelCompact(std::string iFile, IloEnv iEnv):
   _c(iEnv),
   _a(iEnv),
   _b(iEnv),
+  _FileName(iFile),
   _bvar(iEnv),
   _x(0),
   _ActualCost(0),
@@ -154,6 +155,7 @@ ModelCompact::ModelCompact(const ModelCompact & iCompact)
   _c(iCompact._c),
   _a(iCompact._a),
   _b(iCompact._b),
+  _FileName(iCompact._FileName),
   _bvar(iCompact._Model.getEnv()),
   _x(0),
   _ActualCost(0),
@@ -167,12 +169,8 @@ ModelCompact::ModelCompact(const ModelCompact & iCompact)
   _ActualCapacity.add(_m, 0);
   
   // creation des variables booleennes
-  for (int i = 0; i < _m; i++){
-    IloBoolVarArray E(_Model.getEnv());
-    for (int j = 0; j < _n; j++){
-      E.add(IloBoolVar(_Model.getEnv()));
-    }
-    _bvar.add(E);
+  for (int j = 0; j < _m; j++) {
+    _bvar.add(iCompact._bvar[j]);
   }
   ++_NbOfCopy;
 }
@@ -228,15 +226,18 @@ void ModelCompact::CreateObjectiveAndConstraintes()
 
 void ModelCompact::FindFeasableSolution(ModelMaitre & iModelMaitre)
 {
-  IloCplex cplexCompact(_Model);
+  IloCplex CplexCompact(_Model);
 
-  cplexCompact.setParam(IloCplex::IntSolLim, 1); // Valeur par defaut : 2100000000 (arret apres la premiere solution entiere)
-  cplexCompact.setParam(IloCplex::NodeSel, 0);   // Valeur par defaut : 1 (parcours en profondeur)
-  cplexCompact.solve();
-  _ActualCost = (int)cplexCompact.getObjValue();
+  //CplexCompact.setParam(IloCplex::IntSolLim, 1);   // defaut : 2100000000 (arret apres la premiere solution entiere)
+  //CplexCompact.setParam(IloCplex::NodeSel, 0);     // defaut : 1 (parcours en profondeur)
+  CplexCompact.setParam(IloCplex::MIPEmphasis, 1);   // defaut : 0 (permet d'avoir une bonne solution realisable rapidement)
+  CplexCompact.setParam(IloCplex::ParallelMode, -1); // defaut : 0 (Opportuniste (-1) vs. deterministe (+1))
+  CplexCompact.setParam(IloCplex::TiLim, 10);        // defaut : ? (limite de temps de recherche)
+  CplexCompact.solve();
+  _ActualCost = (int)CplexCompact.getObjValue();
   for (int j = 0; j < _m; j++) {
     IloNumArray vals(_Model.getEnv());
-    cplexCompact.getValues(vals, _bvar[j]);
+    CplexCompact.getValues(vals, _bvar[j]);
     InsertSolutionOnMachine(vals, j);
     
     IloInt Cout(0);
@@ -245,8 +246,27 @@ void ModelCompact::FindFeasableSolution(ModelMaitre & iModelMaitre)
     }
     iModelMaitre._Colonnes[j].add(IloNumVar( iModelMaitre._Objectif(Cout) + iModelMaitre._ConstrEqual(vals) + iModelMaitre._ConstrInequal[j](1) ));
   }
-  std::cout << "//--- Premiere solution entiere trouvee par Cplex ---\n";
-  PrintCurrentSolution(2);
+  std::cout << "//--- Solution entiere trouvee par Cplex ---\n";
+  PrintCurrentSolution(0);
+}
+
+
+void ModelCompact::FindFeasableSolution()
+{
+  IloCplex CplexCompact(_Model);
+
+  CplexCompact.setParam(IloCplex::MIPEmphasis, 1);   // defaut : 0 (permet d'avoir une bonne solution realisable rapidement)
+  CplexCompact.setParam(IloCplex::ParallelMode, -1); // defaut : 0 (Opportuniste (-1) vs. deterministe (+1))
+  CplexCompact.setParam(IloCplex::TiLim, 7);        // defaut : ? (limite de temps de recherche)
+  CplexCompact.solve();
+  _ActualCost = (int)CplexCompact.getObjValue();
+  for (int j = 0; j < _m; j++) {
+    IloNumArray vals(_Model.getEnv());
+    CplexCompact.getValues(vals, _bvar[j]);
+    InsertSolutionOnMachine(vals, j);
+  }
+  std::cout << "//--- Solution entiere trouvee par Cplex ---\n";
+  PrintCurrentSolution(0);
 }
 
 
@@ -477,8 +497,6 @@ bool ModelCompact::NeighbourhoodSearch(int iNSize)
     std::cout << "It is a stupid use of this method !" << std::endl;
     return false;
   }
-  // FOR DEBUG : TO REMOVE !
-  cout << "Tentative de voisinage de taille " << iNSize << "\n";
 
   bool FindABetterSolution = false;
   
@@ -508,8 +526,6 @@ bool ModelCompact::NeighbourhoodSearch(int iNSize)
       for (int j = 0; j < _m; j++)
         _ActualCapacity[j] = ModelCompactIt._aCapacity[j];
       
-      // FOR DEBUG : TO REMOVE !
-      PrintCurrentSolution();
       FindABetterSolution = true;
     }
     

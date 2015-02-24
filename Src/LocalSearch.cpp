@@ -26,14 +26,19 @@ void LocalSearchAlgorithm(ModelCompact & iModelCompact)
 
   assert(PopSize > 0);
   vector<ModelCompact> aCompact(PopSize, ModelCompact(iModelCompact));
+  //vector<ModelCompact> aCompact(PopSize, ModelCompact(iModelCompact._FileName, iModelCompact._Model.getEnv()));
   
   // Strategie de construction gloutonne aleatoire
-  int BuiltStrategy = 0;
+  int BuiltStrategy = -1;
   // Nombre d'iterations
   int NbIteration = 1;
+  
+  if (BuiltStrategy==-1)
+  {
+    for (int i = 0; i < PopSize; i++)
+      aCompact[i].FindFeasableSolution();
+  }
 
-  iModelCompact.LocalSearchAlgorithm(VSize);
-  cout << "fini\n";
   int IdxBest = PopSize;
   while (IdxBest == PopSize && NbIteration < 1000)
   {
@@ -44,19 +49,26 @@ void LocalSearchAlgorithm(ModelCompact & iModelCompact)
     for (i = 0; i < PopSize; i++)
     {
       int Idx = i;
-      switch (Idx)
+      if (BuiltStrategy==-1)
       {
-      case 0:
-        aCompact[0].GRASP(1, BuiltStrategy);
-        aCompact[0].LocalSearchAlgorithm(VSize);
-        break;
-
-      default:
-        aCompact[Idx].GRASP(RCL, BuiltStrategy);
+        aCompact[Idx].ComputeCost();
         aCompact[Idx].LocalSearchAlgorithm(VSize);
-        break;
       }
-      
+      else
+      {
+        switch (Idx)
+        {
+        case 0:
+          aCompact[0].GRASP(1, BuiltStrategy);
+          aCompact[0].LocalSearchAlgorithm(VSize);
+          break;
+
+        default:
+          aCompact[Idx].GRASP(RCL, BuiltStrategy);
+          aCompact[Idx].LocalSearchAlgorithm(VSize);
+          break;
+        }
+      }
     }
 
     // Recherche de la meilleure solution trouvee
@@ -74,13 +86,9 @@ void LocalSearchAlgorithm(ModelCompact & iModelCompact)
       for (int j = 0; j < iModelCompact._m; j++)
         iModelCompact._ActualCapacity[j] = aCompact[IdxBest]._ActualCapacity[j];
     }
-  
-    // FOR DEBUG ! TO REMOVE
-    cout << "Nombre d'iteration de construction : " << NbIteration << "\r";
     NbIteration++;
 
   }
-  cout << "\n";
 }
 
 

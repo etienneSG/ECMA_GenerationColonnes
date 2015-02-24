@@ -41,11 +41,13 @@ public:
   void CreateObjectiveAndConstraintes();
   
   /**
-   * Trouve une solution realisable du probleme en effectuant un
-   * branch-and-bound avec un parcours en profondeur
+   * Trouve une solution realisable du probleme
    * @param iModelMaitre: Model maitre a initialiser avec la solution
    */
   void FindFeasableSolution(ModelMaitre & iModelMaitre);
+
+  /** Trouve une solution realisable du probleme */
+  void FindFeasableSolution();
   
   /**
    * Algorithme d'initialisation glouton aleatoire
@@ -98,12 +100,13 @@ public:
   void PrintCurrentSolution(int iMode = 0);
   
   /** Donnees */
-  IloModel _Model;  // Modele
-  IloInt _m;        // Nombre de machines
-  IloInt _n;        // Nombre de taches
-  IntMatrix _c;     // matrice des couts d'affectation
-  IntMatrix _a;     // matrice des capacites consommees
-  IloIntArray _b;   // vecteur des capacites des machines
+  IloModel _Model;        // Modele
+  IloInt _m;              // Nombre de machines
+  IloInt _n;              // Nombre de taches
+  IntMatrix _c;           // matrice des couts d'affectation
+  IntMatrix _a;           // matrice des capacites consommees
+  IloIntArray _b;         // vecteur des capacites des machines
+  std::string _FileName;  // Nom du fichier associé à l'instance
   
   /** Variables de decision du modele compact */
   BoolVarMatrix _bvar;
