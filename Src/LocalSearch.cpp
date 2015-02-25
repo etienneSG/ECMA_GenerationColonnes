@@ -31,23 +31,17 @@ void LocalSearchAlgorithm(ModelCompact & iModelCompact)
   int BuiltStrategy = 0;
   // Nombre d'iterations
   int NbIteration = 1;
-  
-  /*if (BuiltStrategy==-1)
-  {
-    aCompact[0].FindFeasableSolution(1);
-    for (int i = 1; i < PopSize; i++)
-      aCompact[i].FindFeasableSolution(1);
-  }*/
 
   int ValueGlouton = iModelCompact.ComputeUBforObjective();
-  
+  vector<int> AdmSolution;
+
   int IdxBest = PopSize;
   while (IdxBest == PopSize && NbIteration < 1000)
   {
     int i;
-    #ifdef __linux__
-    #pragma omp parallel for schedule(dynamic,1)
-    #endif
+#ifdef __linux__
+#pragma omp parallel for schedule(dynamic,1)
+#endif
     for (i = 1; i < PopSize; i++)
     {
       int Idx = i;
@@ -64,44 +58,36 @@ void LocalSearchAlgorithm(ModelCompact & iModelCompact)
         {
         case 2:
           aCompact[Idx].GRASP(1, BuiltStrategy);
-          #pragma omp critical
-          {
-            if (aCompact[Idx].IsAdmissible() && aCompact[Idx]._ActualCost < ValueGlouton)
-              ValueGlouton = aCompact[Idx]._ActualCost;
-          }
           break;
 
         default:
           aCompact[Idx].GRASP(RCL, BuiltStrategy);
-          #pragma omp critical
-          {
-            if (aCompact[Idx].IsAdmissible() && aCompact[Idx]._ActualCost < ValueGlouton)
-              ValueGlouton = aCompact[Idx]._ActualCost;
-          }
           break;
+        }
+#ifdef __linux__
+#pragma omp critical
+#endif
+        {
+          if (aCompact[Idx].IsAdmissible() && aCompact[Idx]._ActualCost < ValueGlouton)
+            ValueGlouton = aCompact[Idx]._ActualCost;
         }
       }
 
     }
     
-    #ifdef __linux__
-    #pragma omp parallel for schedule(dynamic,1)
-    #endif
+#ifdef __linux__
+#pragma omp parallel for schedule(dynamic,1)
+#endif
     for (i = 0; i < PopSize; i++)
     {
       int Idx = i;
       if (aCompact[Idx].IsAdmissible())
       {
-        #pragma omp critical
+#ifdef __linux__
+#pragma omp critical
+#endif
         {
-          cout << "Solution " << Idx << " admissible avant recherche locale.\n";
-        }
-      }
-      else
-      {
-        #pragma omp critical
-        {
-          cout << "Solution " << Idx << " inadmissible avant recherche locale.\n";
+          AdmSolution.push_back(Idx);
         }
       }
       aCompact[Idx].LocalSearchAlgorithm(VSize);
@@ -124,7 +110,12 @@ void LocalSearchAlgorithm(ModelCompact & iModelCompact)
     }
     NbIteration++;
 
-    cout << "Solution Inadmissible apres recherche locale : ";
+    cout << "Solution admissible avant recherche locale : ";
+    for (unsigned int k = 0; k < AdmSolution.size(); k++) {
+        cout << AdmSolution[k] << " ";
+    }
+    cout << "\n";
+    cout << "Solution admissible apres recherche locale : ";
     for (i = 0; i < PopSize; i++) {
       if (aCompact[i].IsAdmissible())
         cout << i << " ";

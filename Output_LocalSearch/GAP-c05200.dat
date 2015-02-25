@@ -1,0 +1,97 @@
+Tried aggregator 1 time.
+MIP Presolve eliminated 0 rows and 1 columns.
+Reduced MIP has 205 rows, 1000 columns, and 2000 nonzeros.
+Reduced MIP has 1000 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.00 sec. (0.97 ticks)
+Found incumbent of value 5771.000000 after 0.01 sec. (4.20 ticks)
+//--- Solution entiere trouvee par Cplex ---
+Cout de la solution courante : 5771
+Tried aggregator 1 time.
+MIP Presolve eliminated 0 rows and 1 columns.
+Reduced MIP has 205 rows, 1000 columns, and 2000 nonzeros.
+Reduced MIP has 1000 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.00 sec. (0.97 ticks)
+Found incumbent of value 5771.000000 after 0.01 sec. (4.20 ticks)
+//--- Solution entiere trouvee par Cplex ---
+Cout de la solution courante : 5771
+Tried aggregator 1 time.
+MIP Presolve eliminated 0 rows and 1 columns.
+Reduced MIP has 205 rows, 1000 columns, and 2000 nonzeros.
+Reduced MIP has 1000 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.00 sec. (0.97 ticks)
+Found incumbent of value 5771.000000 after 0.01 sec. (4.20 ticks)
+Probing time = 0.00 sec. (0.41 ticks)
+Tried aggregator 1 time.
+Presolve time = 0.00 sec. (0.98 ticks)
+Probing time = 0.00 sec. (0.41 ticks)
+Clique table members: 200.
+MIP emphasis: integer feasibility.
+MIP search method: dynamic search.
+Parallel mode: opportunistic, using up to 8 threads.
+Root relaxation solution time = 0.00 sec. (1.31 ticks)
+
+        Nodes                                         Cuts/
+   Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
+
+*     0+    0                         5771.0000        0.0000      235  100.00%
+      0     0     3450.7653    10     5771.0000     3450.7653      235   40.21%
+      0     0     3451.3243    15     5771.0000      Cuts: 11      243   40.20%
+      0     0     3452.1848    24     5771.0000       Cuts: 6      263   40.18%
+      0     0     3452.5357    32     5771.0000      Cuts: 10      274   40.17%
+*     0+    0                         3473.0000     3452.5357      274    0.59%
+*     0+    0                         3464.0000     3452.5357      274    0.33%
+*     0+    0                         3459.0000     3452.5357      274    0.19%
+*     0+    0                         3457.0000     3452.5357      274    0.13%
+
+Repeating presolve.
+Tried aggregator 2 times.
+MIP Presolve eliminated 125 rows and 830 columns.
+Aggregator did 56 substitutions.
+Reduced MIP has 24 rows, 114 columns, and 228 nonzeros.
+Reduced MIP has 114 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.00 sec. (0.56 ticks)
+Probing time = 0.00 sec. (0.03 ticks)
+Tried aggregator 1 time.
+Presolve time = 0.00 sec. (0.11 ticks)
+Represolve time = 0.00 sec. (1.17 ticks)
+Probing time = 0.00 sec. (0.03 ticks)
+Clique table members: 19.
+MIP emphasis: integer feasibility.
+MIP search method: dynamic search.
+Parallel mode: opportunistic, using up to 8 threads.
+Root relaxation solution time = 0.00 sec. (0.41 ticks)
+
+        Nodes                                         Cuts/
+   Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
+
+*     0+    0                         3457.0000     3452.5357      333    0.13%
+      0     0     3452.5357    26     3457.0000     3452.5357      333    0.13%
+*     0+    0                         3456.0000     3452.5357      333    0.10%
+      0     2     3452.5357    26     3456.0000     3452.5724      333    0.10%
+Elapsed time = 0.08 sec. (31.74 ticks, tree = 0.01 MB, solutions = 6)
+
+Cover cuts applied:  66
+Zero-half cuts applied:  6
+Gomory fractional cuts applied:  1
+
+Root node processing (before b&c):
+  Real time             =    0.06 sec. (25.92 ticks)
+Parallel b&c, 8 threads:
+  Real time             =    0.03 sec. (11.85 ticks)
+  Sync time (average)   =    0.01 sec.
+  Wait time (average)   =    0.00 sec.
+                          ------------
+Total (root+branch&cut) =    0.09 sec. (37.77 ticks)
+//--- Solution entiere trouvee par Cplex ---
+Cout de la solution courante : 3456
+Solution admissible avant recherche locale : 1 0 
+Solution admissible apres recherche locale : 0 1 
+Meilleure valeure obtenue par la glouton : 29339
+//---------- Recherche locale ----------
+Cout de la solution courante : 3456
+Affectation
+1	4	4	4	4	2	0	1	3	2	4	1	3	1	0	0	2	4	4	0	0	4	0	4	1	0	3	4	0	4	1	0	0	2	2	0	0	3	0	1	3	0	1	2	3	3	3	3	4	3	0	2	3	3	0	1	2	2	1	0	4	1	2	0	4	1	0	2	2	1	3	4	2	3	1	2	2	0	0	2	4	4	1	2	4	2	4	3	3	2	1	2	1	3	1	1	1	4	3	3	3	1	0	0	1	1	2	1	4	3	2	0	4	1	2	3	1	2	2	3	1	4	4	3	0	1	0	1	1	4	1	0	0	4	2	2	4	2	4	2	4	2	1	4	0	1	3	4	2	3	3	3	3	1	3	4	3	0	4	0	4	1	0	0	2	3	3	2	4	2	3	1	4	4	4	0	4	4	1	0	0	4	1	3	1	3	0	2	4	2	4	0	0	3	2	1	1	1	0	3	
+Temps CPU:	2.0831s
+Temps utilisateur:	0.395952s
+
+Well done !

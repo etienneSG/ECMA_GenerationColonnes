@@ -1,0 +1,146 @@
+Tried aggregator 1 time.
+MIP Presolve eliminated 0 rows and 1 columns.
+Reduced MIP has 210 rows, 2000 columns, and 4000 nonzeros.
+Reduced MIP has 2000 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.00 sec. (1.95 ticks)
+Probing time = 0.00 sec. (1.01 ticks)
+Tried aggregator 1 time.
+Presolve time = 0.00 sec. (1.96 ticks)
+Probing time = 0.00 sec. (1.01 ticks)
+Clique table members: 200.
+MIP emphasis: balance optimality and feasibility.
+MIP search method: dynamic search.
+Parallel mode: deterministic, using up to 8 threads.
+Root relaxation solution time = 0.00 sec. (2.28 ticks)
+
+        Nodes                                         Cuts/
+   Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
+
+      0     0     2795.4079    20                   2795.4079      244         
+      0     0     2797.3132    33                    Cuts: 28      264         
+      0     0     2798.5307    49                    Cuts: 17      287         
+      0     0     2799.1209    58                    Cuts: 13      313         
+      0     0     2799.5829    64                    Cuts: 10      337         
+*     0+    0                         2844.0000     2799.5829      337    1.56%
+*     0+    0                         2822.0000     2799.5829      337    0.79%
+
+Cover cuts applied:  16
+Zero-half cuts applied:  10
+Gomory fractional cuts applied:  2
+
+Root node processing (before b&c):
+  Real time             =    0.07 sec. (37.63 ticks)
+Parallel b&c, 8 threads:
+  Real time             =    0.00 sec. (0.00 ticks)
+  Sync time (average)   =    0.00 sec.
+  Wait time (average)   =    0.00 sec.
+                          ------------
+Total (root+branch&cut) =    0.07 sec. (37.63 ticks)
+//--- Solution entiere trouvee par Cplex ---
+Cout de la solution courante : 2822
+Tried aggregator 1 time.
+MIP Presolve eliminated 0 rows and 1 columns.
+Reduced MIP has 210 rows, 2000 columns, and 4000 nonzeros.
+Reduced MIP has 2000 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.00 sec. (1.95 ticks)
+Probing time = 0.00 sec. (1.01 ticks)
+Tried aggregator 1 time.
+Presolve time = 0.00 sec. (1.96 ticks)
+Probing time = 0.00 sec. (1.01 ticks)
+Clique table members: 200.
+MIP emphasis: balance optimality and feasibility.
+MIP search method: dynamic search.
+Parallel mode: deterministic, using up to 8 threads.
+Root relaxation solution time = 0.00 sec. (2.28 ticks)
+
+        Nodes                                         Cuts/
+   Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
+
+      0     0     2795.4079    20                   2795.4079      244         
+      0     0     2797.3132    33                    Cuts: 28      264         
+      0     0     2798.5307    49                    Cuts: 17      287         
+      0     0     2799.1209    58                    Cuts: 13      313         
+      0     0     2799.5829    64                    Cuts: 10      337         
+*     0+    0                         2844.0000     2799.5829      337    1.56%
+*     0+    0                         2822.0000     2799.5829      337    0.79%
+
+Cover cuts applied:  16
+Zero-half cuts applied:  10
+Gomory fractional cuts applied:  2
+
+Root node processing (before b&c):
+  Real time             =    0.06 sec. (37.63 ticks)
+Parallel b&c, 8 threads:
+  Real time             =    0.00 sec. (0.00 ticks)
+  Sync time (average)   =    0.00 sec.
+  Wait time (average)   =    0.00 sec.
+                          ------------
+Total (root+branch&cut) =    0.06 sec. (37.63 ticks)
+//--- Solution entiere trouvee par Cplex ---
+Cout de la solution courante : 2822
+Tried aggregator 1 time.
+MIP Presolve eliminated 0 rows and 1 columns.
+Reduced MIP has 210 rows, 2000 columns, and 4000 nonzeros.
+Reduced MIP has 2000 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.00 sec. (1.95 ticks)
+Probing time = 0.00 sec. (1.01 ticks)
+Tried aggregator 1 time.
+Presolve time = 0.00 sec. (1.96 ticks)
+Probing time = 0.00 sec. (1.01 ticks)
+Clique table members: 200.
+MIP emphasis: integer feasibility.
+MIP search method: dynamic search.
+Parallel mode: opportunistic, using up to 8 threads.
+Root relaxation solution time = 0.00 sec. (2.28 ticks)
+
+        Nodes                                         Cuts/
+   Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
+
+      0     0     2795.4079    20                   2795.4079      244         
+      0     0     2797.3132    33                    Cuts: 28      264         
+      0     0     2798.5307    49                    Cuts: 17      287         
+      0     0     2799.1209    58                    Cuts: 13      313         
+*     0+    0                         2871.0000     2799.1209      313    2.50%
+      0     2     2799.1209    58     2871.0000     2799.1215      313    2.50%
+Elapsed time = 0.09 sec. (45.34 ticks, tree = 0.01 MB, solutions = 1)
+*     9+    2                         2844.0000     2799.2516      457    1.57%
+*    11+    3                         2812.0000     2799.2516      511    0.45%
+*    12+    3                         2811.0000     2799.2516      543    0.42%
+*    12+    3                         2810.0000     2799.2516      579    0.38%
+*    18+    9                         2807.0000     2799.2516      729    0.28%
+   1009   539     2803.8561    90     2807.0000     2801.2827    24117    0.20%
+   1724   760        cutoff           2807.0000     2801.8840    46112    0.18%
+   2303   848     2805.9236    84     2807.0000     2802.4359    66718    0.16%
+   2784   974     2805.2828    86     2807.0000     2802.8501    86069    0.15%
+   3474  1074     2804.6578    90     2807.0000     2803.2487   108214    0.13%
+   4244  1183     2805.9983    69     2807.0000     2803.4784   131707    0.13%
+   4972  1282        cutoff           2807.0000     2803.6418   153174    0.12%
+   5777  1341     2805.2891    86     2807.0000     2803.8777   176973    0.11%
+*  6149+ 1343                         2806.0000     2803.9443   187952    0.07%
+   6699   276        cutoff           2806.0000     2804.1326   201281    0.07%
+
+Cover cuts applied:  615
+Zero-half cuts applied:  13
+Gomory fractional cuts applied:  3
+
+Root node processing (before b&c):
+  Real time             =    0.05 sec. (33.83 ticks)
+Parallel b&c, 8 threads:
+  Real time             =    3.21 sec. (2282.89 ticks)
+  Sync time (average)   =    0.02 sec.
+  Wait time (average)   =    0.01 sec.
+                          ------------
+Total (root+branch&cut) =    3.26 sec. (2316.72 ticks)
+//--- Solution entiere trouvee par Cplex ---
+Cout de la solution courante : 2806
+Solution admissible avant recherche locale : 0 1 
+Solution admissible apres recherche locale : 0 1 
+Meilleure valeure obtenue par la glouton : 59997
+//---------- Recherche locale ----------
+Cout de la solution courante : 2806
+Affectation
+0	5	4	7	7	5	3	9	5	8	6	3	6	7	9	3	5	4	8	1	9	4	8	6	8	1	7	6	5	8	2	9	7	2	6	6	1	9	8	4	4	8	4	1	8	6	6	3	0	1	3	8	4	2	0	6	7	8	9	3	7	9	3	5	9	2	5	8	2	5	2	0	5	2	1	1	0	1	7	1	1	2	1	7	0	5	6	4	7	2	8	0	0	3	6	6	2	4	4	0	1	3	0	1	8	8	2	9	3	0	3	7	4	6	3	4	5	9	1	4	8	9	9	0	8	5	3	8	6	9	2	0	4	4	6	9	2	5	1	3	3	0	7	0	0	2	5	8	2	5	0	0	7	7	3	0	0	3	3	6	1	8	2	7	1	1	4	1	5	9	4	9	3	5	8	6	3	0	8	6	2	9	0	9	9	6	7	2	4	3	4	1	1	7	7	8	7	3	5	7	
+Temps CPU:	28.0938s
+Temps utilisateur:	3.90683s
+
+Well done !

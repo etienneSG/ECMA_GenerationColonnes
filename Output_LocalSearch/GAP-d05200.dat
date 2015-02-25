@@ -1,0 +1,90 @@
+Tried aggregator 1 time.
+MIP Presolve eliminated 0 rows and 1 columns.
+Reduced MIP has 205 rows, 1000 columns, and 2000 nonzeros.
+Reduced MIP has 1000 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.00 sec. (0.97 ticks)
+Found incumbent of value 14338.000000 after 0.01 sec. (4.07 ticks)
+//--- Solution entiere trouvee par Cplex ---
+Cout de la solution courante : 14338
+Tried aggregator 1 time.
+MIP Presolve eliminated 0 rows and 1 columns.
+Reduced MIP has 205 rows, 1000 columns, and 2000 nonzeros.
+Reduced MIP has 1000 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.00 sec. (0.97 ticks)
+Found incumbent of value 14338.000000 after 0.01 sec. (4.07 ticks)
+//--- Solution entiere trouvee par Cplex ---
+Cout de la solution courante : 14338
+Tried aggregator 1 time.
+MIP Presolve eliminated 0 rows and 1 columns.
+Reduced MIP has 205 rows, 1000 columns, and 2000 nonzeros.
+Reduced MIP has 1000 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.00 sec. (0.97 ticks)
+Found incumbent of value 14338.000000 after 0.01 sec. (4.07 ticks)
+Probing time = 0.00 sec. (0.41 ticks)
+Tried aggregator 1 time.
+Presolve time = 0.00 sec. (0.98 ticks)
+Probing time = 0.00 sec. (0.41 ticks)
+Clique table members: 200.
+MIP emphasis: integer feasibility.
+MIP search method: dynamic search.
+Parallel mode: opportunistic, using up to 8 threads.
+Root relaxation solution time = 0.00 sec. (2.44 ticks)
+
+        Nodes                                         Cuts/
+   Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
+
+*     0+    0                        14338.0000        0.0000      332  100.00%
+*     0+    0                        13981.0000        0.0000      332  100.00%
+      0     0    12736.1961    10    13981.0000    12736.1961      332    8.90%
+*     0+    0                        12819.0000    12736.1961      332    0.65%
+      0     0    12736.3720    16    12819.0000      Cuts: 12      339    0.64%
+      0     0    12736.7000    18    12819.0000     Covers: 5      346    0.64%
+      0     0    12736.9248    28    12819.0000       Cuts: 9      361    0.64%
+*     0+    0                        12771.0000    12736.9248      361    0.27%
+*     0+    0                        12762.0000    12736.9248      361    0.20%
+      0     2    12736.9248    28    12762.0000    12736.9298      361    0.20%
+Elapsed time = 0.05 sec. (27.11 ticks, tree = 0.01 MB, solutions = 5)
+*   418+  400                        12761.0000    12737.0073     3873    0.19%
+*  1425+ 1238                        12760.0000    12737.1156    12294    0.18%
+   3109  2723    12737.3408    36    12760.0000    12737.3422    24776    0.18%
+*  3139+ 1034                        12758.0000    12737.3422    25023    0.16%
+*  3440+  865                        12753.0000    12737.3992    27093    0.12%
+   8183  4720    12744.2958     8    12753.0000    12737.4783    50336    0.12%
+* 10898+ 6910                        12751.0000    12737.4979    62330    0.11%
+  13990  9739    12746.3443    14    12751.0000    12737.5657    74319    0.11%
+* 18494+10107                        12747.0000    12737.6160    93453    0.07%
+  20162 11645    12737.9997    18    12747.0000    12737.6165    99950    0.07%
+  27352 18060    12743.3700    16    12747.0000    12737.7325   127809    0.07%
+  34095 23995    12738.1935    15    12747.0000    12737.8059   154864    0.07%
+  41505 12876    12743.5049     9    12747.0000    12737.8059   182442    0.07%
+  50993 16819    12737.8207    22    12747.0000    12737.8059   214206    0.07%
+  62667 24909    12741.5890     8    12747.0000    12737.8749   254252    0.07%
+ 105603 61472    12739.6842     8    12747.0000    12738.0644   395539    0.07%
+Elapsed time = 7.65 sec. (4072.67 ticks, tree = 29.47 MB, solutions = 11)
+ 144288 94433    infeasible          12747.0000    12738.1554   519172    0.07%
+
+Cover cuts applied:  10
+Zero-half cuts applied:  6
+Gomory fractional cuts applied:  1
+
+Root node processing (before b&c):
+  Real time             =    0.04 sec. (21.14 ticks)
+Parallel b&c, 8 threads:
+  Real time             =    9.95 sec. (5261.54 ticks)
+  Sync time (average)   =    0.07 sec.
+  Wait time (average)   =    0.06 sec.
+                          ------------
+Total (root+branch&cut) =    9.99 sec. (5282.67 ticks)
+//--- Solution entiere trouvee par Cplex ---
+Cout de la solution courante : 12747
+Solution admissible avant recherche locale : 1 0 
+Solution admissible apres recherche locale : 0 1 
+Meilleure valeure obtenue par la glouton : 60137
+//---------- Recherche locale ----------
+Cout de la solution courante : 12747
+Affectation
+1	1	0	2	2	0	0	0	0	0	4	0	2	0	0	3	2	3	1	2	2	2	4	0	4	2	0	3	4	3	3	2	0	1	2	4	3	1	1	4	0	1	4	4	1	2	0	2	3	4	1	4	3	4	0	2	3	3	4	3	2	2	1	1	4	2	4	2	0	0	4	4	4	2	4	2	4	3	0	2	4	1	1	2	3	4	0	3	2	4	1	1	3	4	0	0	1	2	0	3	0	2	2	2	1	2	1	1	3	1	0	4	0	4	1	1	1	4	2	4	3	1	3	1	3	4	3	3	4	3	1	3	2	3	3	1	0	1	3	3	0	4	3	3	3	4	3	4	1	3	2	1	2	4	4	3	2	2	0	4	3	4	0	0	3	4	2	0	1	2	1	3	0	3	0	1	0	1	0	4	0	3	3	3	3	0	0	1	2	3	1	2	0	1	1	0	2	1	2	2	
+Temps CPU:	79.156s
+Temps utilisateur:	10.3704s
+
+Well done !

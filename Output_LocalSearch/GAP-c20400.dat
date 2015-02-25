@@ -1,0 +1,129 @@
+Tried aggregator 1 time.
+MIP Presolve eliminated 0 rows and 1 columns.
+Reduced MIP has 420 rows, 8000 columns, and 16000 nonzeros.
+Reduced MIP has 8000 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.01 sec. (6.92 ticks)
+Probing time = 0.01 sec. (2.88 ticks)
+Clique table members: 400.
+MIP emphasis: balance optimality and feasibility.
+MIP search method: dynamic search.
+Parallel mode: deterministic, using up to 8 threads.
+Root relaxation solution time = 0.04 sec. (15.14 ticks)
+
+        Nodes                                         Cuts/
+   Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
+
+      0     0     4774.1504    36                   4774.1504      533         
+      0     0     4776.1864    62                    Cuts: 27      579         
+*     0+    0                         8342.0000     4776.1864      650   42.75%
+
+Cover cuts applied:  27
+Zero-half cuts applied:  16
+
+Root node processing (before b&c):
+  Real time             =    0.19 sec. (94.33 ticks)
+Parallel b&c, 8 threads:
+  Real time             =    0.00 sec. (0.00 ticks)
+  Sync time (average)   =    0.00 sec.
+  Wait time (average)   =    0.00 sec.
+                          ------------
+Total (root+branch&cut) =    0.19 sec. (94.33 ticks)
+//--- Solution entiere trouvee par Cplex ---
+Cout de la solution courante : 8342
+Tried aggregator 1 time.
+MIP Presolve eliminated 0 rows and 1 columns.
+Reduced MIP has 420 rows, 8000 columns, and 16000 nonzeros.
+Reduced MIP has 8000 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.01 sec. (6.92 ticks)
+Probing time = 0.01 sec. (2.88 ticks)
+Clique table members: 400.
+MIP emphasis: balance optimality and feasibility.
+MIP search method: dynamic search.
+Parallel mode: deterministic, using up to 8 threads.
+Root relaxation solution time = 0.03 sec. (15.14 ticks)
+
+        Nodes                                         Cuts/
+   Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
+
+      0     0     4774.1504    36                   4774.1504      533         
+      0     0     4776.1864    62                    Cuts: 27      579         
+*     0+    0                         8342.0000     4776.1864      650   42.75%
+
+Cover cuts applied:  27
+Zero-half cuts applied:  16
+
+Root node processing (before b&c):
+  Real time             =    0.20 sec. (94.33 ticks)
+Parallel b&c, 8 threads:
+  Real time             =    0.00 sec. (0.00 ticks)
+  Sync time (average)   =    0.00 sec.
+  Wait time (average)   =    0.00 sec.
+                          ------------
+Total (root+branch&cut) =    0.20 sec. (94.33 ticks)
+//--- Solution entiere trouvee par Cplex ---
+Cout de la solution courante : 8342
+Tried aggregator 1 time.
+MIP Presolve eliminated 0 rows and 1 columns.
+Reduced MIP has 420 rows, 8000 columns, and 16000 nonzeros.
+Reduced MIP has 8000 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.01 sec. (6.92 ticks)
+Probing time = 0.01 sec. (2.88 ticks)
+Clique table members: 400.
+MIP emphasis: integer feasibility.
+MIP search method: dynamic search.
+Parallel mode: opportunistic, using up to 8 threads.
+Root relaxation solution time = 0.02 sec. (15.14 ticks)
+
+        Nodes                                         Cuts/
+   Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
+
+      0     0     4774.1504    36                   4774.1504      533         
+      0     0     4776.1864    62                    Cuts: 27      579         
+      0     0     4776.9923    93                    Cuts: 26      650         
+      0     0     4777.3310    86                    Cuts: 22      695         
+*     0+    0                         8342.0000     4777.3310      695   42.73%
+      0     2     4777.3310    86     8342.0000     4777.3310      695   42.73%
+Elapsed time = 0.19 sec. (138.31 ticks, tree = 0.01 MB, solutions = 1)
+*    12+    3                         4792.0000     4777.3312      983    0.31%
+*    21+   13                         4786.0000     4777.3312     1230    0.18%
+*    40+   32                         4784.0000     4777.3312     1509    0.14%
+*    65+   46                         4783.0000     4777.3312     1860    0.12%
+     90    69     4779.0081   105     4783.0000     4777.3312     2400    0.12%
+    516   445     4779.7670   117     4783.0000     4777.5328    11807    0.11%
+   1157   983     4779.4729   143     4783.0000     4778.0469    27377    0.10%
+   1593  1348     4779.9993   161     4783.0000     4778.1811    38551    0.10%
+   1988  1686     4780.7173   121     4783.0000     4778.1832    50943    0.10%
+   2373  2011     4779.8358   142     4783.0000     4778.1959    63634    0.10%
+   2713  2290     4781.3376   155     4783.0000     4778.2276    74442    0.10%
+   3013  2505     4780.3041   153     4783.0000     4778.2614    85326    0.10%
+   3172  2654     4778.4717   136     4783.0000     4778.4719    90636    0.09%
+   9799  5910     4781.1749    73     4783.0000     4778.6225   222001    0.09%
+Elapsed time = 5.19 sec. (3420.60 ticks, tree = 4.98 MB, solutions = 10)
+  17111 12327     4779.3321    98     4783.0000     4778.6937   369112    0.09%
+  23137 17581     4780.4889    64     4783.0000     4778.7512   509527    0.09%
+  28048 21771     4780.3999   103     4783.0000     4778.7885   629632    0.09%
+
+Cover cuts applied:  143
+Zero-half cuts applied:  19
+
+Root node processing (before b&c):
+  Real time             =    0.17 sec. (128.91 ticks)
+Parallel b&c, 8 threads:
+  Real time             =    9.82 sec. (6382.28 ticks)
+  Sync time (average)   =    0.02 sec.
+  Wait time (average)   =    0.01 sec.
+                          ------------
+Total (root+branch&cut) =    9.99 sec. (6511.18 ticks)
+//--- Solution entiere trouvee par Cplex ---
+Cout de la solution courante : 4783
+Solution admissible avant recherche locale : 1 0 
+Solution admissible apres recherche locale : 0 1 
+Meilleure valeure obtenue par la glouton : 239482
+//---------- Recherche locale ----------
+Cout de la solution courante : 4783
+Affectation
+0	13	6	17	7	0	5	4	15	14	7	1	7	8	17	9	4	14	15	15	12	5	18	5	4	1	19	2	17	18	7	10	3	1	12	8	10	9	4	18	17	16	18	0	4	6	0	7	0	8	2	18	16	19	16	9	18	16	8	10	3	1	0	8	6	11	18	17	12	8	4	2	7	12	1	4	6	7	17	3	7	3	3	15	14	1	14	3	1	8	2	3	13	15	5	0	19	1	8	9	5	12	3	1	11	3	0	10	11	14	4	18	3	18	10	10	6	6	6	3	16	1	8	11	1	6	12	0	9	15	12	19	6	13	8	5	6	4	1	10	17	9	19	15	17	5	6	1	16	15	17	4	17	3	12	2	1	2	4	19	19	5	8	6	3	5	6	17	1	13	4	4	11	12	1	6	7	7	12	2	16	7	0	10	12	9	12	1	6	11	18	14	9	6	11	19	12	13	3	16	16	14	14	12	16	13	8	7	8	14	4	19	0	12	1	12	10	19	9	17	9	6	0	6	8	7	2	1	13	16	14	4	19	18	0	13	19	9	4	0	7	9	16	0	12	9	10	12	5	17	14	2	16	3	9	5	11	17	3	2	14	14	7	10	2	14	6	14	17	5	5	15	15	0	11	9	0	18	8	13	9	19	19	10	9	4	5	0	11	2	17	7	0	15	12	13	10	18	18	10	0	13	16	16	3	14	15	13	13	6	10	17	16	16	13	15	0	15	15	16	10	15	16	13	19	5	13	2	13	14	1	6	4	7	6	5	19	6	5	2	17	17	4	10	3	10	8	15	18	11	19	5	2	18	12	11	12	10	4	15	11	13	15	2	11	9	8	5	2	9	4	19	11	14	3	6	8	18	5	9	17	19	16	17	8	18	7	3	14	16	17	16	11	13	11	17	3	13	8	11	
+Temps CPU:	95.8076s
+Temps utilisateur:	12.8266s
+
+Well done !

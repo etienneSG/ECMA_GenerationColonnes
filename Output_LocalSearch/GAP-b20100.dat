@@ -1,0 +1,109 @@
+Tried aggregator 1 time.
+MIP Presolve eliminated 0 rows and 1 columns.
+Reduced MIP has 120 rows, 2000 columns, and 4000 nonzeros.
+Reduced MIP has 2000 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.01 sec. (2.25 ticks)
+Found incumbent of value 3139.000000 after 0.01 sec. (6.34 ticks)
+
+Root node processing (before b&c):
+  Real time             =    0.01 sec. (4.02 ticks)
+Parallel b&c, 8 threads:
+  Real time             =    0.00 sec. (0.00 ticks)
+  Sync time (average)   =    0.00 sec.
+  Wait time (average)   =    0.00 sec.
+                          ------------
+Total (root+branch&cut) =    0.01 sec. (4.02 ticks)
+//--- Solution entiere trouvee par Cplex ---
+Cout de la solution courante : 3139
+Tried aggregator 1 time.
+MIP Presolve eliminated 0 rows and 1 columns.
+Reduced MIP has 120 rows, 2000 columns, and 4000 nonzeros.
+Reduced MIP has 2000 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.00 sec. (2.25 ticks)
+Found incumbent of value 3139.000000 after 0.01 sec. (6.34 ticks)
+
+Root node processing (before b&c):
+  Real time             =    0.01 sec. (4.02 ticks)
+Parallel b&c, 8 threads:
+  Real time             =    0.00 sec. (0.00 ticks)
+  Sync time (average)   =    0.00 sec.
+  Wait time (average)   =    0.00 sec.
+                          ------------
+Total (root+branch&cut) =    0.01 sec. (4.02 ticks)
+//--- Solution entiere trouvee par Cplex ---
+Cout de la solution courante : 3139
+Tried aggregator 1 time.
+MIP Presolve eliminated 0 rows and 1 columns.
+Reduced MIP has 120 rows, 2000 columns, and 4000 nonzeros.
+Reduced MIP has 2000 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.00 sec. (2.25 ticks)
+Found incumbent of value 3139.000000 after 0.01 sec. (6.34 ticks)
+Probing time = 0.00 sec. (1.02 ticks)
+Clique table members: 100.
+MIP emphasis: integer feasibility.
+MIP search method: dynamic search.
+Parallel mode: opportunistic, using up to 8 threads.
+Root relaxation solution time = 0.00 sec. (1.65 ticks)
+
+        Nodes                                         Cuts/
+   Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
+
+*     0+    0                         3139.0000        0.0000      142  100.00%
+*     0+    0                         1577.0000        0.0000      142  100.00%
+*     0+    0                         1333.0000        0.0000      142  100.00%
+*     0+    0                         1326.0000        0.0000      142  100.00%
+      0     0     1155.1814    34     1326.0000     1155.1814      142   12.88%
+*     0+    0                         1180.0000     1155.1814      142    2.10%
+*     0+    0                         1173.0000     1155.1814      142    1.52%
+
+Repeating presolve.
+Tried aggregator 1 time.
+MIP Presolve eliminated 0 rows and 1056 columns.
+Reduced MIP has 120 rows, 944 columns, and 1888 nonzeros.
+Reduced MIP has 944 binaries, 0 generals, 0 SOSs, and 0 indicators.
+Presolve time = 0.00 sec. (1.33 ticks)
+Probing time = 0.00 sec. (0.64 ticks)
+Tried aggregator 1 time.
+Presolve time = 0.00 sec. (1.01 ticks)
+Represolve time = 0.01 sec. (3.69 ticks)
+Probing time = 0.00 sec. (0.64 ticks)
+Clique table members: 100.
+MIP emphasis: integer feasibility.
+MIP search method: dynamic search.
+Parallel mode: opportunistic, using up to 8 threads.
+Root relaxation solution time = 0.00 sec. (0.91 ticks)
+
+        Nodes                                         Cuts/
+   Node  Left     Objective  IInf  Best Integer    Best Bound    ItCnt     Gap
+
+*     0+    0                         1173.0000     1155.1814      278    1.52%
+      0     0     1155.1814    34     1173.0000     1155.1814      278    1.52%
+      0     2     1155.1814    34     1173.0000     1155.2426      278    1.51%
+Elapsed time = 0.05 sec. (27.47 ticks, tree = 0.01 MB, solutions = 6)
+*    23+   11                         1170.0000     1155.5322      713    1.24%
+*    29+    5                         1167.0000     1155.5322      768    0.98%
+*    30+    3                         1166.0000     1155.5322      883    0.90%
+
+Cover cuts applied:  94
+
+Root node processing (before b&c):
+  Real time             =    0.04 sec. (24.94 ticks)
+Parallel b&c, 8 threads:
+  Real time             =    0.02 sec. (12.47 ticks)
+  Sync time (average)   =    0.01 sec.
+  Wait time (average)   =    0.00 sec.
+                          ------------
+Total (root+branch&cut) =    0.07 sec. (37.40 ticks)
+//--- Solution entiere trouvee par Cplex ---
+Cout de la solution courante : 1166
+Solution admissible avant recherche locale : 1 0 
+Solution admissible apres recherche locale : 0 1 
+Meilleure valeure obtenue par la glouton : 59234
+//---------- Recherche locale ----------
+Cout de la solution courante : 1166
+Affectation
+11	2	12	7	17	12	12	19	7	9	5	6	6	12	8	11	10	17	6	18	15	13	0	11	15	14	2	0	16	18	2	16	4	1	18	5	0	19	6	16	10	9	5	14	19	7	15	1	8	9	11	3	13	0	9	3	12	5	2	15	3	1	14	17	1	0	13	10	7	15	10	7	4	9	13	8	8	4	13	16	18	6	8	10	11	12	4	18	7	2	14	17	1	19	17	5	3	17	18	14	
+Temps CPU:	3.55099s
+Temps utilisateur:	0.662317s
+
+Well done !
