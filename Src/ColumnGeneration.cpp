@@ -9,6 +9,7 @@ void ColumnGeneration(ModelMaitre & iMaster, ModelCompact & iCompact)
 {
   // Solveur du modele maitre
   IloCplex cplexMaster(iMaster._Model);
+  cplexMaster.setParam(IloCplex::CutUp, iCompact._ActualCost + CST_EPS);
 
   // Modele auxiliaire
   IloModel ModelAux(iMaster._Env);
@@ -27,6 +28,14 @@ void ColumnGeneration(ModelMaitre & iMaster, ModelCompact & iCompact)
     //cout << "//********** Iteration " << NbOfIterations << " **********//\n";
     
     cplexMaster.solve();
+    cplexMaster.setParam(IloCplex::CutUp, cplexMaster.getObjValue() + CST_EPS);
+    
+    /*for (int j = 0; j < iCompact._m; j++) {
+      IloNumArray valsMaster(iMaster._Env);
+      cplexMaster.getValues(valsMaster, iMaster._Colonnes[j]);
+      PrintArray(valsMaster);
+    }
+    cplexMaster.exportModel("Master.lp");*/
     
     IloNumArray valDualEqual(iMaster._Env);
     cplexMaster.getDuals(valDualEqual, iMaster._ConstrEqual);
@@ -48,7 +57,7 @@ void ColumnGeneration(ModelMaitre & iMaster, ModelCompact & iCompact)
 
       double ObjAuxOpt = cplexAux.getObjValue();
       //cout << "** Probleme auxiliaire " << j << " (opt " << ObjAuxOpt - valDualInequal[j] << ")";
-      if (ObjAuxOpt < valDualInequal[j])
+      if (ObjAuxOpt < valDualInequal[j] - CST_EPS)
       {
         IloNumArray vals(iMaster._Env);
         cplexAux.getValues(vals, z);
@@ -69,7 +78,7 @@ void ColumnGeneration(ModelMaitre & iMaster, ModelCompact & iCompact)
       break;
   }
 
-  cplexMaster.exportModel("ModelMaitre.lp");
+  //cplexMaster.exportModel("ModelMaitre.lp");
   double ObjMasterOpt = cplexMaster.getObjValue();
   cout << "Valeur de l'optimum obtenu par generation de colonnes : " << ObjMasterOpt << "\n";
   for(int j = 0; j < iCompact._m; j++)

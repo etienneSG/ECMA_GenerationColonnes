@@ -46,8 +46,12 @@ public:
    */
   void FindFeasableSolution(ModelMaitre & iModelMaitre);
 
-  /** Trouve une solution realisable du probleme */
-  void FindFeasableSolution();
+  /**
+   * Trouve une solution realisable du probleme
+   * @param iMode: 0 : s'arrete a la premiere solution entiere <br>
+   *               1 : trouve une bonne solution admissible rapidement
+   */
+  void FindFeasableSolution(int iMode = 0);
   
   /**
    * Algorithme d'initialisation glouton aleatoire

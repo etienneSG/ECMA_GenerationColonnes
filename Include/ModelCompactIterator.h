@@ -11,8 +11,9 @@
 #define MODELCOMPACTITERATOR_H
 
 #include "ConstantsAndTypes.h"
-#include "kcombinationiterator.h"
-#include "HcubeIterator.h"
+//#include "kcombinationiterator.h"
+//#include "HcubeIterator.h"
+#include "AleaIterator.h"
 #include "ModelCompact.h"
 
 
@@ -35,20 +36,22 @@ public:
   /** Retourne vrai si la solution courante est admissible et faux sinon */
   bool IsAdmissible();
   
+  /** Retourne le cout de la penalite engendree par l'inadmissiblite */
+  int ComputePenalties();
+  
   /** Retourne vrai si l'iterateur a parcouru l'ensemble des voisins et faux sinon */
   inline bool IsEnded();
   
   /** Iterateurs */
   int _VSize; // Taille du voisinage
-  KcombinationIterator _KcombIt;
-  HcubeIterator _HcubeIt;
+  AleaIterator _AleaIt;
   
   /** Donnees du probleme */
   IloInt _m;          // Nombre de machines
   IloInt _n;          // Nombre de taches
-  IntMatrix * _c;     // matrice des couts d'affectation
-  IntMatrix * _a;     // matrice des capacites consommees
-  IloIntArray * _b;   // vecteur des capacites des machines
+  IntMatrix & _c;     // matrice des couts d'affectation
+  IntMatrix & _a;     // matrice des capacites consommees
+  IloIntArray & _b;   // vecteur des capacites des machines
   
   /** Solution courante */
   int _Cost;        // Cout de la solution courante
@@ -60,7 +63,7 @@ public:
   int * _aInitialCapacity;  // Capacite occupee initialement sur chaque machine
   
 private:
-  ModelCompactIterator(){};
+  ModelCompactIterator();
 };
 
 
@@ -70,7 +73,7 @@ private:
 
 
 inline bool ModelCompactIterator::IsEnded() {
-  return _KcombIt.IsEnded();
+  return _AleaIt.IsEnded();
 }
 
 #endif

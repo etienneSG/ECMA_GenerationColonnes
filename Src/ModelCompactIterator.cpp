@@ -4,13 +4,12 @@
 
 ModelCompactIterator::ModelCompactIterator(ModelCompact & iModelCompact, int iVoisinageSize)
 : _VSize(iVoisinageSize),
-  _KcombIt(iVoisinageSize, iModelCompact._n),
-  _HcubeIt(iModelCompact._m, iVoisinageSize),
+  _AleaIt(iModelCompact._m, iModelCompact._n, iVoisinageSize),
   _m(iModelCompact._m),
   _n(iModelCompact._n),
-  _c(&iModelCompact._c),
-  _a(&iModelCompact._a),
-  _b(&iModelCompact._b),
+  _c(iModelCompact._c),
+  _a(iModelCompact._a),
+  _b(iModelCompact._b),
   _Cost(iModelCompact._ActualCost),
   _aCapacity(0),
   _aMachineInitiale(0),
@@ -33,20 +32,24 @@ ModelCompactIterator::ModelCompactIterator(ModelCompact & iModelCompact, int iVo
     for (int i = 0; i < _VSize; i++)
     {
       // Mise a jour des cout et des capacites
-      _Cost = _Cost - iModelCompact._c[_aMachineInitiale[_KcombIt(i)]][_KcombIt(i)] + iModelCompact._c[_HcubeIt(i)][_KcombIt(i)];
-      _aCapacity[_aMachineInitiale[_KcombIt(i)]] -=  iModelCompact._a[_aMachineInitiale[_KcombIt(i)]][_KcombIt(i)];
-      _aCapacity[_HcubeIt(i)] +=  iModelCompact._a[_HcubeIt(i)][_KcombIt(i)];
+      _Cost = _Cost - iModelCompact._c[_aMachineInitiale[_AleaIt.N(i)]][_AleaIt.N(i)] + iModelCompact._c[_AleaIt.K(i)][_AleaIt.N(i)];
+      _aCapacity[_aMachineInitiale[_AleaIt.N(i)]] -=  iModelCompact._a[_aMachineInitiale[_AleaIt.N(i)]][_AleaIt.N(i)];
+      _aCapacity[_AleaIt.K(i)] +=  iModelCompact._a[_AleaIt.K(i)][_AleaIt.N(i)];
     }
   }
 
 }
 
 
+ModelCompactIterator::ModelCompactIterator()
+: _c(*(new IntMatrix)),
+  _a(*(new IntMatrix)),
+  _b(*(new IloIntArray))
+{
+}
+
 ModelCompactIterator::~ModelCompactIterator()
 {
-  _c = 0;
-  _a = 0;
-  _b = 0;
   if (_aCapacity)
     delete [] _aCapacity; _aCapacity = 0;
   if (_aMachineInitiale)
@@ -58,43 +61,37 @@ ModelCompactIterator::~ModelCompactIterator()
 
 void ModelCompactIterator::operator++()
 {
+  // On enleve les couts actuels des anciennes machines
   for (int i = 0; i < _VSize; i++) {
-    _Cost -= (*_c)[_HcubeIt(i)][_KcombIt(i)];
-    _aCapacity[_HcubeIt(i)] -= (*_a)[_HcubeIt(i)][_KcombIt(i)];
+    _Cost -= _c[_AleaIt.K(i)][_AleaIt.N(i)];
+    _aCapacity[_AleaIt.K(i)] -= _a[_AleaIt.K(i)][_AleaIt.N(i)];
+  }
+  // On rajoute les couts initiaux pour les anciennes machines
+  for (int i = 0; i < _VSize; i++) {
+    _Cost += _c[_aMachineInitiale[_AleaIt.N(i)]][_AleaIt.N(i)];
+    _aCapacity[_aMachineInitiale[_AleaIt.N(i)]] +=  _a[_aMachineInitiale[_AleaIt.N(i)]][_AleaIt.N(i)];
   }
   
-  if (_HcubeIt.IsEnded())
-  {
-    for (int i = 0; i < _VSize; i++) {
-      _Cost += (*_c)[_aMachineInitiale[_KcombIt(i)]][_KcombIt(i)];
-      _aCapacity[_aMachineInitiale[_KcombIt(i)]] +=  (*_a)[_aMachineInitiale[_KcombIt(i)]][_KcombIt(i)];
-    }
-    
-    _HcubeIt.Reset();
-    ++_KcombIt;
-    
-    for (int i = 0; i < _VSize; i++) {
-      _Cost = _Cost - (*_c)[_aMachineInitiale[_KcombIt(i)]][_KcombIt(i)];
-      _aCapacity[_aMachineInitiale[_KcombIt(i)]] -=  (*_a)[_aMachineInitiale[_KcombIt(i)]][_KcombIt(i)];
-    }
-  }
-  else
-  {
-    ++_HcubeIt;
-  }
+  // On incremente
+  ++_AleaIt;
   
+  // On eneve les cout initiaux pour les nouvelles machines
   for (int i = 0; i < _VSize; i++) {
-    _Cost += (*_c)[_HcubeIt(i)][_KcombIt(i)];
-    _aCapacity[_HcubeIt(i)] += (*_a)[_HcubeIt(i)][_KcombIt(i)];
+    _Cost = _Cost - _c[_aMachineInitiale[_AleaIt.N(i)]][_AleaIt.N(i)];
+    _aCapacity[_aMachineInitiale[_AleaIt.N(i)]] -=  _a[_aMachineInitiale[_AleaIt.N(i)]][_AleaIt.N(i)];
   }
-
+  // On ajoute les couts actuels pour les nuvelles machines
+  for (int i = 0; i < _VSize; i++) {
+    _Cost += _c[_AleaIt.K(i)][_AleaIt.N(i)];
+    _aCapacity[_AleaIt.K(i)] += _a[_AleaIt.K(i)][_AleaIt.N(i)];
+  }
 }
 
 
 bool ModelCompactIterator::IsAdmissible()
 {
   for (int i = 0; i < _m; i++) {
-    if (_aCapacity[i] > (*_b)[i])
+    if (_aCapacity[i] > _b[i])
       return false;
   }
   return true;

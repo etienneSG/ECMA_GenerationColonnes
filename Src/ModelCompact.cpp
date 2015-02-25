@@ -167,6 +167,7 @@ ModelCompact::ModelCompact(const ModelCompact & iCompact)
   _x = new int[_n];
   memset(_x, 0, _n*sizeof(int));
   _ActualCapacity.add(_m, 0);
+  ComputeCost();
   
   // creation des variables booleennes
   for (int j = 0; j < _m; j++) {
@@ -227,12 +228,11 @@ void ModelCompact::CreateObjectiveAndConstraintes()
 void ModelCompact::FindFeasableSolution(ModelMaitre & iModelMaitre)
 {
   IloCplex CplexCompact(_Model);
-
-  //CplexCompact.setParam(IloCplex::IntSolLim, 1);   // defaut : 2100000000 (arret apres la premiere solution entiere)
-  //CplexCompact.setParam(IloCplex::NodeSel, 0);     // defaut : 1 (parcours en profondeur)
-  CplexCompact.setParam(IloCplex::MIPEmphasis, 1);   // defaut : 0 (permet d'avoir une bonne solution realisable rapidement)
+  CplexCompact.setParam(IloCplex::IntSolLim, 1);   // defaut : 2100000000 (arret apres la premiere solution entiere)
+  CplexCompact.setParam(IloCplex::NodeSel, 0);     // defaut : 1 (parcours en profondeur)
+/*CplexCompact.setParam(IloCplex::MIPEmphasis, 1);   // defaut : 0 (permet d'avoir une bonne solution realisable rapidement)
   CplexCompact.setParam(IloCplex::ParallelMode, -1); // defaut : 0 (Opportuniste (-1) vs. deterministe (+1))
-  CplexCompact.setParam(IloCplex::TiLim, 10);        // defaut : ? (limite de temps de recherche)
+  CplexCompact.setParam(IloCplex::TiLim, 10);        // defaut : ? (limite de temps de recherche)*/
   CplexCompact.solve();
   _ActualCost = (int)CplexCompact.getObjValue();
   for (int j = 0; j < _m; j++) {
@@ -251,19 +251,34 @@ void ModelCompact::FindFeasableSolution(ModelMaitre & iModelMaitre)
 }
 
 
-void ModelCompact::FindFeasableSolution()
+void ModelCompact::FindFeasableSolution(int iMode)
 {
   IloCplex CplexCompact(_Model);
-
-  CplexCompact.setParam(IloCplex::MIPEmphasis, 1);   // defaut : 0 (permet d'avoir une bonne solution realisable rapidement)
-  CplexCompact.setParam(IloCplex::ParallelMode, -1); // defaut : 0 (Opportuniste (-1) vs. deterministe (+1))
-  CplexCompact.setParam(IloCplex::TiLim, 7);        // defaut : ? (limite de temps de recherche)
-  CplexCompact.solve();
-  _ActualCost = (int)CplexCompact.getObjValue();
-  for (int j = 0; j < _m; j++) {
-    IloNumArray vals(_Model.getEnv());
-    CplexCompact.getValues(vals, _bvar[j]);
-    InsertSolutionOnMachine(vals, j);
+  switch (iMode)
+  {
+  case 0:
+    CplexCompact.setParam(IloCplex::IntSolLim, 1);   // defaut : 2100000000 (arret apres la premiere solution entiere)
+    CplexCompact.setParam(IloCplex::NodeSel, 0);     // defaut : 1 (parcours en profondeur)
+    break;
+    
+  default:
+    CplexCompact.setParam(IloCplex::MIPEmphasis, 1);   // defaut : 0 (permet d'avoir une bonne solution realisable rapidement)
+    CplexCompact.setParam(IloCplex::ParallelMode, -1); // defaut : 0 (Opportuniste (-1) vs. deterministe (+1))
+    CplexCompact.setParam(IloCplex::TiLim, 10);         // defaut : ? (limite de temps de recherche)
+    break;
+  }
+  if (CplexCompact.solve())
+  {
+    _ActualCost = (int)CplexCompact.getObjValue();
+    for (int j = 0; j < _m; j++) {
+      IloNumArray vals(_Model.getEnv());
+      CplexCompact.getValues(vals, _bvar[j]);
+      InsertSolutionOnMachine(vals, j);
+    }
+  }
+  else
+  {
+    ComputeCost();
   }
   std::cout << "//--- Solution entiere trouvee par Cplex ---\n";
   PrintCurrentSolution(0);
@@ -408,14 +423,12 @@ void ModelCompact::GRASP(int iRCL, int iHelpFeasability)
 int ModelCompact::ComputeCost()
 {
   _ActualCost = 0;
-  int idx_l;
-  for (idx_l = 0; idx_l < _m; idx_l++) {
-    _ActualCapacity[idx_l] = 0;
+  for (int j = 0; j < _m; j++) {
+    _ActualCapacity[j] = 0;
   }
-  int idx_c;
-  for (idx_c = 0; idx_c < _n; idx_c++) {
-    _ActualCost += _c[_x[idx_c]][idx_c];
-    _ActualCapacity[_x[idx_c]] += _a[_x[idx_c]][idx_c];
+  for (int i = 0; i < _n; i++) {
+    _ActualCost += _c[_x[i]][i];
+    _ActualCapacity[_x[i]] += _a[_x[i]][i];
   }
   return _ActualCost;
 }
@@ -493,7 +506,7 @@ void ModelCompact::PrintCurrentSolution(int iMode)
 
 bool ModelCompact::NeighbourhoodSearch(int iNSize)
 {
-  if (iNSize <= 0 || iNSize > std::min(2, (int)_n) ) {
+  if (iNSize <= 0 || iNSize > (int)_n ) {
     std::cout << "It is a stupid use of this method !" << std::endl;
     return false;
   }
@@ -517,8 +530,8 @@ bool ModelCompact::NeighbourhoodSearch(int iNSize)
           _x[aLastChanges[i]] = ModelCompactIt._aMachineInitiale[aLastChanges[i]];
       }
       for (int i = 0; i < iNSize; i++) {
-        _x[ModelCompactIt._KcombIt(i)] = ModelCompactIt._HcubeIt(i);
-        aLastChanges[i] = ModelCompactIt._KcombIt(i);
+        _x[ModelCompactIt._AleaIt.N(i)] = ModelCompactIt._AleaIt.K(i);
+        aLastChanges[i] = ModelCompactIt._AleaIt.N(i);
       }
       
       _ActualCost = ModelCompactIt._Cost;
@@ -541,7 +554,7 @@ bool ModelCompact::NeighbourhoodSearch(int iNSize)
 
 void ModelCompact::LocalSearchAlgorithm(int iMaxSize)
 {
-  if (iMaxSize < 1 || !IsAdmissible())
+  if (iMaxSize < 1)
     return;
 
   int NeighbourhoodSize = 1;

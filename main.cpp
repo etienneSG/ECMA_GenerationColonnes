@@ -36,10 +36,10 @@ int main (int argc, char const *argv[])
     myCompact.FindFeasableSolution(myMaster);
     
     // Recherche locale d'une meilleure solution
-    //LocalSearch(myCompact);
+    LocalSearch(myCompact);
     
     // Generation de colonnes
-    ColumnGeneration(myMaster, myCompact);
+    //ColumnGeneration(myMaster, myCompact);
     
   }
   catch (IloException& e) {
