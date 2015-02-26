@@ -12,8 +12,10 @@ ModelCompactIterator::ModelCompactIterator(ModelCompact & iModelCompact, int iVo
   _b(iModelCompact._b),
   _Cost(iModelCompact._ActualCost),
   _aCapacity(0),
+  _Penalties(iModelCompact._Penalties),
   _aMachineInitiale(0),
   _InitialCost(iModelCompact._ActualCost),
+  _InitialPenalties(iModelCompact._Penalties),
   _aInitialCapacity(0)
 {
   _aCapacity = new int[iModelCompact._m];
@@ -31,12 +33,13 @@ ModelCompactIterator::ModelCompactIterator(ModelCompact & iModelCompact, int iVo
   {
     for (int i = 0; i < _VSize; i++)
     {
-      // Mise a jour des cout et des capacites
+      // Mise a jour du cout et des capacites
       _Cost = _Cost - iModelCompact._c[_aMachineInitiale[_AleaIt.N(i)]][_AleaIt.N(i)] + iModelCompact._c[_AleaIt.K(i)][_AleaIt.N(i)];
       _aCapacity[_aMachineInitiale[_AleaIt.N(i)]] -=  iModelCompact._a[_aMachineInitiale[_AleaIt.N(i)]][_AleaIt.N(i)];
       _aCapacity[_AleaIt.K(i)] +=  iModelCompact._a[_AleaIt.K(i)][_AleaIt.N(i)];
     }
   }
+  ComputePenalties();
 
 }
 
@@ -48,6 +51,7 @@ ModelCompactIterator::ModelCompactIterator()
 {
 }
 
+
 ModelCompactIterator::~ModelCompactIterator()
 {
   if (_aCapacity)
@@ -56,6 +60,16 @@ ModelCompactIterator::~ModelCompactIterator()
     delete [] _aMachineInitiale; _aMachineInitiale = 0;
   if (_aInitialCapacity)
     delete [] _aInitialCapacity; _aInitialCapacity = 0;
+}
+
+
+int ModelCompactIterator::ComputePenalties()
+{
+  _Penalties = 0;
+  for (int j = 0; j < _m; j++) {
+    _Penalties += PenaltyCost(_aCapacity[j],_b[j]);
+  }
+  return _Penalties;
 }
 
 
@@ -77,14 +91,16 @@ void ModelCompactIterator::operator++()
   
   // On eneve les cout initiaux pour les nouvelles machines
   for (int i = 0; i < _VSize; i++) {
-    _Cost = _Cost - _c[_aMachineInitiale[_AleaIt.N(i)]][_AleaIt.N(i)];
+    _Cost -= _c[_aMachineInitiale[_AleaIt.N(i)]][_AleaIt.N(i)];
     _aCapacity[_aMachineInitiale[_AleaIt.N(i)]] -=  _a[_aMachineInitiale[_AleaIt.N(i)]][_AleaIt.N(i)];
   }
-  // On ajoute les couts actuels pour les nuvelles machines
+  // On ajoute les couts actuels pour les nouvelles machines
   for (int i = 0; i < _VSize; i++) {
     _Cost += _c[_AleaIt.K(i)][_AleaIt.N(i)];
     _aCapacity[_AleaIt.K(i)] += _a[_AleaIt.K(i)][_AleaIt.N(i)];
   }
+  
+  ComputePenalties();
 }
 
 

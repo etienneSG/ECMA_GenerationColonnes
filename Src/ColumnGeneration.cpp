@@ -1,11 +1,12 @@
 #include "ColumnGeneration.h"
 
+#include "timetools.h"
 #include <iostream>
 
 using namespace std;
 
 
-void ColumnGeneration(ModelMaitre & iMaster, ModelCompact & iCompact)
+void ColumnGenerationAlgorithm(ModelMaitre & iMaster, ModelCompact & iCompact)
 {
   // Solveur du modele maitre
   IloCplex cplexMaster(iMaster._Model);
@@ -94,3 +95,19 @@ void ColumnGeneration(ModelMaitre & iMaster, ModelCompact & iCompact)
 
 }
 
+
+void ColumnGeneration(ModelMaitre & iMaster, ModelCompact & iCompact)
+{
+  double BeginColumnGeneration_UserTime = get_wall_time();
+  double BeginColumnGeneration_CPUTime = get_cpu_time();
+  ColumnGenerationAlgorithm(iMaster, iCompact);
+  double EndColumnGeneration_CPUTime = get_cpu_time();
+  double EndColumnGeneration_UserTime = get_wall_time();
+
+  cout << "//---------- Generation de colonnes ----------\n";
+  double ColumnGeneration_CPUTime = EndColumnGeneration_CPUTime - BeginColumnGeneration_CPUTime;
+  cout << "Temps CPU:\t" << ColumnGeneration_CPUTime << "s\n";
+  double ColumnGeneration_UserTime = EndColumnGeneration_UserTime - BeginColumnGeneration_UserTime;
+  cout << "Temps utilisateur:\t" << ColumnGeneration_UserTime << "s\n";
+  cout << "\n";
+}

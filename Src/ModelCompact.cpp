@@ -125,6 +125,7 @@ ModelCompact::ModelCompact(std::string iFile, IloEnv iEnv):
   _bvar(iEnv),
   _x(0),
   _ActualCost(0),
+  _Penalties(0),
   _ActualCapacity(iEnv),
   _IsAdmissible(false),
   _NbOfCopy(*(new int(0)))
@@ -145,6 +146,7 @@ ModelCompact::ModelCompact(std::string iFile, IloEnv iEnv):
     }
     _bvar.add(E);
   }
+  ComputeCost();
 }
 
 
@@ -159,6 +161,7 @@ ModelCompact::ModelCompact(const ModelCompact & iCompact)
   _bvar(iCompact._Model.getEnv()),
   _x(0),
   _ActualCost(0),
+  _Penalties(0),
   _ActualCapacity(iCompact._Model.getEnv()),
   _IsAdmissible(false),
   _NbOfCopy(iCompact._NbOfCopy)
@@ -228,11 +231,11 @@ void ModelCompact::CreateObjectiveAndConstraintes()
 void ModelCompact::FindFeasableSolution(ModelMaitre & iModelMaitre)
 {
   IloCplex CplexCompact(_Model);
-  CplexCompact.setParam(IloCplex::IntSolLim, 1);   // defaut : 2100000000 (arret apres la premiere solution entiere)
-  CplexCompact.setParam(IloCplex::NodeSel, 0);     // defaut : 1 (parcours en profondeur)
-/*CplexCompact.setParam(IloCplex::MIPEmphasis, 1);   // defaut : 0 (permet d'avoir une bonne solution realisable rapidement)
+  //CplexCompact.setParam(IloCplex::IntSolLim, 1);   // defaut : 2100000000 (arret apres la premiere solution entiere)
+  //CplexCompact.setParam(IloCplex::NodeSel, 0);     // defaut : 1 (parcours en profondeur)
+  CplexCompact.setParam(IloCplex::MIPEmphasis, 1);   // defaut : 0 (permet d'avoir une bonne solution realisable rapidement)
   CplexCompact.setParam(IloCplex::ParallelMode, -1); // defaut : 0 (Opportuniste (-1) vs. deterministe (+1))
-  CplexCompact.setParam(IloCplex::TiLim, 10);        // defaut : ? (limite de temps de recherche)*/
+  CplexCompact.setParam(IloCplex::TiLim, 10);        // defaut : ? (limite de temps de recherche)
   CplexCompact.solve();
   _ActualCost = (int)CplexCompact.getObjValue();
   for (int j = 0; j < _m; j++) {
@@ -246,6 +249,7 @@ void ModelCompact::FindFeasableSolution(ModelMaitre & iModelMaitre)
     }
     iModelMaitre._Colonnes[j].add(IloNumVar( iModelMaitre._Objectif(Cout) + iModelMaitre._ConstrEqual(vals) + iModelMaitre._ConstrInequal[j](1) ));
   }
+  ComputeCost();
   std::cout << "//--- Solution entiere trouvee par Cplex ---\n";
   PrintCurrentSolution(0);
 }
@@ -276,10 +280,7 @@ void ModelCompact::FindFeasableSolution(int iMode)
       InsertSolutionOnMachine(vals, j);
     }
   }
-  else
-  {
-    ComputeCost();
-  }
+  ComputeCost();
   std::cout << "//--- Solution entiere trouvee par Cplex ---\n";
   PrintCurrentSolution(0);
 }
@@ -380,30 +381,34 @@ void ModelCompact::GRASP(int iRCL, int iHelpFeasability)
 
     switch (iHelpFeasability)
     {
-    case 0:
+    case -1:  // Une tache est affectee a une machine aleatoirement
+      _x[RdIt.getNb()] = rand()%(int)_m;
+      break;
+
+    case 0:   // GRASP classique
       SortIncreasingCost(Index, 0, pivot, RdIt.getNb());
       if (pivot < RCL)
         SortIncreasingCost(Index, pivot, _m, RdIt.getNb());
       ChosenMachine = rand()%RCL;
       break;
 
-    case 1:
+    case 1:   // GRASP en acceptant si possible que parmi les affectations admissibles
       SortIncreasingCost(Index, 0, pivot, RdIt.getNb());
       ChosenMachine = rand()%std::max(std::min(RCL,pivot),1);
       break;
 
-    case 2:
+    case 2:   // Parmi les meilleurs couts, on prend l'affectation de capacite minimale
       SortIncreasingCost(Index, 0, pivot, RdIt.getNb());
       SortIncreasingCapacity(Index, 0, std::min(RCL,pivot), RdIt.getNb());
       ChosenMachine = 0;
       break;
 
-    case 3:
+    case 3:   // On choisit l'affectation de capacite minimale independament du cout
       SortIncreasingCapacity(Index, 0, pivot, RdIt.getNb());
       ChosenMachine = 0;
       break;
 
-    default:
+    default:  // GRASP en se basant sur les capacites
       SortIncreasingCapacity(Index, 0, pivot, RdIt.getNb());
       ChosenMachine = rand()%std::max(std::min(RCL,pivot),1);
       break;
@@ -415,8 +420,8 @@ void ModelCompact::GRASP(int iRCL, int iHelpFeasability)
     ++RdIt;
   }
 
-  // Calcul du cout de l'affectation obtenus
-  ComputeCost();
+  // Calcul de la penalite obtenue
+  ComputePenalties();
 }
 
 
@@ -430,21 +435,33 @@ int ModelCompact::ComputeCost()
     _ActualCost += _c[_x[i]][i];
     _ActualCapacity[_x[i]] += _a[_x[i]][i];
   }
+  ComputePenalties();
   return _ActualCost;
+}
+
+
+int ModelCompact::ComputePenalties()
+{
+  _Penalties = 0;
+  for (int j = 0; j < _m; j++) {
+    _Penalties += PenaltyCost(_ActualCapacity[j],_b[j]);
+  }
+  return _Penalties;
 }
 
 
 bool ModelCompact::IsAdmissible()
 {
-  if (!_IsAdmissible)
-  {
-    for (int j = 0; j < _m; j++) {
-      if (_ActualCapacity[j] > _b[j])
-        return false;
-    }
-    _IsAdmissible = true;
+  //if (!_IsAdmissible)
+  //{
+  for (int j = 0; j < _m; j++) {
+    if (_ActualCapacity[j] > _b[j])
+      return false;
   }
-  return _IsAdmissible;
+  return true;
+  //  _IsAdmissible = true;
+  //}
+  //return _IsAdmissible;
 }
 
 
@@ -471,7 +488,7 @@ void ModelCompact::InsertSolutionOnMachine(IloNumArray & iSolution, int iIdxMach
 
 void ModelCompact::PrintCurrentSolution(int iMode)
 {
-  std::cout << "Cout de la solution courante : " << _ActualCost << "\n";
+  std::cout << "Cout de la solution courante : " << getCost() << "\n";
   switch (iMode)
   {
   case 0:  // Mode silencieux : seulement le cout
@@ -522,7 +539,8 @@ bool ModelCompact::NeighbourhoodSearch(int iNSize)
   ModelCompactIterator ModelCompactIt(*this, iNSize);
   while (!ModelCompactIt.IsEnded())
   {
-    if ( _ActualCost > ModelCompactIt._Cost && ModelCompactIt.IsAdmissible() )
+    //if ( _ActualCost > ModelCompactIt._Cost && ModelCompactIt.IsAdmissible() )
+    if ( getCost() > ModelCompactIt.getCost())
     {
       // Modification de la solution courante
       if (aLastChanges[0] != -1) {
@@ -534,7 +552,9 @@ bool ModelCompact::NeighbourhoodSearch(int iNSize)
         aLastChanges[i] = ModelCompactIt._AleaIt.N(i);
       }
       
+      //_ActualCost = ModelCompactIt._Cost;
       _ActualCost = ModelCompactIt._Cost;
+      _Penalties = ModelCompactIt._Penalties;
       
       for (int j = 0; j < _m; j++)
         _ActualCapacity[j] = ModelCompactIt._aCapacity[j];
@@ -591,6 +611,6 @@ int ModelCompact::ComputeUBforObjective()
       Cost += _c[j][i];
     }
   }
-  return Cost;
+  return 50*Cost;
 }
 

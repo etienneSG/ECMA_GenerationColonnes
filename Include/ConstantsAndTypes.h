@@ -2,6 +2,7 @@
 #define CONSTANTSANDTYPE_H
 
 #include <ilcplex/ilocplex.h>
+#include <algorithm>
 
 typedef IloArray<IloIntArray> IntMatrix;
 typedef IloArray<IloNumArray> NumMatrix;
@@ -23,10 +24,11 @@ void PrintArray(NumMatrix3d &iNumMatrix3d);
 /** Constantes du programme */
 #define CST_EPS 1e-7
 
-#ifdef __linux__
-#include <omp.h>
-#define NB_PROC omp_get_num_procs()
-#endif
+/** Fonction de penalite de l'inadmissibilite */
+inline int PenaltyCost(int Real, int limit)
+{
+  return (Real > limit ? 50*(Real-limit)*(Real-limit) : 0) ;
+}
 
 /** Pour limiter le temps de la recherche locale */
 //#define MAX_TIME_FOR_LOCAL_SEARCH 60

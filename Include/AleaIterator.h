@@ -69,6 +69,14 @@ private:
   std::vector<int> _IdxN;
   std::vector<int> _IdxK;
   int _IdxC;
+  
+  std::vector<int> _Integer;  // Vecteur contenant les entiers de [0,N[
+  
+  /**
+   * Swap (c-1) random number different from _IdxN[1] of _Integer to the begining
+   * of the vector
+   */
+  void AleaNchooseK();
 };
 
 

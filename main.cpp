@@ -33,7 +33,7 @@ int main (int argc, char const *argv[])
     ModelMaitre myMaster(env, myCompact);
 
     //determination des colonnes initiales
-    myCompact.FindFeasableSolution(myMaster);
+    //myCompact.FindFeasableSolution(myMaster);
     
     // Recherche locale d'une meilleure solution
     LocalSearch(myCompact);

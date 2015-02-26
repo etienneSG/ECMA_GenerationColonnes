@@ -23,9 +23,14 @@ AleaIterator::AleaIterator(int iK,int iN, int iC):
   _c(iC),
   _IdxN(iC+1,0),
   _IdxK(iC+1,0),
-  _IdxC(0)
+  _IdxC(0),
+  _Integer(iN,0)
 {
-  _IdxN[0] = -1;
+  int i;
+  for (i = 0; i <= _c; i++)
+    _IdxN[i] = i-1;
+  for (i = 1; i < _n; i++)
+    _Integer[i] = i;
 }
 
 
@@ -36,7 +41,7 @@ AleaIterator::~AleaIterator()
 
 void AleaIterator::operator++()
 {
-  if (_IdxC < _c-1)
+  if (_IdxC < _c*_c-1)
     _IdxC++;
   else
   {
@@ -50,16 +55,28 @@ void AleaIterator::operator++()
         _IdxN[1]++;
       else
       {
-        Reset();
         _IdxN[0]++;
       }
     }
   }
 
-  for (int i = 2; i <= _c; i++)
+  if (IsEnded())
   {
-    _IdxN[i] = rand()%_n;
-    _IdxK[i] = rand()%_k;
+    _IdxC = 0;
+    for (int i = 1; i <= _c; i++)
+    {
+      _IdxN[i] = i-1;
+      _IdxK[i] = 0;
+    }
+  }
+  else
+  {
+    AleaNchooseK();
+    for (int i = 2; i <= _c; i++)
+    {
+      _IdxN[i] = _Integer[i-2];
+      _IdxK[i] = rand()%_k;
+    }
   }
 }
 
@@ -79,11 +96,22 @@ void AleaIterator::Print()
 void AleaIterator::Reset()
 {
   _IdxC = 0;
-  for (int i = 1; i <= _c; i++)
+  for (int i = 0; i <= _c; i++)
   {
-    _IdxN[i] = 0;
+    _IdxN[i] = i-1;
     _IdxK[i] = 0;
   }
-  _IdxN[0] = -1;
-  _IdxK[0] = 0;
+}
+
+
+void AleaIterator::AleaNchooseK()
+{
+  for (int i = 0; i < _c-1; i++)
+  {
+    int rd = rand()%(_n-1);
+    if (_Integer[rd]==_IdxN[1])
+      swap(_Integer[i], _Integer[_n-1]);
+    else
+      swap(_Integer[i], _Integer[rd]);
+  }
 }

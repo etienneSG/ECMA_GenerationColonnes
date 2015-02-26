@@ -64,6 +64,12 @@ public:
   /** Calcule le cout de la solution courante et actualise les capacites consommees */
   int ComputeCost();
   
+  /** Calcule les penalites associees au depassement des capacites des machines */
+  int ComputePenalties();
+  
+  /** Retourne le cout de la solution courante (cout ET penalites) */
+  inline int getCost();
+  
   /** Retourne vrai si la solution courante est admissible et faux sinon */
   bool IsAdmissible();
   
@@ -118,6 +124,7 @@ public:
   /** Variables */
   int * _x;                     // Solution courante (pour chaque tache est stocke le numero de la machine)
   int _ActualCost;              // Prix de la solution courante
+  int _Penalties;               // Penalites associees au depassement des capacites des machines
   IloIntArray _ActualCapacity;  // Capacite occupee sur chaque machine
   bool _IsAdmissible;           // Vrai si la solution est admissible et faux sinon
   
@@ -163,6 +170,15 @@ private:
   int PushToEndInadmissibleMachines(std::vector<int>& vIndex, int iTache);
   
 };
+
+
+//==============================================================================
+// Implementation des methodes inline
+//==============================================================================
+
+inline int ModelCompact::getCost() {
+  return _ActualCost + _Penalties;
+}
 
 #endif
 

@@ -30,17 +30,20 @@ public:
   /** Destructeur */
   ~ModelCompactIterator();
   
+  /** Calcule les penalites associees au depassement des capacites des machines */
+  int ComputePenalties();
+  
   /** Iterateur sur les voisins */
   void operator++();
   
   /** Retourne vrai si la solution courante est admissible et faux sinon */
   bool IsAdmissible();
   
-  /** Retourne le cout de la penalite engendree par l'inadmissiblite */
-  int ComputePenalties();
-  
   /** Retourne vrai si l'iterateur a parcouru l'ensemble des voisins et faux sinon */
   inline bool IsEnded();
+  
+  /** Retourne le cout de la solution courante (avec penalite) */
+  inline int getCost();
   
   /** Iterateurs */
   int _VSize; // Taille du voisinage
@@ -56,10 +59,12 @@ public:
   /** Solution courante */
   int _Cost;        // Cout de la solution courante
   int * _aCapacity; // Capacite courante occupee sur chaque machine
+  int _Penalties;   // Penalites associees au depassement des capacites des machines
   
   /** Solution initiale */
   int * _aMachineInitiale;  // Machines sur lesquelles se trouvaient initialement chaque tache
   int _InitialCost;         // Prix de la solution initiale
+  int _InitialPenalties;    // Penalites initiales
   int * _aInitialCapacity;  // Capacite occupee initialement sur chaque machine
   
 private:
@@ -75,6 +80,12 @@ private:
 inline bool ModelCompactIterator::IsEnded() {
   return _AleaIt.IsEnded();
 }
+
+
+inline int ModelCompactIterator::getCost() {
+  return _Cost + _Penalties;
+}
+
 
 #endif
 

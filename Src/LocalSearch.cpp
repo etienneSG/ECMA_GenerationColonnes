@@ -18,9 +18,9 @@ using namespace std;
 void LocalSearchAlgorithm(ModelCompact & iModelCompact)
 {
   // Taille maximale des voisinages explores
-  int VSize = 4;
+  int VSize = 3;
   // Nombre de solutions initiales et de recherches locales a faire
-  int PopSize = 24;
+  int PopSize = 40;
   // Taille de l'exploration dans la construction gloutonne-aleatoire
   int RCL = std::max((int)iModelCompact._m / 5, 3);
 
@@ -28,7 +28,7 @@ void LocalSearchAlgorithm(ModelCompact & iModelCompact)
   vector<ModelCompact> aCompact(PopSize, ModelCompact(iModelCompact));
   
   // Strategie de construction gloutonne aleatoire
-  int BuiltStrategy = 0;
+  int BuiltStrategy = -1;
   // Nombre d'iterations
   int NbIteration = 1;
 
@@ -39,18 +39,16 @@ void LocalSearchAlgorithm(ModelCompact & iModelCompact)
   while (IdxBest == PopSize && NbIteration < 1000)
   {
     int i;
-#ifdef __linux__
-#pragma omp parallel for schedule(dynamic,1)
-#endif
+    #ifdef __linux__
+    #pragma omp parallel for schedule(dynamic)
+    #endif
     for (i = 1; i < PopSize; i++)
     {
       int Idx = i;
       if (Idx == 1)
       {
         aCompact[0].FindFeasableSolution(0);
-        aCompact[0].ComputeCost();
         aCompact[1].FindFeasableSolution(1);
-        aCompact[1].ComputeCost();
       }
       else
       {
@@ -64,9 +62,9 @@ void LocalSearchAlgorithm(ModelCompact & iModelCompact)
           aCompact[Idx].GRASP(RCL, BuiltStrategy);
           break;
         }
-#ifdef __linux__
-#pragma omp critical
-#endif
+        #ifdef __linux__
+        #pragma omp critical
+        #endif
         {
           if (aCompact[Idx].IsAdmissible() && aCompact[Idx]._ActualCost < ValueGlouton)
             ValueGlouton = aCompact[Idx]._ActualCost;
@@ -75,22 +73,24 @@ void LocalSearchAlgorithm(ModelCompact & iModelCompact)
 
     }
     
-#ifdef __linux__
-#pragma omp parallel for schedule(dynamic,1)
-#endif
+    #ifdef __linux__
+    #pragma omp parallel for schedule(dynamic,1)
+    #endif
     for (i = 0; i < PopSize; i++)
     {
       int Idx = i;
       if (aCompact[Idx].IsAdmissible())
       {
-#ifdef __linux__
-#pragma omp critical
-#endif
+        #ifdef __linux__
+        #pragma omp critical
+        #endif
         {
           AdmSolution.push_back(Idx);
         }
       }
       aCompact[Idx].LocalSearchAlgorithm(VSize);
+      //cout << "sol " << Idx << "-----\n";
+      //aCompact[Idx].PrintCurrentSolution(1);
     }
     
     // Recherche de la meilleure solution trouvee
