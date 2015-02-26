@@ -18,7 +18,7 @@ void LocalSearchAlgorithm(ModelCompact & iModelCompact)
   // Taille maximale des voisinages explores
   int VSize = 3;
   // Nombre de solutions initiales et de recherches locales a faire
-  int PopSize = 32;
+  int PopSize = 16;
   // Taille de l'exploration dans la construction gloutonne-aleatoire
   int RCL = std::max((int)iModelCompact._m / 5, 3);
 
