@@ -8,9 +8,7 @@
 #include <algorithm>
 #include <../../opt/ibm/ILOG/CPLEX_Studio125/concert/include/ilconcert/iloenv.h>
 
-#ifdef __linux__
 #include <omp.h> // Open Multi-Processing Library (Linux only)
-#endif
 
 using namespace std;
 
@@ -20,7 +18,7 @@ void LocalSearchAlgorithm(ModelCompact & iModelCompact)
   // Taille maximale des voisinages explores
   int VSize = 3;
   // Nombre de solutions initiales et de recherches locales a faire
-  int PopSize = 40;
+  int PopSize = 32;
   // Taille de l'exploration dans la construction gloutonne-aleatoire
   int RCL = std::max((int)iModelCompact._m / 5, 3);
 
@@ -28,69 +26,67 @@ void LocalSearchAlgorithm(ModelCompact & iModelCompact)
   vector<ModelCompact> aCompact(PopSize, ModelCompact(iModelCompact));
   
   // Strategie de construction gloutonne aleatoire
-  int BuiltStrategy = -1;
-  // Nombre d'iterations
-  int NbIteration = 1;
+  int BuiltStrategy = 0;
 
   int ValueGlouton = iModelCompact.ComputeUBforObjective();
   vector<int> AdmSolution;
 
   int IdxBest = PopSize;
-  while (IdxBest == PopSize && NbIteration < 1000)
+  while (IdxBest == PopSize)
   {
+    cout << "******************** Construction des solutions initiales *********************\n";
     int i;
-    #ifdef __linux__
     #pragma omp parallel for schedule(dynamic)
-    #endif
     for (i = 1; i < PopSize; i++)
     {
       int Idx = i;
-      if (Idx == 1)
+      switch (Idx)
       {
-        aCompact[0].FindFeasableSolution(0);
-        aCompact[1].FindFeasableSolution(1);
-      }
-      else
-      {
-        switch (Idx)
-        {
-        case 2:
-          aCompact[Idx].GRASP(1, BuiltStrategy);
-          break;
-
-        default:
-          aCompact[Idx].GRASP(RCL, BuiltStrategy);
-          break;
-        }
-        #ifdef __linux__
+      case 1:
+        aCompact[0].FindFeasableSolution(1);
+        aCompact[1].FindFeasableSolution(2);
         #pragma omp critical
-        #endif
         {
-          if (aCompact[Idx].IsAdmissible() && aCompact[Idx]._ActualCost < ValueGlouton)
-            ValueGlouton = aCompact[Idx]._ActualCost;
+          cout << "----- Solution " << 0 << " -----\n";
+          aCompact[0].PrintCurrentSolution(0);
         }
-      }
+        break;
+        
+      case 2:
+        aCompact[Idx].GRASP(1, BuiltStrategy);
+        break;
 
+      default:
+        aCompact[Idx].GRASP(RCL, BuiltStrategy);
+        break;
+      }
+      #pragma omp critical
+      {
+        if (Idx >= 2 && aCompact[Idx].IsAdmissible() && aCompact[Idx]._ActualCost < ValueGlouton)
+          ValueGlouton = aCompact[Idx]._ActualCost;
+        cout << "----- Solution " << i << " -----\n";
+        aCompact[Idx].PrintCurrentSolution(0);
+      }
     }
     
-    #ifdef __linux__
-    #pragma omp parallel for schedule(dynamic,1)
-    #endif
+    cout << "\n****************************** Recherche Locale *******************************\n";
+    #pragma omp parallel for schedule(dynamic)
     for (i = 0; i < PopSize; i++)
     {
       int Idx = i;
       if (aCompact[Idx].IsAdmissible())
       {
-        #ifdef __linux__
         #pragma omp critical
-        #endif
         {
           AdmSolution.push_back(Idx);
         }
       }
       aCompact[Idx].LocalSearchAlgorithm(VSize);
-      //cout << "sol " << Idx << "-----\n";
-      //aCompact[Idx].PrintCurrentSolution(1);
+      #pragma omp critical
+      {
+        cout << "----- Solution " << i << " -----\n";
+        aCompact[Idx].PrintCurrentSolution(0);
+      }
     }
     
     // Recherche de la meilleure solution trouvee
@@ -105,25 +101,27 @@ void LocalSearchAlgorithm(ModelCompact & iModelCompact)
     {
       memcpy(iModelCompact._x, aCompact[IdxBest]._x, iModelCompact._n*sizeof(int));
       iModelCompact._ActualCost = aCompact[IdxBest]._ActualCost;
+      iModelCompact._Penalties = aCompact[IdxBest]._Penalties;
       for (int j = 0; j < iModelCompact._m; j++)
         iModelCompact._ActualCapacity[j] = aCompact[IdxBest]._ActualCapacity[j];
     }
-    NbIteration++;
-
-    cout << "Solution admissible avant recherche locale : ";
-    for (unsigned int k = 0; k < AdmSolution.size(); k++) {
-        cout << AdmSolution[k] << " ";
-    }
-    cout << "\n";
-    cout << "Solution admissible apres recherche locale : ";
-    for (i = 0; i < PopSize; i++) {
-      if (aCompact[i].IsAdmissible())
-        cout << i << " ";
-    }
-    cout << "\n";
   }
+
   
-  cout << "Meilleure valeure obtenue par la glouton : " << ValueGlouton << "\n";
+  cout << "\n************************************ Bilan ************************************\n";
+  cout << "Meilleure valeure obtenue par le glouton : " << ValueGlouton << "\n";
+  cout << "Solutions admissibles avant la recherche locale : ";
+  for (unsigned int k = 0; k < AdmSolution.size(); k++) {
+      cout << AdmSolution[k] << " ";
+  }
+  cout << "\n";
+  cout << "Solutions admissibles apres la recherche locale : ";
+  for (int i = 0; i < PopSize; i++) {
+    if (aCompact[i].IsAdmissible())
+      cout << i << " ";
+  }
+  cout << "\n";
+  
 }
 
 
@@ -135,12 +133,14 @@ void LocalSearch(ModelCompact & iModelCompact)
   double EndLocalSearch_CPUTime = get_cpu_time();
   double EndLocalSearch_UserTime = get_wall_time();
 
-  cout << "//---------- Recherche locale ----------\n";
+  cout << "\n----- Optimum local -----\n";
   iModelCompact.PrintCurrentSolution(2);
+  
+  cout << "\n---- Temps de calcul ----\n";
   double LocalSearch_CPUTime = EndLocalSearch_CPUTime - BeginLocalSearch_CPUTime;
-  cout << "Temps CPU:\t" << LocalSearch_CPUTime << "s\n";
+  cout << "Temps CPU:         " << LocalSearch_CPUTime << "s\n";
   double LocalSearch_UserTime = EndLocalSearch_UserTime - BeginLocalSearch_UserTime;
-  cout << "Temps utilisateur:\t" << LocalSearch_UserTime << "s\n";
+  cout << "Temps utilisateur: " << LocalSearch_UserTime << "s\n";
   cout << "\n";
 }
 

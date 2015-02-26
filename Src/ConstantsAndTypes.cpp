@@ -7,6 +7,12 @@
 using namespace std;
 
 
+int PenaltyCost(int iReal, int iLimit)
+{
+  return (iReal > iLimit ? 50*(iReal-iLimit) : 0) ;
+}
+
+
 void PrintArray(IntMatrix &iIntMatrix)
 {
   int n = iIntMatrix.getSize();

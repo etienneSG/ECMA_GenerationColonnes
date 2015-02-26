@@ -41,7 +41,7 @@ AleaIterator::~AleaIterator()
 
 void AleaIterator::operator++()
 {
-  if (_IdxC < _c*_c-1)
+  if (_IdxC < _c-1)
     _IdxC++;
   else
   {

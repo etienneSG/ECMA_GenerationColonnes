@@ -231,6 +231,7 @@ void ModelCompact::CreateObjectiveAndConstraintes()
 void ModelCompact::FindFeasableSolution(ModelMaitre & iModelMaitre)
 {
   IloCplex CplexCompact(_Model);
+  CplexCompact.setOut(_Model.getEnv().getNullStream());
   //CplexCompact.setParam(IloCplex::IntSolLim, 1);   // defaut : 2100000000 (arret apres la premiere solution entiere)
   //CplexCompact.setParam(IloCplex::NodeSel, 0);     // defaut : 1 (parcours en profondeur)
   CplexCompact.setParam(IloCplex::MIPEmphasis, 1);   // defaut : 0 (permet d'avoir une bonne solution realisable rapidement)
@@ -250,25 +251,26 @@ void ModelCompact::FindFeasableSolution(ModelMaitre & iModelMaitre)
     iModelMaitre._Colonnes[j].add(IloNumVar( iModelMaitre._Objectif(Cout) + iModelMaitre._ConstrEqual(vals) + iModelMaitre._ConstrInequal[j](1) ));
   }
   ComputeCost();
-  std::cout << "//--- Solution entiere trouvee par Cplex ---\n";
-  PrintCurrentSolution(0);
+  //std::cout << "//--- Solution entiere trouvee par Cplex ---\n";
+  //PrintCurrentSolution(0);
 }
 
 
 void ModelCompact::FindFeasableSolution(int iMode)
 {
   IloCplex CplexCompact(_Model);
+  CplexCompact.setOut(_Model.getEnv().getNullStream());
   switch (iMode)
   {
   case 0:
-    CplexCompact.setParam(IloCplex::IntSolLim, 1);   // defaut : 2100000000 (arret apres la premiere solution entiere)
-    CplexCompact.setParam(IloCplex::NodeSel, 0);     // defaut : 1 (parcours en profondeur)
-    break;
-    
-  default:
     CplexCompact.setParam(IloCplex::MIPEmphasis, 1);   // defaut : 0 (permet d'avoir une bonne solution realisable rapidement)
     CplexCompact.setParam(IloCplex::ParallelMode, -1); // defaut : 0 (Opportuniste (-1) vs. deterministe (+1))
     CplexCompact.setParam(IloCplex::TiLim, 10);         // defaut : ? (limite de temps de recherche)
+    break;
+    
+  default:
+    CplexCompact.setParam(IloCplex::IntSolLim, iMode);   // defaut : 2100000000 (arret apres la premiere solution entiere)
+    CplexCompact.setParam(IloCplex::NodeSel, 0);     // defaut : 1 (parcours en profondeur)
     break;
   }
   if (CplexCompact.solve())
@@ -281,8 +283,8 @@ void ModelCompact::FindFeasableSolution(int iMode)
     }
   }
   ComputeCost();
-  std::cout << "//--- Solution entiere trouvee par Cplex ---\n";
-  PrintCurrentSolution(0);
+  //std::cout << "//--- Solution entiere trouvee par Cplex ---\n";
+  //PrintCurrentSolution(0);
 }
 
 
@@ -370,11 +372,14 @@ void ModelCompact::GRASP(int iRCL, int iHelpFeasability)
   int RCL = std::min(iRCL,(int)_m);
   
   vector<int> Index(_m, 0);
-  for (int j = 0; j < _m; j++)
+  for (int j = 0; j < _m; j++) {
     Index[j] = j;
+    _ActualCapacity[j] = 0;
+  }
+  _ActualCost = 0;
   
   RandomIterator RdIt(_n);
-  for (int i = 0; i < _n; i++)
+  while (!RdIt.IsEnded())
   {
     int pivot = PushToEndInadmissibleMachines(Index, RdIt.getNb());
     int ChosenMachine = 0;
@@ -382,7 +387,7 @@ void ModelCompact::GRASP(int iRCL, int iHelpFeasability)
     switch (iHelpFeasability)
     {
     case -1:  // Une tache est affectee a une machine aleatoirement
-      _x[RdIt.getNb()] = rand()%(int)_m;
+      ChosenMachine = rand()%((int)_m);
       break;
 
     case 0:   // GRASP classique
@@ -414,9 +419,9 @@ void ModelCompact::GRASP(int iRCL, int iHelpFeasability)
       break;
     }
 
-    _x[i] = Index[ChosenMachine];
-    _ActualCapacity[ChosenMachine] += _a[ChosenMachine][RdIt.getNb()];
-    _ActualCost += _c[ChosenMachine][RdIt.getNb()];
+    _x[RdIt.getNb()] = Index[ChosenMachine];
+    _ActualCapacity[Index[ChosenMachine]] += _a[Index[ChosenMachine]][RdIt.getNb()];
+    _ActualCost += _c[Index[ChosenMachine]][RdIt.getNb()];
     ++RdIt;
   }
 
@@ -511,6 +516,10 @@ void ModelCompact::PrintCurrentSolution(int iMode)
     std::cout << "Affectation\n";
     for (int i = 0; i < _n; i++) {
       std::cout << _x[i] << "\t";
+    }
+    std::cout << "\n";std::cout << "Capacites\n";
+    for (int j = 0; j < _m; j++) {
+      std::cout << _ActualCapacity[j] << "\t";
     }
     std::cout << "\n";
     break;
