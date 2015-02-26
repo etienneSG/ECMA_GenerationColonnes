@@ -265,7 +265,7 @@ void ModelCompact::FindFeasableSolution(int iMode)
   case 0:
     CplexCompact.setParam(IloCplex::MIPEmphasis, 1);   // defaut : 0 (permet d'avoir une bonne solution realisable rapidement)
     CplexCompact.setParam(IloCplex::ParallelMode, -1); // defaut : 0 (Opportuniste (-1) vs. deterministe (+1))
-    CplexCompact.setParam(IloCplex::TiLim, 10);         // defaut : ? (limite de temps de recherche)
+    CplexCompact.setParam(IloCplex::TiLim, 7);         // defaut : ? (limite de temps de recherche)
     break;
     
   default:

@@ -12,7 +12,8 @@
 
 
 /**
- * Effectue une recherche locale a partir de la solution courante contenue dans iModelCompact
+ * Effectue une recherche locale a partir de la solutions construite avec la methode GRASP
+ * et avec les deux premieres solutions entieres trouvees par Cplex
  * @param iModelCompact: Modele sur lequel effectuer la recherche locale
  */
 void LocalSearchAlgorithm(ModelCompact & iModelCompact);
@@ -24,6 +25,14 @@ void LocalSearchAlgorithm(ModelCompact & iModelCompact);
  * @param iModelCompact: Modele sur lequel effectuer la recherche locale
  */
 void LocalSearch(ModelCompact & iModelCompact);
+
+
+/**
+ * Effectue une recherche locale a partir d'une "bonne" solution entiere trouvee par Cplex
+ * en moins de 7 secondes
+ * @param iModelCompact: Modele sur lequel effectuer la recherche locale
+ */
+void SpecificLocalSearch(ModelCompact & iModelCompact);
 
 
 #endif

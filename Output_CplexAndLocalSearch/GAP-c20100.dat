@@ -1,0 +1,22 @@
+************************** Cplex et recherche locale **************************
+Cplex trouve une solution admissible en moins de 7 secondes.
+Cout de la solution courante : 1243
+
+Solution trouvee en cherchant localement depuis la precedente :
+Cout de la solution courante : 1243
+Affectation
+5	12	13	0	0	8	4	11	6	8	8	14	3	15	10	18	16	14	4	3	3	3	16	17	13	7	2	19	0	17	5	12	6	1	2	13	9	17	10	12	15	0	3	10	16	16	9	2	0	6	15	19	19	7	6	8	13	12	12	0	9	11	16	9	8	17	10	19	15	12	1	2	6	4	0	7	5	4	18	1	2	11	5	18	7	11	17	17	14	11	16	1	4	8	7	11	14	9	19	7	
+Capacites
+57	58	50	52	56	53	62	55	58	55	57	58	62	53	58	57	53	59	49	56	
+
+************************************ Bilan ************************************
+
+---- Recherche Cplex -----
+Temps CPU:         0.636559s
+Temps utilisateur: 0.132561s
+
+---- Recherche locale ----
+Temps CPU:         0.002651s
+Temps utilisateur: 0.00265694s
+
+Well done !

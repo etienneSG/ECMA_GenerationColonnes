@@ -144,3 +144,50 @@ void LocalSearch(ModelCompact & iModelCompact)
   cout << "\n";
 }
 
+
+void SpecificLocalSearch(ModelCompact & iModelCompact)
+{
+  // Taille maximale des voisinages explores
+  int VSize = 3;
+
+  cout << "************************** Cplex et recherche locale **************************\n";
+
+  double BeginCplex_UserTime = get_wall_time();
+  double BeginCplex_CPUTime = get_cpu_time();
+  iModelCompact.FindFeasableSolution(0);
+  double EndCplex_CPUTime = get_cpu_time();
+  double EndCplex_UserTime = get_wall_time();
+
+  if (iModelCompact.IsAdmissible())
+  {
+    cout << "Cplex trouve une solution admissible en moins de 7 secondes.\n";
+    iModelCompact.PrintCurrentSolution(0);
+    cout << "\n";
+
+    double BeginLocalSearch_UserTime = get_wall_time();
+    double BeginLocalSearch_CPUTime = get_cpu_time();
+    iModelCompact.LocalSearchAlgorithm(VSize);
+    double EndLocalSearch_CPUTime = get_cpu_time();
+    double EndLocalSearch_UserTime = get_wall_time();
+    cout << "Solution trouvee en cherchant localement depuis la precedente :\n";
+    iModelCompact.PrintCurrentSolution(2);
+
+    cout << "\n************************************ Bilan ************************************\n";
+    cout << "\n---- Recherche Cplex -----\n";
+    double Cplex_CPUTime = EndCplex_CPUTime - BeginCplex_CPUTime;
+    cout << "Temps CPU:         " << Cplex_CPUTime << "s\n";
+    double Cplex_UserTime = EndCplex_UserTime - BeginCplex_UserTime;
+    cout << "Temps utilisateur: " << Cplex_UserTime << "s\n";
+    cout << "\n---- Recherche locale ----\n";
+    double LocalSearch_CPUTime = EndLocalSearch_CPUTime - BeginLocalSearch_CPUTime;
+    cout << "Temps CPU:         " << LocalSearch_CPUTime << "s\n";
+    double LocalSearch_UserTime = EndLocalSearch_UserTime - BeginLocalSearch_UserTime;
+    cout << "Temps utilisateur: " << LocalSearch_UserTime << "s\n";
+    cout << "\n";
+
+  }
+  else
+    cout << "Aucune solution admissible trouvee par Cplex en moins de 7 secondes.\n";
+}
+
+

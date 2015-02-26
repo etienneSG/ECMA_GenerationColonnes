@@ -34,12 +34,15 @@ int main (int argc, char const *argv[])
 
     //determination des colonnes initiales
     //myCompact.FindFeasableSolution(myMaster);
-    
-    // Recherche locale d'une meilleure solution
-    LocalSearch(myCompact);
-    
+
     // Generation de colonnes
     //ColumnGeneration(myMaster, myCompact);
+
+    // Recherche locale d'une meilleure solution
+    LocalSearch(myCompact);
+
+    // Recherche locale a partir d'une "bonne" solution Cplex
+    //SpecificLocalSearch(myCompact);
     
   }
   catch (IloException& e) {
