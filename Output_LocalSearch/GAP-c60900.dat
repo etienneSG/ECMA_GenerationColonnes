@@ -1,149 +1,85 @@
 ******************** Construction des solutions initiales *********************
------ Solution 5 -----
-Cout de la solution courante : 118975
------ Solution 3 -----
-Cout de la solution courante : 126615
------ Solution 2 -----
-Cout de la solution courante : 118853
------ Solution 6 -----
-Cout de la solution courante : 132665
------ Solution 7 -----
-Cout de la solution courante : 129483
 ----- Solution 4 -----
-Cout de la solution courante : 135233
------ Solution 8 -----
-Cout de la solution courante : 128249
+Cout de la solution courante : 124800
+----- Solution 3 -----
+Cout de la solution courante : 143077
+----- Solution 7 -----
+Cout de la solution courante : 133229
+----- Solution 2 -----
+Cout de la solution courante : 124909
 ----- Solution 9 -----
-Cout de la solution courante : 130823
------ Solution 10 -----
-Cout de la solution courante : 139235
------ Solution 11 -----
-Cout de la solution courante : 129055
------ Solution 12 -----
-Cout de la solution courante : 131853
+Cout de la solution courante : 133482
+----- Solution 8 -----
+Cout de la solution courante : 127809
+----- Solution 5 -----
+Cout de la solution courante : 125802
+----- Solution 6 -----
+Cout de la solution courante : 143778
 ----- Solution 13 -----
-Cout de la solution courante : 133445
+Cout de la solution courante : 134214
+----- Solution 10 -----
+Cout de la solution courante : 123600
+----- Solution 11 -----
+Cout de la solution courante : 135731
+----- Solution 12 -----
+Cout de la solution courante : 128757
 ----- Solution 14 -----
-Cout de la solution courante : 145478
+Cout de la solution courante : 125938
 ----- Solution 15 -----
-Cout de la solution courante : 146758
------ Solution 16 -----
-Cout de la solution courante : 131977
------ Solution 17 -----
-Cout de la solution courante : 141525
------ Solution 18 -----
-Cout de la solution courante : 125275
------ Solution 19 -----
-Cout de la solution courante : 126464
------ Solution 20 -----
-Cout de la solution courante : 136603
------ Solution 21 -----
-Cout de la solution courante : 151836
------ Solution 22 -----
-Cout de la solution courante : 155519
------ Solution 23 -----
-Cout de la solution courante : 131083
------ Solution 24 -----
-Cout de la solution courante : 134258
------ Solution 25 -----
-Cout de la solution courante : 129194
------ Solution 26 -----
-Cout de la solution courante : 123746
------ Solution 27 -----
-Cout de la solution courante : 135508
------ Solution 29 -----
-Cout de la solution courante : 121658
------ Solution 28 -----
-Cout de la solution courante : 148877
------ Solution 31 -----
-Cout de la solution courante : 124131
------ Solution 30 -----
-Cout de la solution courante : 144866
+Cout de la solution courante : 128487
 ----- Solution 0 -----
 Cout de la solution courante : 12191
 ----- Solution 1 -----
 Cout de la solution courante : 12191
 
 ****************************** Recherche Locale *******************************
------ Solution 4 -----
-Cout de la solution courante : 14974
------ Solution 7 -----
-Cout de la solution courante : 15089
 ----- Solution 2 -----
-Cout de la solution courante : 11462
+Cout de la solution courante : 12510
+----- Solution 5 -----
+Cout de la solution courante : 14920
+----- Solution 3 -----
+Cout de la solution courante : 14310
+----- Solution 9 -----
+Cout de la solution courante : 14832
 ----- Solution 10 -----
-Cout de la solution courante : 14726
+Cout de la solution courante : 14331
+----- Solution 0 -----
+Cout de la solution courante : 9804
 ----- Solution 1 -----
 Cout de la solution courante : 9804
------ Solution 0 -----
-Cout de la solution courante : 9798
------ Solution 13 -----
-Cout de la solution courante : 15005
------ Solution 14 -----
-Cout de la solution courante : 14800
------ Solution 6 -----
-Cout de la solution courante : 9678
------ Solution 3 -----
-Cout de la solution courante : 9658
------ Solution 5 -----
-Cout de la solution courante : 9635
------ Solution 18 -----
-Cout de la solution courante : 14249
------ Solution 9 -----
-Cout de la solution courante : 9637
------ Solution 8 -----
-Cout de la solution courante : 9617
 ----- Solution 11 -----
-Cout de la solution courante : 9649
------ Solution 20 -----
-Cout de la solution courante : 14998
------ Solution 12 -----
-Cout de la solution courante : 9617
------ Solution 16 -----
-Cout de la solution courante : 9683
------ Solution 15 -----
-Cout de la solution courante : 9623
------ Solution 17 -----
-Cout de la solution courante : 9611
------ Solution 25 -----
-Cout de la solution courante : 14688
------ Solution 19 -----
-Cout de la solution courante : 9637
------ Solution 21 -----
-Cout de la solution courante : 9656
------ Solution 28 -----
-Cout de la solution courante : 14364
------ Solution 29 -----
-Cout de la solution courante : 14400
------ Solution 22 -----
-Cout de la solution courante : 9623
------ Solution 30 -----
-Cout de la solution courante : 15002
------ Solution 31 -----
-Cout de la solution courante : 15366
------ Solution 23 -----
-Cout de la solution courante : 9611
------ Solution 24 -----
-Cout de la solution courante : 9657
------ Solution 26 -----
+Cout de la solution courante : 14971
+----- Solution 4 -----
+Cout de la solution courante : 9636
+----- Solution 7 -----
 Cout de la solution courante : 9589
------ Solution 27 -----
-Cout de la solution courante : 9637
+----- Solution 6 -----
+Cout de la solution courante : 9629
+----- Solution 8 -----
+Cout de la solution courante : 9723
+----- Solution 12 -----
+Cout de la solution courante : 9684
+----- Solution 13 -----
+Cout de la solution courante : 9608
+----- Solution 14 -----
+Cout de la solution courante : 9650
+----- Solution 15 -----
+Cout de la solution courante : 9581
 
 ************************************ Bilan ************************************
 Meilleure valeure obtenue par le glouton : 80849450
 Solutions admissibles avant la recherche locale : 1 0 
-Solutions admissibles apres la recherche locale : 0 1 3 5 6 8 9 11 12 15 16 17 18 19 21 22 23 24 26 27 
+Solutions admissibles apres la recherche locale : 0 1 3 4 6 7 8 10 11 12 13 14 15 
 
 ----- Optimum local -----
-Cout de la solution courante : 9589
+Cout de la solution courante : 9581
 Affectation
-34	53	40	55	51	2	4	22	4	21	38	17	42	6	59	28	35	54	25	49	18	11	5	11	49	23	32	26	18	55	3	21	43	21	51	57	46	25	28	1	40	19	18	38	56	35	34	20	30	56	45	37	44	20	12	58	50	43	24	59	58	44	20	36	33	3	1	15	35	32	10	6	0	34	16	54	54	31	25	58	17	4	51	17	56	32	18	24	45	32	15	25	56	0	42	2	15	26	4	35	5	17	53	34	39	26	52	0	47	39	59	31	26	36	19	58	39	21	3	36	38	47	37	6	0	48	54	45	33	8	35	3	22	47	4	45	0	19	43	46	20	32	51	59	34	2	6	14	36	54	6	21	47	45	7	59	35	34	33	6	44	42	35	41	14	2	53	29	47	25	8	2	16	0	50	37	3	30	19	9	50	37	3	9	28	8	43	1	13	32	56	48	23	7	26	21	49	30	4	15	9	20	36	54	46	54	22	27	41	27	47	8	11	59	55	43	19	9	6	37	3	6	26	48	12	12	56	53	3	44	38	20	10	6	24	47	42	15	16	36	30	46	42	10	4	11	32	12	54	41	24	0	34	39	58	39	13	44	54	42	44	52	15	53	16	23	56	49	50	12	13	29	43	30	34	38	39	32	26	17	42	42	23	51	19	53	28	8	18	18	51	15	37	38	45	40	29	9	24	38	19	12	54	9	27	40	45	46	28	26	5	47	21	23	2	21	46	6	42	4	22	58	50	4	20	35	49	24	32	33	31	21	14	21	2	59	29	41	29	31	59	17	44	5	5	46	19	42	13	33	8	59	57	11	19	45	50	21	17	50	41	39	51	8	14	40	45	23	59	35	40	15	36	59	20	14	5	5	58	54	32	18	41	30	1	27	7	27	49	23	15	13	21	0	47	52	54	22	7	14	19	31	48	44	46	28	36	14	53	7	31	13	30	20	2	17	37	19	17	34	1	27	33	50	15	0	12	46	39	1	33	53	58	43	40	6	29	34	27	10	55	14	50	47	0	42	18	26	24	35	15	25	5	57	14	33	29	7	5	23	47	9	27	14	23	21	29	25	7	9	19	2	53	15	50	57	54	59	37	21	25	26	10	17	12	38	31	30	41	29	13	3	38	10	59	55	22	16	13	23	44	11	34	27	35	6	20	53	41	54	10	17	52	57	10	49	24	42	55	29	55	56	50	13	38	5	10	10	23	57	56	50	36	5	49	26	0	41	52	29	19	40	59	57	51	34	9	44	49	24	56	8	12	47	58	43	38	52	41	31	55	22	27	57	6	13	4	24	50	26	1	34	21	55	45	57	55	20	58	52	49	31	24	38	11	11	58	25	56	53	58	1	58	3	33	39	58	9	25	34	36	8	37	54	51	31	48	55	4	32	38	27	6	1	29	39	9	48	11	26	8	19	55	24	41	27	16	51	35	1	37	8	44	3	45	38	0	45	24	16	25	55	14	27	21	13	2	7	26	17	30	45	20	15	25	13	0	47	25	7	51	12	22	6	39	28	13	32	55	0	45	24	1	52	19	9	49	53	37	40	16	11	15	7	56	0	22	16	2	12	9	27	28	56	12	50	37	19	43	48	44	52	42	45	43	36	31	11	10	54	16	44	31	30	33	1	42	29	46	54	21	35	18	12	19	5	22	56	28	56	33	8	14	8	43	27	8	36	46	18	22	17	38	11	7	37	48	3	14	29	52	25	10	9	50	2	48	32	43	23	56	40	43	56	37	28	46	12	28	14	57	18	58	53	54	5	39	1	31	41	33	31	39	15	37	52	57	18	22	51	23	37	17	12	28	36	27	36	51	48	43	39	35	20	40	29	13	58	16	5	13	24	35	36	20	16	47	0	13	30	37	39	18	50	42	18	18	6	41	51	52	31	47	17	19	11	50	39	21	22	30	47	52	24	48	49	14	48	7	40	7	59	40	6	16	25	2	26	19	1	53	28	57	7	41	4	2	35	52	57	31	36	18	46	7	3	32	32	4	11	48	46	45	44	38	1	30	39	12	17	8	5	20	1	13	4	59	28	55	51	
+34	53	40	55	51	49	17	5	55	7	49	17	38	17	59	28	35	52	25	24	25	42	40	49	31	23	32	43	18	55	3	21	43	9	19	22	45	28	11	1	2	41	57	38	56	35	18	17	30	56	45	37	9	20	4	58	50	43	24	20	27	5	20	36	33	47	3	57	35	32	10	6	0	34	2	50	54	24	27	58	17	21	51	14	56	57	18	24	45	20	15	25	56	31	42	2	15	6	35	41	5	17	44	34	39	13	52	22	42	39	33	48	59	14	19	10	11	46	45	36	3	47	37	46	0	48	54	25	52	8	35	3	22	47	4	52	22	19	24	46	20	43	46	59	34	2	6	36	36	53	6	21	43	45	7	11	35	56	26	10	44	42	35	21	29	32	53	29	47	25	8	2	16	39	50	29	3	30	31	9	50	37	54	9	28	50	43	1	13	32	56	48	23	7	26	21	5	6	4	15	9	14	32	46	24	54	22	27	41	42	42	33	11	59	49	3	19	9	6	37	57	52	26	48	12	12	56	17	34	1	38	20	10	6	24	41	26	15	14	52	30	39	25	34	51	39	32	45	54	41	4	55	34	39	58	39	13	44	17	42	44	52	4	3	16	23	56	49	50	12	23	29	50	12	34	41	39	42	54	38	42	50	23	44	19	53	28	39	45	18	51	15	37	38	45	47	29	5	24	41	19	12	54	9	27	40	45	46	28	26	5	47	21	23	26	37	46	6	30	4	22	58	26	4	34	53	49	33	32	39	5	53	14	28	2	59	29	51	29	31	59	57	44	5	15	56	48	13	42	33	39	59	57	11	19	45	45	2	17	59	7	39	51	8	14	40	23	46	59	16	40	15	0	59	10	33	9	5	58	20	32	29	23	44	1	27	42	6	49	23	15	13	8	0	28	7	43	22	7	14	19	31	47	19	46	28	53	52	53	7	18	8	30	28	58	17	37	19	17	34	1	27	58	50	40	0	32	46	39	1	33	28	58	12	40	6	2	30	42	16	21	35	17	47	4	42	18	26	23	35	15	25	41	57	14	33	29	39	29	1	8	27	27	14	56	21	21	38	57	9	25	3	12	15	26	36	51	15	45	21	2	52	10	17	9	38	31	30	21	29	13	3	38	36	31	55	3	16	13	23	44	18	9	59	35	3	50	11	47	54	10	17	52	8	54	20	32	0	55	13	51	56	50	13	38	55	55	10	23	57	37	50	4	5	53	40	0	41	22	31	19	57	44	40	51	34	16	55	49	24	40	8	41	47	58	43	38	14	24	31	32	22	27	13	24	13	4	11	50	26	1	34	59	32	45	57	55	32	58	52	54	57	10	49	11	10	58	25	15	35	58	1	31	3	21	42	24	11	0	34	36	8	36	54	51	31	48	12	12	18	38	27	37	31	1	21	10	1	11	26	8	19	55	21	41	27	16	51	18	0	37	41	44	43	53	28	17	43	5	9	25	6	2	6	21	33	2	7	26	17	30	6	6	15	56	6	0	47	25	40	51	45	22	11	19	13	13	15	11	0	28	24	1	52	13	9	2	50	6	30	16	11	15	7	48	0	19	55	2	12	49	27	16	56	54	58	37	4	43	34	44	20	40	4	3	36	20	16	24	54	43	12	31	30	33	8	36	19	46	13	12	35	57	12	3	43	22	56	47	32	33	8	27	32	40	27	8	30	31	18	35	48	38	11	7	37	48	3	59	29	52	25	47	20	48	7	38	21	40	23	56	40	43	56	37	19	46	12	58	14	14	18	10	17	54	5	10	1	38	31	33	46	53	15	53	9	7	18	49	51	23	37	26	12	13	18	34	4	51	48	10	39	50	19	40	29	13	58	16	5	14	24	24	5	20	0	31	0	43	44	37	39	18	12	32	18	41	31	49	1	49	2	47	17	19	45	55	1	21	22	38	47	26	30	48	59	27	34	12	45	14	35	59	20	16	25	0	26	29	16	20	28	57	7	58	4	27	35	52	16	31	36	37	36	7	7	22	32	22	11	48	46	29	44	38	1	33	35	12	47	8	5	20	1	35	54	59	2	14	51	
 Capacites
-178	173	169	175	178	182	178	177	172	183	176	166	174	174	173	169	175	175	166	181	177	178	179	175	172	172	177	178	176	181	171	181	182	182	169	178	182	180	182	170	169	176	175	173	179	172	169	179	178	181	175	164	175	175	178	174	178	172	174	180	
+179	176	167	173	181	181	178	177	177	179	176	166	170	184	173	173	173	175	179	177	179	176	174	171	173	167	180	176	175	172	177	175	179	177	177	172	176	179	181	178	178	177	171	178	175	181	172	181	179	182	177	174	174	171	177	168	178	178	180	173	
 
 ---- Temps de calcul ----
-Temps CPU:         536.975s
-Temps utilisateur: 74.3065s
+Temps CPU:         246.456s
+Temps utilisateur: 38.8531s
 
 Well done !

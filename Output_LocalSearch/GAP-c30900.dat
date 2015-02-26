@@ -1,64 +1,32 @@
 ******************** Construction des solutions initiales *********************
------ Solution 3 -----
-Cout de la solution courante : 143487
 ----- Solution 2 -----
-Cout de la solution courante : 141677
------ Solution 7 -----
-Cout de la solution courante : 137276
------ Solution 8 -----
-Cout de la solution courante : 153834
+Cout de la solution courante : 128466
 ----- Solution 6 -----
-Cout de la solution courante : 144447
------ Solution 4 -----
-Cout de la solution courante : 146634
+Cout de la solution courante : 136185
 ----- Solution 5 -----
-Cout de la solution courante : 140390
+Cout de la solution courante : 154089
+----- Solution 4 -----
+Cout de la solution courante : 152437
+----- Solution 7 -----
+Cout de la solution courante : 157834
+----- Solution 3 -----
+Cout de la solution courante : 134627
+----- Solution 8 -----
+Cout de la solution courante : 139455
 ----- Solution 9 -----
-Cout de la solution courante : 133105
------ Solution 10 -----
-Cout de la solution courante : 149115
------ Solution 11 -----
-Cout de la solution courante : 145591
------ Solution 15 -----
-Cout de la solution courante : 134152
------ Solution 13 -----
-Cout de la solution courante : 147938
------ Solution 14 -----
-Cout de la solution courante : 131585
+Cout de la solution courante : 147829
 ----- Solution 12 -----
-Cout de la solution courante : 145455
------ Solution 16 -----
-Cout de la solution courante : 153270
------ Solution 17 -----
-Cout de la solution courante : 134069
------ Solution 18 -----
-Cout de la solution courante : 129035
------ Solution 20 -----
-Cout de la solution courante : 143539
------ Solution 21 -----
-Cout de la solution courante : 147921
------ Solution 19 -----
-Cout de la solution courante : 141311
------ Solution 22 -----
-Cout de la solution courante : 135054
------ Solution 24 -----
-Cout de la solution courante : 133386
------ Solution 23 -----
-Cout de la solution courante : 145773
------ Solution 25 -----
-Cout de la solution courante : 149061
------ Solution 27 -----
-Cout de la solution courante : 136226
------ Solution 28 -----
-Cout de la solution courante : 155179
------ Solution 26 -----
-Cout de la solution courante : 141106
------ Solution 31 -----
-Cout de la solution courante : 142398
------ Solution 29 -----
-Cout de la solution courante : 143478
------ Solution 30 -----
-Cout de la solution courante : 138943
+Cout de la solution courante : 140322
+----- Solution 11 -----
+Cout de la solution courante : 161628
+----- Solution 10 -----
+Cout de la solution courante : 141368
+----- Solution 14 -----
+Cout de la solution courante : 155032
+----- Solution 15 -----
+Cout de la solution courante : 142667
+----- Solution 13 -----
+Cout de la solution courante : 149099
 ----- Solution 0 -----
 Cout de la solution courante : 10004
 ----- Solution 1 -----
@@ -70,70 +38,38 @@ Cout de la solution courante : 9996
 ----- Solution 0 -----
 Cout de la solution courante : 10004
 ----- Solution 2 -----
-Cout de la solution courante : 12543
------ Solution 6 -----
-Cout de la solution courante : 13894
------ Solution 10 -----
-Cout de la solution courante : 15323
------ Solution 3 -----
-Cout de la solution courante : 10994
------ Solution 8 -----
-Cout de la solution courante : 11046
------ Solution 4 -----
-Cout de la solution courante : 10760
+Cout de la solution courante : 11881
 ----- Solution 5 -----
-Cout de la solution courante : 10727
+Cout de la solution courante : 11183
 ----- Solution 7 -----
-Cout de la solution courante : 10629
+Cout de la solution courante : 10972
+----- Solution 3 -----
+Cout de la solution courante : 10503
+----- Solution 8 -----
+Cout de la solution courante : 10599
 ----- Solution 9 -----
-Cout de la solution courante : 10620
+Cout de la solution courante : 10503
+----- Solution 4 -----
+Cout de la solution courante : 10584
+----- Solution 6 -----
+Cout de la solution courante : 10640
+----- Solution 10 -----
+Cout de la solution courante : 10652
 ----- Solution 11 -----
-Cout de la solution courante : 10641
+Cout de la solution courante : 10894
 ----- Solution 12 -----
-Cout de la solution courante : 10582
------ Solution 19 -----
-Cout de la solution courante : 14221
------ Solution 16 -----
-Cout de la solution courante : 10997
------ Solution 14 -----
-Cout de la solution courante : 10793
------ Solution 13 -----
-Cout de la solution courante : 10683
------ Solution 17 -----
-Cout de la solution courante : 10866
+Cout de la solution courante : 11391
 ----- Solution 15 -----
-Cout de la solution courante : 10598
------ Solution 18 -----
-Cout de la solution courante : 10664
------ Solution 25 -----
-Cout de la solution courante : 15405
------ Solution 27 -----
-Cout de la solution courante : 15442
------ Solution 20 -----
-Cout de la solution courante : 10702
------ Solution 21 -----
-Cout de la solution courante : 10983
------ Solution 22 -----
-Cout de la solution courante : 10773
------ Solution 23 -----
-Cout de la solution courante : 10717
------ Solution 24 -----
-Cout de la solution courante : 10733
------ Solution 31 -----
-Cout de la solution courante : 15144
------ Solution 26 -----
-Cout de la solution courante : 10558
------ Solution 29 -----
-Cout de la solution courante : 10590
------ Solution 28 -----
-Cout de la solution courante : 10511
------ Solution 30 -----
-Cout de la solution courante : 10486
+Cout de la solution courante : 10615
+----- Solution 14 -----
+Cout de la solution courante : 10825
+----- Solution 13 -----
+Cout de la solution courante : 10527
 
 ************************************ Bilan ************************************
 Meilleure valeure obtenue par le glouton : 40625200
 Solutions admissibles avant la recherche locale : 0 1 
-Solutions admissibles apres la recherche locale : 0 1 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 26 27 28 29 30 31 
+Solutions admissibles apres la recherche locale : 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 
 
 ----- Optimum local -----
 Cout de la solution courante : 9996
@@ -143,7 +79,7 @@ Capacites
 360	357	352	354	357	362	350	355	357	363	358	350	356	369	357	349	346	361	358	359	358	357	351	353	361	350	360	353	357	361	
 
 ---- Temps de calcul ----
-Temps CPU:         141.726s
-Temps utilisateur: 21.8939s
+Temps CPU:         72.6073s
+Temps utilisateur: 12.9198s
 
 Well done !

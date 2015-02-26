@@ -1,64 +1,32 @@
 ******************** Construction des solutions initiales *********************
------ Solution 6 -----
-Cout de la solution courante : 7652
------ Solution 4 -----
-Cout de la solution courante : 6560
------ Solution 3 -----
-Cout de la solution courante : 7458
------ Solution 2 -----
-Cout de la solution courante : 2408
------ Solution 7 -----
-Cout de la solution courante : 4542
------ Solution 9 -----
-Cout de la solution courante : 3003
------ Solution 10 -----
-Cout de la solution courante : 7392
------ Solution 5 -----
-Cout de la solution courante : 5943
------ Solution 11 -----
-Cout de la solution courante : 8805
------ Solution 13 -----
-Cout de la solution courante : 6756
------ Solution 14 -----
-Cout de la solution courante : 3619
------ Solution 16 -----
-Cout de la solution courante : 5124
------ Solution 15 -----
-Cout de la solution courante : 4819
 ----- Solution 8 -----
-Cout de la solution courante : 2799
+Cout de la solution courante : 6564
+----- Solution 6 -----
+Cout de la solution courante : 4843
+----- Solution 4 -----
+Cout de la solution courante : 11025
+----- Solution 5 -----
+Cout de la solution courante : 4502
+----- Solution 2 -----
+Cout de la solution courante : 2696
+----- Solution 7 -----
+Cout de la solution courante : 5277
+----- Solution 3 -----
+Cout de la solution courante : 6563
+----- Solution 9 -----
+Cout de la solution courante : 6412
+----- Solution 10 -----
+Cout de la solution courante : 6050
+----- Solution 11 -----
+Cout de la solution courante : 7435
 ----- Solution 12 -----
-Cout de la solution courante : 4560
------ Solution 17 -----
-Cout de la solution courante : 4665
------ Solution 18 -----
-Cout de la solution courante : 5680
------ Solution 19 -----
-Cout de la solution courante : 3081
------ Solution 20 -----
-Cout de la solution courante : 3554
------ Solution 21 -----
-Cout de la solution courante : 6634
------ Solution 22 -----
-Cout de la solution courante : 4310
------ Solution 23 -----
-Cout de la solution courante : 5143
------ Solution 24 -----
-Cout de la solution courante : 5634
------ Solution 25 -----
-Cout de la solution courante : 6594
------ Solution 26 -----
-Cout de la solution courante : 7228
------ Solution 27 -----
-Cout de la solution courante : 2362
------ Solution 28 -----
-Cout de la solution courante : 5867
------ Solution 29 -----
-Cout de la solution courante : 8456
------ Solution 30 -----
-Cout de la solution courante : 6180
------ Solution 31 -----
-Cout de la solution courante : 4517
+Cout de la solution courante : 7758
+----- Solution 14 -----
+Cout de la solution courante : 3802
+----- Solution 13 -----
+Cout de la solution courante : 5908
+----- Solution 15 -----
+Cout de la solution courante : 4471
 ----- Solution 0 -----
 Cout de la solution courante : 3139
 ----- Solution 1 -----
@@ -68,82 +36,50 @@ Cout de la solution courante : 1333
 ----- Solution 1 -----
 Cout de la solution courante : 1326
 ----- Solution 2 -----
-Cout de la solution courante : 1396
+Cout de la solution courante : 1313
 ----- Solution 5 -----
-Cout de la solution courante : 1600
------ Solution 7 -----
-Cout de la solution courante : 1421
------ Solution 4 -----
-Cout de la solution courante : 1263
------ Solution 6 -----
-Cout de la solution courante : 1270
------ Solution 8 -----
-Cout de la solution courante : 1292
------ Solution 9 -----
-Cout de la solution courante : 1297
------ Solution 3 -----
-Cout de la solution courante : 1259
------ Solution 0 -----
-Cout de la solution courante : 1248
------ Solution 10 -----
-Cout de la solution courante : 1476
------ Solution 11 -----
-Cout de la solution courante : 1243
------ Solution 13 -----
-Cout de la solution courante : 1982
------ Solution 14 -----
-Cout de la solution courante : 1466
------ Solution 12 -----
-Cout de la solution courante : 1229
------ Solution 15 -----
-Cout de la solution courante : 1291
------ Solution 16 -----
-Cout de la solution courante : 1256
------ Solution 18 -----
-Cout de la solution courante : 1290
------ Solution 17 -----
-Cout de la solution courante : 1234
------ Solution 20 -----
-Cout de la solution courante : 1218
------ Solution 19 -----
-Cout de la solution courante : 1262
------ Solution 22 -----
-Cout de la solution courante : 1542
------ Solution 23 -----
-Cout de la solution courante : 1251
------ Solution 21 -----
-Cout de la solution courante : 1214
------ Solution 25 -----
-Cout de la solution courante : 1520
------ Solution 24 -----
 Cout de la solution courante : 1254
------ Solution 26 -----
-Cout de la solution courante : 1336
------ Solution 28 -----
-Cout de la solution courante : 1244
------ Solution 29 -----
-Cout de la solution courante : 1463
------ Solution 27 -----
-Cout de la solution courante : 1237
------ Solution 31 -----
+----- Solution 6 -----
+Cout de la solution courante : 1295
+----- Solution 3 -----
+Cout de la solution courante : 1298
+----- Solution 9 -----
+Cout de la solution courante : 1300
+----- Solution 4 -----
+Cout de la solution courante : 1276
+----- Solution 0 -----
+Cout de la solution courante : 1250
+----- Solution 8 -----
+Cout de la solution courante : 1227
+----- Solution 7 -----
+Cout de la solution courante : 1241
+----- Solution 12 -----
+Cout de la solution courante : 1382
+----- Solution 10 -----
 Cout de la solution courante : 1301
------ Solution 30 -----
-Cout de la solution courante : 1319
+----- Solution 11 -----
+Cout de la solution courante : 1251
+----- Solution 13 -----
+Cout de la solution courante : 1272
+----- Solution 14 -----
+Cout de la solution courante : 1231
+----- Solution 15 -----
+Cout de la solution courante : 1421
 
 ************************************ Bilan ************************************
 Meilleure valeure obtenue par le glouton : 2961700
 Solutions admissibles avant la recherche locale : 1 0 
-Solutions admissibles apres la recherche locale : 0 1 2 3 4 5 6 7 8 9 10 11 12 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 
+Solutions admissibles apres la recherche locale : 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 
 
 ----- Optimum local -----
-Cout de la solution courante : 1214
+Cout de la solution courante : 1227
 Affectation
-11	2	12	16	12	15	17	19	7	9	5	6	6	13	3	11	10	17	17	18	15	13	0	11	15	14	2	0	1	18	2	19	16	5	18	5	14	19	4	16	10	9	8	6	19	7	15	4	8	1	11	18	13	3	9	3	11	5	13	15	12	1	12	0	1	0	13	10	7	8	10	3	4	7	13	8	8	14	0	16	18	6	8	10	11	9	3	9	7	2	14	17	5	4	2	5	3	18	6	14	
+11	0	12	15	12	12	0	19	7	9	5	6	4	13	8	11	10	17	17	19	15	3	9	4	18	14	2	0	16	14	2	19	16	5	0	2	14	6	11	16	1	9	5	6	19	7	15	1	4	9	17	10	6	3	9	5	12	10	2	15	3	1	14	0	1	0	13	10	11	15	10	3	11	7	13	8	8	5	13	16	18	4	14	10	11	12	3	13	7	2	4	17	7	8	17	5	6	18	18	8	
 Capacites
-61	61	65	67	61	54	64	59	58	63	49	67	67	62	65	56	63	41	63	68	
+66	63	64	60	57	66	68	61	65	62	63	62	59	59	63	64	57	41	66	57	
 
 ---- Temps de calcul ----
-Temps CPU:         2.01114s
-Temps utilisateur: 0.31161s
+Temps CPU:         0.874132s
+Temps utilisateur: 0.172249s
 
 Well done !

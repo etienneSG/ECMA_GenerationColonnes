@@ -1,64 +1,32 @@
 ******************** Construction des solutions initiales *********************
 ----- Solution 7 -----
-Cout de la solution courante : 751311
------ Solution 4 -----
-Cout de la solution courante : 720146
------ Solution 6 -----
-Cout de la solution courante : 755550
+Cout de la solution courante : 770943
 ----- Solution 3 -----
-Cout de la solution courante : 730176
------ Solution 8 -----
-Cout de la solution courante : 724046
------ Solution 2 -----
-Cout de la solution courante : 930758
+Cout de la solution courante : 738940
 ----- Solution 5 -----
-Cout de la solution courante : 729764
+Cout de la solution courante : 742786
+----- Solution 8 -----
+Cout de la solution courante : 701910
+----- Solution 6 -----
+Cout de la solution courante : 718559
+----- Solution 2 -----
+Cout de la solution courante : 938286
+----- Solution 4 -----
+Cout de la solution courante : 730706
 ----- Solution 9 -----
-Cout de la solution courante : 740267
+Cout de la solution courante : 749556
 ----- Solution 10 -----
-Cout de la solution courante : 756735
+Cout de la solution courante : 719129
 ----- Solution 11 -----
-Cout de la solution courante : 741973
+Cout de la solution courante : 691895
 ----- Solution 12 -----
-Cout de la solution courante : 730076
+Cout de la solution courante : 740144
 ----- Solution 13 -----
-Cout de la solution courante : 759250
------ Solution 14 -----
-Cout de la solution courante : 775578
+Cout de la solution courante : 744061
 ----- Solution 15 -----
-Cout de la solution courante : 757035
------ Solution 16 -----
-Cout de la solution courante : 731624
------ Solution 17 -----
-Cout de la solution courante : 740901
------ Solution 18 -----
-Cout de la solution courante : 775405
------ Solution 20 -----
-Cout de la solution courante : 753548
------ Solution 19 -----
-Cout de la solution courante : 790392
------ Solution 22 -----
-Cout de la solution courante : 753181
------ Solution 21 -----
-Cout de la solution courante : 710678
------ Solution 23 -----
-Cout de la solution courante : 763511
------ Solution 24 -----
-Cout de la solution courante : 724604
------ Solution 25 -----
-Cout de la solution courante : 791044
------ Solution 26 -----
-Cout de la solution courante : 727729
------ Solution 27 -----
-Cout de la solution courante : 726867
------ Solution 29 -----
-Cout de la solution courante : 716481
------ Solution 28 -----
-Cout de la solution courante : 747645
------ Solution 30 -----
-Cout de la solution courante : 766661
------ Solution 31 -----
-Cout de la solution courante : 707088
+Cout de la solution courante : 755821
+----- Solution 14 -----
+Cout de la solution courante : 767590
 ----- Solution 0 -----
 Cout de la solution courante : 31457
 ----- Solution 1 -----
@@ -66,84 +34,52 @@ Cout de la solution courante : 28019
 
 ****************************** Recherche Locale *******************************
 ----- Solution 1 -----
-Cout de la solution courante : 28019
+Cout de la solution courante : 28002
 ----- Solution 0 -----
-Cout de la solution courante : 27835
------ Solution 3 -----
-Cout de la solution courante : 27849
------ Solution 5 -----
-Cout de la solution courante : 27597
------ Solution 7 -----
-Cout de la solution courante : 27690
------ Solution 6 -----
-Cout de la solution courante : 27831
------ Solution 8 -----
-Cout de la solution courante : 27745
+Cout de la solution courante : 27894
 ----- Solution 4 -----
-Cout de la solution courante : 27726
+Cout de la solution courante : 27733
+----- Solution 6 -----
+Cout de la solution courante : 27844
+----- Solution 3 -----
+Cout de la solution courante : 27582
+----- Solution 8 -----
+Cout de la solution courante : 27655
 ----- Solution 2 -----
-Cout de la solution courante : 27464
+Cout de la solution courante : 27581
+----- Solution 7 -----
+Cout de la solution courante : 27619
+----- Solution 5 -----
+Cout de la solution courante : 27794
 ----- Solution 9 -----
-Cout de la solution courante : 27553
------ Solution 10 -----
-Cout de la solution courante : 27772
------ Solution 11 -----
-Cout de la solution courante : 27974
------ Solution 12 -----
-Cout de la solution courante : 27696
+Cout de la solution courante : 27713
 ----- Solution 13 -----
-Cout de la solution courante : 27728
+Cout de la solution courante : 27815
 ----- Solution 15 -----
-Cout de la solution courante : 27865
------ Solution 16 -----
-Cout de la solution courante : 27710
------ Solution 17 -----
-Cout de la solution courante : 27856
------ Solution 18 -----
-Cout de la solution courante : 27553
------ Solution 19 -----
-Cout de la solution courante : 27845
+Cout de la solution courante : 27777
+----- Solution 11 -----
+Cout de la solution courante : 27685
+----- Solution 12 -----
+Cout de la solution courante : 27764
 ----- Solution 14 -----
-Cout de la solution courante : 27798
------ Solution 20 -----
-Cout de la solution courante : 27522
------ Solution 21 -----
-Cout de la solution courante : 27626
------ Solution 22 -----
-Cout de la solution courante : 27771
------ Solution 23 -----
-Cout de la solution courante : 27726
------ Solution 24 -----
-Cout de la solution courante : 27887
------ Solution 26 -----
-Cout de la solution courante : 27781
------ Solution 27 -----
-Cout de la solution courante : 27719
------ Solution 25 -----
-Cout de la solution courante : 27748
------ Solution 28 -----
-Cout de la solution courante : 27661
------ Solution 31 -----
-Cout de la solution courante : 27674
------ Solution 30 -----
-Cout de la solution courante : 27810
------ Solution 29 -----
-Cout de la solution courante : 27721
+Cout de la solution courante : 27668
+----- Solution 10 -----
+Cout de la solution courante : 27583
 
 ************************************ Bilan ************************************
 Meilleure valeure obtenue par le glouton : 12136350
 Solutions admissibles avant la recherche locale : 1 0 
-Solutions admissibles apres la recherche locale : 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 16 17 18 19 20 21 22 23 24 25 26 27 28 29 30 31 
+Solutions admissibles apres la recherche locale : 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 
 
 ----- Optimum local -----
-Cout de la solution courante : 27464
+Cout de la solution courante : 27581
 Affectation
-1	6	6	3	4	9	9	9	1	1	1	2	4	3	6	8	8	1	4	6	2	5	5	8	8	1	7	3	0	9	5	3	8	1	0	8	0	6	1	8	2	3	4	7	4	2	5	0	9	8	8	5	9	4	4	1	0	1	1	5	2	8	6	3	2	8	3	7	3	6	9	4	2	8	7	7	5	6	3	2	9	6	4	8	3	2	2	3	8	6	6	9	9	0	9	3	8	5	7	2	4	8	4	7	2	5	4	2	7	9	7	0	9	2	5	2	1	7	8	2	3	6	8	9	0	5	9	7	1	5	9	1	5	2	9	6	6	3	2	6	8	9	1	9	6	7	5	0	5	0	1	2	6	2	4	8	6	7	5	1	6	4	7	9	2	7	3	7	0	4	0	2	3	9	8	1	0	5	4	6	8	0	7	1	1	4	8	8	1	6	4	8	6	1	9	9	5	1	0	6	7	0	6	7	6	1	3	9	3	3	4	4	9	2	7	0	6	0	1	7	8	2	9	9	9	3	7	7	0	3	3	6	8	8	4	7	8	4	6	4	3	2	0	1	0	9	6	2	2	6	5	8	3	3	9	9	1	2	2	4	7	4	7	2	5	3	8	4	8	8	0	9	7	0	5	5	1	3	7	0	0	6	1	1	2	0	8	3	3	9	1	7	7	3	0	8	7	9	8	7	7	1	3	2	8	2	0	9	3	6	3	1	1	3	2	2	5	1	6	5	3	8	5	4	7	1	9	4	4	0	5	8	0	5	0	5	9	2	5	3	5	5	5	0	4	9	3	8	2	5	3	2	8	4	2	0	9	2	5	5	7	0	0	8	1	7	5	1	4	5	1	3	2	9	1	5	1	7	6	0	7	1	9	0	2	9	3	4	9	8	3	1	6	7	0	4	9	2	3	4	
+1	6	6	3	6	5	2	7	1	0	1	2	4	3	6	8	8	1	4	5	2	5	5	8	8	1	7	5	6	9	5	3	8	9	0	5	8	6	1	9	2	3	4	7	4	7	5	0	2	2	8	5	9	5	9	1	8	1	2	5	7	8	6	3	2	0	1	6	3	9	3	9	2	8	7	7	5	6	3	9	9	2	4	8	3	2	2	3	0	6	6	9	9	0	9	3	9	5	7	2	4	8	3	9	2	5	4	2	7	4	8	0	9	2	4	3	1	7	2	2	3	6	8	9	0	5	4	7	1	5	8	2	9	2	7	0	0	3	2	9	8	9	1	9	6	3	5	0	5	0	7	2	6	2	4	8	6	7	5	8	6	4	7	8	2	7	9	7	0	4	9	4	3	9	8	1	4	5	2	3	8	8	7	7	8	4	8	8	7	1	4	8	6	1	9	9	0	1	0	6	4	0	6	6	6	1	5	9	3	3	4	7	9	2	2	9	6	0	1	7	8	3	9	9	9	3	3	7	0	3	3	6	8	8	4	7	2	2	6	4	3	2	9	1	0	9	6	2	2	9	5	8	2	5	0	9	0	2	2	4	5	5	7	2	0	3	1	0	8	8	0	9	7	0	5	5	1	3	7	0	0	2	1	1	2	0	5	3	3	9	1	0	7	3	0	8	7	0	8	5	7	1	3	7	8	4	1	8	3	6	0	1	7	3	2	2	5	7	6	6	1	8	5	9	5	1	5	4	4	5	5	8	3	5	0	5	9	1	1	6	1	5	5	0	4	7	9	0	2	7	8	5	6	4	4	0	6	2	5	7	7	0	0	8	1	7	5	1	4	7	1	3	7	9	1	9	1	7	6	9	0	1	2	0	9	1	9	4	9	8	3	1	2	4	0	6	9	2	3	4	
 Capacites
-1618	1664	1526	1672	1632	1605	1579	1559	1586	1635	
+1621	1661	1527	1672	1632	1603	1582	1565	1588	1635	
 
 ---- Temps de calcul ----
-Temps CPU:         5.60626s
-Temps utilisateur: 0.845014s
+Temps CPU:         3.23075s
+Temps utilisateur: 0.533144s
 
 Well done !
