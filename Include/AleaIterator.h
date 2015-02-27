@@ -13,8 +13,11 @@
 #ifndef ALEAITERATOR_H
 #define ALEAITERATOR_H
 
+#include "kcombinationiterator.h"
+
 #include <vector>
 #include <assert.h>
+
 
 class AleaIterator
 {
@@ -27,8 +30,9 @@ public:
    * @param iK: number of elements in box
    * @param iN: number of elements in the set
    * @param iC: number of elements to chose in [0, iN[
+   * @param iDataK: array of N value in [0, iK[
    */
-  AleaIterator(int iK,int iN, int iC);
+  AleaIterator(int iK,int iN, int iC, int * iaDataK = 0);
   
   /** Destructor */
   ~AleaIterator();
@@ -66,17 +70,12 @@ private:
   int _n;                 // Number of elements in the set
   int _k;                 // Range of the values taken by each element
   int _c;                 // In n choose c elements
-  std::vector<int> _IdxN;
+  int * _aK;              // Array of N value in [0, iK[
+  
+  KcombinationIterator _NcKit; // Iterator on the element of "N choose K"
   std::vector<int> _IdxK;
   int _IdxC;
-  
-  std::vector<int> _Integer;  // Vecteur contenant les entiers de [0,N[
-  
-  /**
-   * Swap (c-1) random number different from _IdxN[1] of _Integer to the begining
-   * of the vector
-   */
-  void AleaNchooseK();
+
 };
 
 
@@ -85,17 +84,16 @@ private:
 //==============================================================================
 
 inline bool AleaIterator::IsEnded() {
-  return _IdxN[0] >= 0;
+  return _NcKit.IsEnded();
 }
 
 inline int AleaIterator::N(int iIdx) {
-  assert(0 <= iIdx && iIdx < _c);
-  return _IdxN[iIdx+1];
+  return _NcKit(iIdx);
 }
 
 inline int AleaIterator::K(int iIdx) {
   assert(0 <= iIdx && iIdx < _c);
-  return _IdxK[iIdx+1];
+  return _IdxK[iIdx];
 }
 
 #endif

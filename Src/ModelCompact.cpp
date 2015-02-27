@@ -532,7 +532,7 @@ void ModelCompact::PrintCurrentSolution(int iMode)
 
 bool ModelCompact::NeighbourhoodSearch(int iNSize)
 {
-  if (iNSize <= 0 || iNSize > (int)_n ) {
+  if (iNSize <= 0 || iNSize > 3 ) {
     std::cout << "It is a stupid use of this method !" << std::endl;
     return false;
   }
