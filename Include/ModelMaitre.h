@@ -27,7 +27,13 @@ public:
   
   /** Destructeur */
   ~ModelMaitre();
-  
+
+  /**
+   * Supprime des colonnes inutilisees dans la solution optimale
+   * @param: Solveur Cplex associe aux modele
+   */
+  void RemoveColumn(const IloCplex & iCplex);
+
   /** Donnees */
   IloEnv _Env;                    // Environnement Cplex
   IloModel _Model;                // Modele

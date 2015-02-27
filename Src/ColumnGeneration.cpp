@@ -10,6 +10,7 @@ void ColumnGenerationAlgorithm(ModelMaitre & iMaster, ModelCompact & iCompact)
 {
   // Solveur du modele maitre
   IloCplex cplexMaster(iMaster._Model);
+  cplexMaster.setOut(iMaster._Env.getNullStream());
   cplexMaster.setParam(IloCplex::CutUp, iCompact._ActualCost + CST_EPS);
 
   // Modele auxiliaire
@@ -26,23 +27,29 @@ void ColumnGenerationAlgorithm(ModelMaitre & iMaster, ModelCompact & iCompact)
   {
     // FOR DEBUG ! TO REMOVE
     NbOfIterations++;
+    //cout << "Iteration : " << NbOfIterations << "\n";
     //cout << "//********** Iteration " << NbOfIterations << " **********//\n";
     
     cplexMaster.solve();
     cplexMaster.setParam(IloCplex::CutUp, cplexMaster.getObjValue() + CST_EPS);
     
+    if (NbOfIterations%300 == 0)
+      cout << "Cout a la " << NbOfIterations << "e iteration : " << cplexMaster.getObjValue() << "\n";
     /*for (int j = 0; j < iCompact._m; j++) {
       IloNumArray valsMaster(iMaster._Env);
       cplexMaster.getValues(valsMaster, iMaster._Colonnes[j]);
       PrintArray(valsMaster);
-    }
-    cplexMaster.exportModel("Master.lp");*/
+    }*/
+    //cplexMaster.exportModel("Master.lp");
     
     IloNumArray valDualEqual(iMaster._Env);
     cplexMaster.getDuals(valDualEqual, iMaster._ConstrEqual);
     IloNumArray valDualInequal(iMaster._Env);
     cplexMaster.getDuals(valDualInequal, iMaster._ConstrInequal);
     int NbReductCostPositive = 0;
+    
+    //cplexMaster.exportModel("Master.lp");
+    iMaster.RemoveColumn(cplexMaster);
 
     for(int j = 0; j < iCompact._m; j++)
     {
@@ -74,12 +81,15 @@ void ColumnGenerationAlgorithm(ModelMaitre & iMaster, ModelCompact & iCompact)
         NbReductCostPositive++;
       //cout << "\n";
     }
-
+    
     if (NbReductCostPositive==iCompact._m)
       break;
+    
   }
 
+  
   //cplexMaster.exportModel("ModelMaitre.lp");
+  cplexMaster.solve();
   double ObjMasterOpt = cplexMaster.getObjValue();
   cout << "Valeur de l'optimum obtenu par generation de colonnes : " << ObjMasterOpt << "\n";
   for(int j = 0; j < iCompact._m; j++)

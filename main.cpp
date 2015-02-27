@@ -33,13 +33,13 @@ int main (int argc, char const *argv[])
     ModelMaitre myMaster(env, myCompact);
 
     //determination des colonnes initiales
-    //myCompact.FindFeasableSolution(myMaster);
+    myCompact.FindFeasableSolution(myMaster);
 
     // Generation de colonnes
-    //ColumnGeneration(myMaster, myCompact);
+    ColumnGeneration(myMaster, myCompact);
 
     // Recherche locale d'une meilleure solution
-    LocalSearch(myCompact);
+    //LocalSearch(myCompact);
 
     // Recherche locale a partir d'une "bonne" solution Cplex
     //SpecificLocalSearch(myCompact);
