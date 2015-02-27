@@ -33,7 +33,7 @@ void ColumnGenerationAlgorithm(ModelMaitre & iMaster, ModelCompact & iCompact)
     cplexMaster.solve();
     cplexMaster.setParam(IloCplex::CutUp, cplexMaster.getObjValue() + CST_EPS);
     
-    if (NbOfIterations%300 == 0)
+    if (NbOfIterations%100 == 0)
       cout << "Cout a la " << NbOfIterations << "e iteration : " << cplexMaster.getObjValue() << "\n";
     /*for (int j = 0; j < iCompact._m; j++) {
       IloNumArray valsMaster(iMaster._Env);
@@ -108,13 +108,15 @@ void ColumnGenerationAlgorithm(ModelMaitre & iMaster, ModelCompact & iCompact)
 
 void ColumnGeneration(ModelMaitre & iMaster, ModelCompact & iCompact)
 {
+  cout << "*************************** Generation de colonnes ****************************\n";
+  cout << "\n----- Iterations et valeur de l'objectif -----\n";
   double BeginColumnGeneration_UserTime = get_wall_time();
   double BeginColumnGeneration_CPUTime = get_cpu_time();
   ColumnGenerationAlgorithm(iMaster, iCompact);
   double EndColumnGeneration_CPUTime = get_cpu_time();
   double EndColumnGeneration_UserTime = get_wall_time();
 
-  cout << "//---------- Generation de colonnes ----------\n";
+  cout << "\n-------------- Temps de calcul ---------------\n";
   double ColumnGeneration_CPUTime = EndColumnGeneration_CPUTime - BeginColumnGeneration_CPUTime;
   cout << "Temps CPU:\t" << ColumnGeneration_CPUTime << "s\n";
   double ColumnGeneration_UserTime = EndColumnGeneration_UserTime - BeginColumnGeneration_UserTime;
