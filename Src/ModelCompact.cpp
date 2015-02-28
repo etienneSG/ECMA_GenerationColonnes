@@ -232,11 +232,11 @@ void ModelCompact::FindFeasableSolution(ModelMaitre & iModelMaitre)
 {
   IloCplex CplexCompact(_Model);
   CplexCompact.setOut(_Model.getEnv().getNullStream());
-  CplexCompact.setParam(IloCplex::IntSolLim, 1);   // defaut : 2100000000 (arret apres la premiere solution entiere)
-  CplexCompact.setParam(IloCplex::NodeSel, 0);     // defaut : 1 (parcours en profondeur)
-//   CplexCompact.setParam(IloCplex::MIPEmphasis, 1);   // defaut : 0 (permet d'avoir une bonne solution realisable rapidement)
-//   CplexCompact.setParam(IloCplex::ParallelMode, -1); // defaut : 0 (Opportuniste (-1) vs. deterministe (+1))
-//   CplexCompact.setParam(IloCplex::TiLim, 10);        // defaut : ? (limite de temps de recherche)
+//  CplexCompact.setParam(IloCplex::IntSolLim, 1);   // defaut : 2100000000 (arret apres la premiere solution entiere)
+//  CplexCompact.setParam(IloCplex::NodeSel, 0);     // defaut : 1 (parcours en profondeur)
+  CplexCompact.setParam(IloCplex::MIPEmphasis, 1);   // defaut : 0 (permet d'avoir une bonne solution realisable rapidement)
+  CplexCompact.setParam(IloCplex::ParallelMode, -1); // defaut : 0 (Opportuniste (-1) vs. deterministe (+1))
+  CplexCompact.setParam(IloCplex::TiLim, 10);        // defaut : ? (limite de temps de recherche)
   CplexCompact.solve();
   _ActualCost = (int)CplexCompact.getObjValue();
   for (int j = 0; j < _m; j++) {

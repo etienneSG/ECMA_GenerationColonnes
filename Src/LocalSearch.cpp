@@ -18,13 +18,13 @@ void LocalSearchAlgorithm(ModelCompact & iModelCompact)
   // Taille maximale des voisinages explores
   int VSize = 2;
   // Nombre de solutions initiales et de recherches locales a faire
-  int PopSize = 16;
+  int PopSize = 8;
   // Taille de l'exploration dans la construction gloutonne-aleatoire
   int RCL = std::max((int)iModelCompact._m / 5, 3);
 
   assert(PopSize > 0);
   vector<ModelCompact> aCompact(PopSize, ModelCompact(iModelCompact));
-  
+
   // Strategie de construction gloutonne aleatoire
   int BuiltStrategy = 0;
 

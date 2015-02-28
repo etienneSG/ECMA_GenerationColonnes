@@ -19,7 +19,8 @@ int main (int argc, char const *argv[])
   srand (time(NULL));
   
   std::string Argument1 = argc>1 ? argv[1] : "GAP/GAP-test.dat";
-
+  std::string Argument2 = argc>2 ? argv[2] : "LocalSearch";
+  
   IloEnv env;
   try {
 
@@ -29,20 +30,20 @@ int main (int argc, char const *argv[])
     // Creation de l'objectif et des contraintes
     myCompact.CreateObjectiveAndConstraintes();
     
-    // Creation du modele maitre
-    ModelMaitre myMaster(env, myCompact);
-
-    //determination des colonnes initiales
-    //myCompact.FindFeasableSolution(myMaster);
-
-    // Generation de colonnes
-    //ColumnGeneration(myMaster, myCompact);
-
-    // Recherche locale d'une meilleure solution
-    LocalSearch(myCompact);
-
-    // Recherche locale a partir d'une "bonne" solution Cplex
-    //SpecificLocalSearch(myCompact);
+    if (Argument2 == "ColumnGen")
+    {
+      ModelMaitre myMaster(env, myCompact);     // Creation du modele maitre
+      myCompact.FindFeasableSolution(myMaster); // Determination des colonnes initiales
+      ColumnGeneration(myMaster, myCompact);    // Generation de colonnes
+    }
+    else if (Argument2 ==  "LocalSearch")
+    {
+      LocalSearch(myCompact);                   // Recherche locale d'une meilleure solution
+    }
+    else if (Argument2 ==  "SpecificLocalSearch")
+    {
+      SpecificLocalSearch(myCompact);           // Recherche locale a partir d'une "bonne" solution Cplex
+    }
     
   }
   catch (IloException& e) {

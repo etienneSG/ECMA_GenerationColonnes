@@ -21,34 +21,24 @@ void ColumnGenerationAlgorithm(ModelMaitre & iMaster, ModelCompact & iCompact)
   IloCplex cplexAux(ModelAux);
   cplexAux.setOut(iMaster._Env.getNullStream());
 
-  // FOR DEBUG ! TO REMOVE
   int NbOfIterations = 0;
   while(true)
   {
-    // FOR DEBUG ! TO REMOVE
     NbOfIterations++;
-    //cout << "Iteration : " << NbOfIterations << "\n";
-    //cout << "//********** Iteration " << NbOfIterations << " **********//\n";
     
     cplexMaster.solve();
     cplexMaster.setParam(IloCplex::CutUp, cplexMaster.getObjValue() + CST_EPS);
     
+    iMaster._ObjValue = cplexMaster.getObjValue();
     if (NbOfIterations%100 == 0)
-      cout << "Cout a la " << NbOfIterations << "e iteration : " << cplexMaster.getObjValue() << "\n";
-    /*for (int j = 0; j < iCompact._m; j++) {
-      IloNumArray valsMaster(iMaster._Env);
-      cplexMaster.getValues(valsMaster, iMaster._Colonnes[j]);
-      PrintArray(valsMaster);
-    }*/
-    //cplexMaster.exportModel("Master.lp");
-    
+      cout << "Cout a la " << NbOfIterations << "e iteration : " << iMaster._ObjValue << "\n";
+
     IloNumArray valDualEqual(iMaster._Env);
     cplexMaster.getDuals(valDualEqual, iMaster._ConstrEqual);
     IloNumArray valDualInequal(iMaster._Env);
     cplexMaster.getDuals(valDualInequal, iMaster._ConstrInequal);
     int NbReductCostPositive = 0;
     
-    //cplexMaster.exportModel("Master.lp");
     iMaster.RemoveColumn(cplexMaster);
 
     for(int j = 0; j < iCompact._m; j++)
@@ -61,10 +51,8 @@ void ColumnGenerationAlgorithm(ModelMaitre & iMaster, ModelCompact & iCompact)
       ConstrAux.setUB(iCompact._b[j]);
       
       cplexAux.solve();
-      //cplexAux.exportModel("ModelAux.lp");
 
       double ObjAuxOpt = cplexAux.getObjValue();
-      //cout << "** Probleme auxiliaire " << j << " (opt " << ObjAuxOpt - valDualInequal[j] << ")";
       if (ObjAuxOpt < valDualInequal[j] - CST_EPS)
       {
         IloNumArray vals(iMaster._Env);
@@ -74,12 +62,9 @@ void ColumnGenerationAlgorithm(ModelMaitre & iMaster, ModelCompact & iCompact)
           Cout+=vals[i]*iCompact._c[j][i];
         }
         iMaster._Colonnes[j].add(IloNumVar( iMaster._Objectif(Cout) + iMaster._ConstrEqual(vals) + iMaster._ConstrInequal[j](1) ));
-        //cout << ", Ajout de colonne de cout " << Cout << " et d'affectation ";
-        //PrintArray(vals);
       }
       else
         NbReductCostPositive++;
-      //cout << "\n";
     }
     
     if (NbReductCostPositive==iCompact._m)
@@ -87,8 +72,6 @@ void ColumnGenerationAlgorithm(ModelMaitre & iMaster, ModelCompact & iCompact)
     
   }
 
-  
-  //cplexMaster.exportModel("ModelMaitre.lp");
   cplexMaster.solve();
   double ObjMasterOpt = cplexMaster.getObjValue();
   cout << "Valeur de l'optimum obtenu par generation de colonnes : " << ObjMasterOpt << "\n";
@@ -99,7 +82,6 @@ void ColumnGenerationAlgorithm(ModelMaitre & iMaster, ModelCompact & iCompact)
     cout << "Machine " << j << "\n";
     PrintArray(vals);
   }
-  //------------------------------
 
   ModelAux.end();
 

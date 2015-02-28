@@ -84,7 +84,8 @@ ModelMaitre::ModelMaitre(IloEnv iEnv,  ModelCompact & iCompact)
   _CoutColonne(iEnv),
   _IsTacheInColonne(iEnv),
   _pCompact(&iCompact),
-  _Colonnes(iEnv)
+  _Colonnes(iEnv),
+  _ObjValue(_pCompact->_ActualCost)
 {
   for (int i = 0; i < iCompact._m; i++)
   {
@@ -113,7 +114,7 @@ ModelMaitre::~ModelMaitre()
 void ModelMaitre::RemoveColumn(const IloCplex & iCplex)
 {
   // Taux de suppression des colonnes inutilisees
-  int SuppRate = iCplex.getObjValue() < _pCompact->_ActualCost ? (_pCompact->_n+_pCompact->_m)/2 : _pCompact->_n+_pCompact->_m;
+  int SuppRate = (_pCompact->_n+_pCompact->_m)*3;
   
   vector<Affectation> UselessColumn;
 //   int NbVar = 0;
@@ -123,7 +124,7 @@ void ModelMaitre::RemoveColumn(const IloCplex & iCplex)
     iCplex.getValues(vals, _Colonnes[j]);
     int NbColumn = vals.getSize();
 //     NbVar += NbColumn;
-    for (int i = 0; i < NbColumn; i++) {
+    for (int i = 0; i < NbColumn-1; i++) {
       double RC = iCplex.getReducedCost(_Colonnes[j][i]);
       if (fabs(vals[i]) < CST_EPS && RC >= 0)
         UselessColumn.push_back(Affectation(j,i,RC));
@@ -134,14 +135,9 @@ void ModelMaitre::RemoveColumn(const IloCplex & iCplex)
 //   cout << "Colonnes inutiles : " << NbUseless << "\r";
   if (NbToRemove > 0)
   {
-//     for (int k = 0; k < NbToRemove; k++) {
-//       swap( UselessColumn[k], UselessColumn[rand()%NbUseless]);
-//     }
     SortAffectationByReducedCost(UselessColumn, 0, NbUseless);
+
     SortAffectation(UselessColumn, 0, NbToRemove);
-//     for (int j = 0; j < _pCompact->_m; j++) {
-//       cout << _Colonnes[j] << "\n";
-//     }
     for (int k = NbToRemove-1; k >= 0; k--) {
 //       cout << "Colonne a supprimer : " << UselessColumn[k]._j << " " << UselessColumn[k]._i << "\n";
       _Colonnes[ UselessColumn[k]._j ][ UselessColumn[k]._i ].end();

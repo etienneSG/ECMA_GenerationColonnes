@@ -1,13 +1,29 @@
 #!/bin/bash
 
-mkdir -p Output
+mkdir -p Output_LocalSearch
+mkdir -p Output_SpecificLocalSearch
+mkdir -p Output_CplexAndLocalSearch
 
 make Clean
 make
 
-for instance in GAP/*.dat
+for instance in GAP/GAP-test.dat
 do
     echo "Recherche de l'instance" $instance
-    output=${instance/GAP/Output}
-    ./Bin/MonExec ${instance} > ${output}
+    output=${instance/GAP/Output_LocalSearch}
+    ./Bin/MonExec ${instance} LocalSearch > ${output}
+done
+
+for instance in GAP/GAP-test.dat
+do
+    echo "Recherche de l'instance" $instance
+    output=${instance/GAP/Output_CplexAndLocalSearch}
+    ./Bin/MonExec ${instance} SpecificLocalSearch > ${output}
+done
+
+for instance in GAP/GAP-test.dat
+do
+    echo "Recherche de l'instance" $instance
+    output=${instance/GAP/Output_ColumnGeneration}
+    ./Bin/MonExec ${instance} ColumnGen > ${output}
 done

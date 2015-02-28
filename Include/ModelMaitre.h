@@ -43,6 +43,7 @@ public:
   
   /** Variables */
   NumVarMatrix _Colonnes;
+  double _ObjValue;               // Valeur courante de l'objectif
   
   /** Objectif et contraintes */
   IloObjective _Objectif;         // Objectif
