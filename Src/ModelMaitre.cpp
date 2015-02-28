@@ -114,7 +114,7 @@ ModelMaitre::~ModelMaitre()
 void ModelMaitre::RemoveColumn(const IloCplex & iCplex)
 {
   // Taux de suppression des colonnes inutilisees
-  int SuppRate = (_pCompact->_n+_pCompact->_m)*3;
+  int SuppRate = (_pCompact->_n+_pCompact->_m)/2;
   
   vector<Affectation> UselessColumn;
 //   int NbVar = 0;

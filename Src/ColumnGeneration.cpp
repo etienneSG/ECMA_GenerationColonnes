@@ -1,7 +1,11 @@
 #include "ColumnGeneration.h"
 
 #include "timetools.h"
+#include "KnapSack.h"
 #include <iostream>
+#include <vector>
+
+#include <omp.h>
 
 using namespace std;
 
@@ -15,11 +19,16 @@ void ColumnGenerationAlgorithm(ModelMaitre & iMaster, ModelCompact & iCompact)
 
   // Modele auxiliaire
   IloModel ModelAux(iMaster._Env);
-  IloBoolVarArray z(iMaster._Env, iCompact._n);
-  IloObjective ObjAux = IloAdd(ModelAux, IloMinimize(iMaster._Env,1));
-  IloRange ConstrAux = IloAdd(ModelAux, IloScalProd(IloNumArray(iMaster._Env, iCompact._n) , z) <= 0);
+  //IloBoolVarArray z(iMaster._Env, iCompact._n);
+  //IloObjective ObjAux = IloAdd(ModelAux, IloMinimize(iMaster._Env,1));
+  //IloRange ConstrAux = IloAdd(ModelAux, IloScalProd(IloNumArray(iMaster._Env, iCompact._n) , z) <= 0);
   IloCplex cplexAux(ModelAux);
   cplexAux.setOut(iMaster._Env.getNullStream());
+
+  vector< vector<int> > a( iCompact._m, vector<int>(iCompact._n, 0) );
+  for (int j = 0; j < iCompact._m; j++)
+    for (int i = 0; i < iCompact._n; i++)
+      a[j][i] = iCompact._a[j][i];
 
   int NbOfIterations = 0;
   while(true)
@@ -41,30 +50,37 @@ void ColumnGenerationAlgorithm(ModelMaitre & iMaster, ModelCompact & iCompact)
     
     iMaster.RemoveColumn(cplexMaster);
 
-    for(int j = 0; j < iCompact._m; j++)
+    IloEnv env = iMaster._Env;
+    int j;
+//     #pragma omp parallel for schedule(dynamic) private(j, env)
+    for(j = 0; j < iCompact._m; j++)
     {
-      IloNumArray CoefConstrAux(iMaster._Env, iCompact._n);
-      for (int i = 0; i < iCompact._n; i++)
-        CoefConstrAux[i] = iCompact._c[j][i] - valDualEqual[i];
-      ObjAux.setExpr(IloScalProd(CoefConstrAux, z));
-      ConstrAux.setExpr(IloScalProd(iCompact._a[j], z));
-      ConstrAux.setUB(iCompact._b[j]);
+      int Idx = j;
       
-      cplexAux.solve();
-
-      double ObjAuxOpt = cplexAux.getObjValue();
-      if (ObjAuxOpt < valDualInequal[j] - CST_EPS)
+      vector<int> CoefConstrAux(iCompact._n, 0);
+      for (int i = 0; i < iCompact._n; i++)
+        CoefConstrAux[i] = valDualEqual[i] - iCompact._c[Idx][i];
+      IloNumArray vals(env, iCompact._n);
+      double ObjAuxOpt = knapSack(iCompact._b[Idx], a[Idx], CoefConstrAux, iCompact._n, vals);
+      if (-ObjAuxOpt < valDualInequal[Idx] - CST_EPS)
       {
-        IloNumArray vals(iMaster._Env);
-        cplexAux.getValues(vals, z);
         IloInt Cout(0);
         for (int i = 0; i < iCompact._n; i++){
-          Cout+=vals[i]*iCompact._c[j][i];
+          Cout+=vals[i]*iCompact._c[Idx][i];
         }
-        iMaster._Colonnes[j].add(IloNumVar( iMaster._Objectif(Cout) + iMaster._ConstrEqual(vals) + iMaster._ConstrInequal[j](1) ));
+//         #pragma omp critical
+        {
+          iMaster._Colonnes[Idx].add(IloNumVar( iMaster._Objectif(Cout) + iMaster._ConstrEqual(vals) + iMaster._ConstrInequal[Idx](1) ));
+        }
       }
       else
-        NbReductCostPositive++;
+      {
+//         #pragma omp critical
+        {
+          NbReductCostPositive++;
+        }
+      }
+      vals.end();
     }
     
     if (NbReductCostPositive==iCompact._m)
