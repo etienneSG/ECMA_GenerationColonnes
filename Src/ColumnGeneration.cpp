@@ -18,14 +18,7 @@ void ColumnGenerationAlgorithm(ModelMaitre & iMaster, ModelCompact & iCompact)
   cplexMaster.setParam(IloCplex::CutUp, iCompact._ActualCost + CST_EPS);
 
   // Modele auxiliaire
-  IloModel ModelAux(iMaster._Env);
-  //IloBoolVarArray z(iMaster._Env, iCompact._n);
-  //IloObjective ObjAux = IloAdd(ModelAux, IloMinimize(iMaster._Env,1));
-  //IloRange ConstrAux = IloAdd(ModelAux, IloScalProd(IloNumArray(iMaster._Env, iCompact._n) , z) <= 0);
-  IloCplex cplexAux(ModelAux);
-  cplexAux.setOut(iMaster._Env.getNullStream());
-
-  vector< vector<int> > a( iCompact._m, vector<int>(iCompact._n, 0) );
+  vector< vector<double> > a( iCompact._m, vector<double>(iCompact._n, 0) );  // Vecteurs des coefficients des contraintes
   for (int j = 0; j < iCompact._m; j++)
     for (int i = 0; i < iCompact._n; i++)
       a[j][i] = iCompact._a[j][i];
@@ -36,9 +29,10 @@ void ColumnGenerationAlgorithm(ModelMaitre & iMaster, ModelCompact & iCompact)
     NbOfIterations++;
     
     cplexMaster.solve();
-    cplexMaster.setParam(IloCplex::CutUp, cplexMaster.getObjValue() + CST_EPS);
-    
     iMaster._ObjValue = cplexMaster.getObjValue();
+    
+    cplexMaster.setParam(IloCplex::CutUp, iMaster._ObjValue + CST_EPS);
+    
     if (NbOfIterations%100 == 0)
       cout << "Cout a la " << NbOfIterations << "e iteration : " << iMaster._ObjValue << "\n";
 
@@ -52,36 +46,39 @@ void ColumnGenerationAlgorithm(ModelMaitre & iMaster, ModelCompact & iCompact)
 
     IloEnv env = iMaster._Env;
     int j;
-//     #pragma omp parallel for schedule(dynamic) private(j, env)
+    #pragma omp parallel for schedule(dynamic) private(j, env)
     for(j = 0; j < iCompact._m; j++)
     {
       int Idx = j;
-      
-      vector<int> CoefConstrAux(iCompact._n, 0);
+
+      vector<double> CoefConstrAux(iCompact._n, 0);  // Vecteur des couts de l'objectif
       for (int i = 0; i < iCompact._n; i++)
         CoefConstrAux[i] = valDualEqual[i] - iCompact._c[Idx][i];
       IloNumArray vals(env, iCompact._n);
-      double ObjAuxOpt = knapSack(iCompact._b[Idx], a[Idx], CoefConstrAux, iCompact._n, vals);
-      if (-ObjAuxOpt < valDualInequal[Idx] - CST_EPS)
+      double ObjAuxOpt = knapSack((double)iCompact._b[Idx], a[Idx], CoefConstrAux, iCompact._n, vals);
+      if (-ObjAuxOpt < valDualInequal[Idx])
       {
         IloInt Cout(0);
         for (int i = 0; i < iCompact._n; i++){
           Cout+=vals[i]*iCompact._c[Idx][i];
         }
-//         #pragma omp critical
+        #pragma omp critical
         {
           iMaster._Colonnes[Idx].add(IloNumVar( iMaster._Objectif(Cout) + iMaster._ConstrEqual(vals) + iMaster._ConstrInequal[Idx](1) ));
         }
       }
       else
       {
-//         #pragma omp critical
+        #pragma omp critical
         {
           NbReductCostPositive++;
         }
       }
       vals.end();
     }
+    
+    valDualEqual.end();
+    valDualInequal.end();
     
     if (NbReductCostPositive==iCompact._m)
       break;
@@ -97,9 +94,8 @@ void ColumnGenerationAlgorithm(ModelMaitre & iMaster, ModelCompact & iCompact)
     cplexMaster.getValues(vals, iMaster._Colonnes[j]);
     cout << "Machine " << j << "\n";
     PrintArray(vals);
+    vals.end();
   }
-
-  ModelAux.end();
 
 }
 

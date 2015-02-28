@@ -1,14 +1,16 @@
 #include "KnapSack.h"
+#include "ConstantsAndTypes.h"
 #include <algorithm>
 #include <stdio.h>
+#include <math.h>
 
 using namespace std;
 
 
-int knapSack(int W, vector<int> wt, vector<int> val, int n, IloNumArray oSol)
+int knapSack(double W, vector<double> wt, vector<double> val, int n, IloNumArray oSol)
 {
   int i, w;
-  vector< vector<int> > K(n+1, vector<int>(W+1,0));
+  vector< vector<double> > K(n+1, vector<double>(W+1,0));
  
   // Build table K[][] in bottom up manner
   for (i = 0; i <= n; i++)
@@ -26,11 +28,11 @@ int knapSack(int W, vector<int> wt, vector<int> val, int n, IloNumArray oSol)
 
   // Creation of the object list
   i = n; w = W;
-  while (K[i][w]==K[i][w-1])
+  while (fabs(K[i][w] - K[i][w-1]) < CST_EPS)
     w--;
   while (w > 0)
   {
-    while (i > 0 && K[i][w]==K[i-1][w]) {
+    while (i > 0 && fabs(K[i][w]-K[i-1][w]) < CST_EPS) {
       oSol[i-1] = 0;
       i--;
     }

@@ -22,7 +22,7 @@
  *              (Assume that it is initialize with n elements !)
  * @return: the optimal value of the knapsack
  */
-int knapSack(int W, std::vector<int> wt, std::vector<int> val, int n, IloNumArray oSol);
+int knapSack(double W, std::vector<double> wt, std::vector<double> val, int n, IloNumArray oSol);
 
 #endif
 

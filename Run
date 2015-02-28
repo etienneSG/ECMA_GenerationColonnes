@@ -8,7 +8,7 @@ make Clean
 make
 
 echo "********************* Recherche Locale *********************"
-for instance in GAP/GAP-*.dat
+for instance in GAP/GAP-g*.dat
 do
     echo "Recherche de l'instance" $instance
     output=${instance/GAP/Output_LocalSearch}
@@ -16,7 +16,7 @@ do
 done
 echo
 echo "***** Recherche locale depuis une bonne solution Cplex *****"
-for instance in GAP/GAP-*.dat
+for instance in GAP/GAP-g*.dat
 do
     echo "Recherche de l'instance" $instance
     output=${instance/GAP/Output_CplexAndLocalSearch}
