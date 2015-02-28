@@ -1,85 +1,53 @@
 ******************** Construction des solutions initiales *********************
------ Solution 4 -----
-Cout de la solution courante : 1883
------ Solution 3 -----
-Cout de la solution courante : 1771
------ Solution 2 -----
-Cout de la solution courante : 1437
------ Solution 6 -----
-Cout de la solution courante : 1811
------ Solution 8 -----
-Cout de la solution courante : 1905
 ----- Solution 5 -----
-Cout de la solution courante : 1821
------ Solution 11 -----
-Cout de la solution courante : 1776
------ Solution 10 -----
-Cout de la solution courante : 1994
+Cout de la solution courante : 1954
+----- Solution 4 -----
+Cout de la solution courante : 1806
+----- Solution 3 -----
+Cout de la solution courante : 1922
+----- Solution 2 -----
+Cout de la solution courante : 1425
+----- Solution 6 -----
+Cout de la solution courante : 1904
 ----- Solution 7 -----
-Cout de la solution courante : 1805
------ Solution 12 -----
-Cout de la solution courante : 1921
------ Solution 15 -----
-Cout de la solution courante : 1852
------ Solution 9 -----
-Cout de la solution courante : 1798
------ Solution 13 -----
-Cout de la solution courante : 1885
------ Solution 14 -----
-Cout de la solution courante : 1944
+Cout de la solution courante : 1941
 ----- Solution 0 -----
 Cout de la solution courante : 2838
 ----- Solution 1 -----
 Cout de la solution courante : 1380
 
 ****************************** Recherche Locale *******************************
------ Solution 1 -----
-Cout de la solution courante : 1380
 ----- Solution 2 -----
-Cout de la solution courante : 1378
------ Solution 6 -----
-Cout de la solution courante : 1371
+Cout de la solution courante : 1373
+----- Solution 1 -----
+Cout de la solution courante : 1368
+----- Solution 0 -----
+Cout de la solution courante : 1366
+----- Solution 4 -----
+Cout de la solution courante : 1364
 ----- Solution 3 -----
 Cout de la solution courante : 1363
------ Solution 5 -----
-Cout de la solution courante : 1366
 ----- Solution 7 -----
-Cout de la solution courante : 1381
------ Solution 4 -----
-Cout de la solution courante : 1370
------ Solution 0 -----
+Cout de la solution courante : 1363
+----- Solution 6 -----
 Cout de la solution courante : 1369
------ Solution 9 -----
-Cout de la solution courante : 1370
------ Solution 8 -----
+----- Solution 5 -----
 Cout de la solution courante : 1364
------ Solution 10 -----
-Cout de la solution courante : 1369
------ Solution 11 -----
-Cout de la solution courante : 1369
------ Solution 12 -----
-Cout de la solution courante : 1364
------ Solution 13 -----
-Cout de la solution courante : 1372
------ Solution 15 -----
-Cout de la solution courante : 1368
------ Solution 14 -----
-Cout de la solution courante : 1366
 
 ************************************ Bilan ************************************
-Meilleure valeure obtenue par le glouton : 1437
-Solutions admissibles avant la recherche locale : 0 1 3 4 5 2 6 7 8 9 10 11 12 13 14 15 
-Solutions admissibles apres la recherche locale : 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 
+Meilleure valeure obtenue par le glouton : 1425
+Solutions admissibles avant la recherche locale : 0 1 2 5 4 6 3 7 
+Solutions admissibles apres la recherche locale : 0 1 2 3 4 5 6 7 
 
 ----- Optimum local -----
 Cout de la solution courante : 1363
 Affectation
-0	0	6	7	5	2	4	7	2	2	5	0	8	3	1	2	6	1	2	1	4	2	1	1	0	0	3	7	7	5	5	5	0	6	9	0	7	0	3	3	8	5	5	3	3	6	6	7	2	9	5	9	4	0	0	8	8	1	8	2	3	3	8	2	4	4	8	9	6	8	1	6	2	8	4	8	0	7	5	2	1	5	1	0	5	7	7	8	7	6	9	2	6	0	5	1	9	9	7	3	
+1	0	4	5	5	2	4	7	2	2	5	4	8	3	5	2	6	1	2	7	4	2	1	1	0	0	1	7	7	5	5	5	0	6	2	0	7	0	3	3	8	5	5	3	3	6	6	7	2	9	5	9	4	0	0	8	8	0	8	2	3	3	8	5	4	4	8	9	6	8	1	6	2	8	4	8	0	7	5	2	1	9	1	0	5	7	7	8	7	6	9	2	0	0	7	1	9	9	7	3	
 Capacites
-190	168	189	118	95	184	112	182	184	73	
+189	147	189	108	114	186	81	182	184	89	
 
 ---- Temps de calcul ----
-Temps CPU:         0.539274s
-Temps utilisateur: 0.102747s
+Temps CPU:         0.165057s
+Temps utilisateur: 0.0470169s
 
 Well done !

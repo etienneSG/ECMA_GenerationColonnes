@@ -1,85 +1,53 @@
 ******************** Construction des solutions initiales *********************
------ Solution 4 -----
-Cout de la solution courante : 124736
------ Solution 8 -----
-Cout de la solution courante : 111522
------ Solution 6 -----
-Cout de la solution courante : 105702
------ Solution 2 -----
-Cout de la solution courante : 169023
 ----- Solution 5 -----
-Cout de la solution courante : 111137
+Cout de la solution courante : 101454
+----- Solution 6 -----
+Cout de la solution courante : 123603
 ----- Solution 7 -----
-Cout de la solution courante : 83915
+Cout de la solution courante : 108360
+----- Solution 4 -----
+Cout de la solution courante : 105304
+----- Solution 2 -----
+Cout de la solution courante : 166398
 ----- Solution 3 -----
-Cout de la solution courante : 99688
------ Solution 9 -----
-Cout de la solution courante : 89554
------ Solution 11 -----
-Cout de la solution courante : 103413
------ Solution 10 -----
-Cout de la solution courante : 105571
------ Solution 13 -----
-Cout de la solution courante : 98142
------ Solution 12 -----
-Cout de la solution courante : 111758
------ Solution 15 -----
-Cout de la solution courante : 102188
------ Solution 14 -----
-Cout de la solution courante : 95077
+Cout de la solution courante : 120914
 ----- Solution 0 -----
 Cout de la solution courante : 7136
 ----- Solution 1 -----
 Cout de la solution courante : 7035
 
 ****************************** Recherche Locale *******************************
------ Solution 0 -----
-Cout de la solution courante : 6993
------ Solution 1 -----
-Cout de la solution courante : 7017
------ Solution 5 -----
-Cout de la solution courante : 7006
------ Solution 2 -----
-Cout de la solution courante : 7036
------ Solution 3 -----
-Cout de la solution courante : 6978
------ Solution 4 -----
-Cout de la solution courante : 7100
------ Solution 9 -----
-Cout de la solution courante : 6963
 ----- Solution 7 -----
-Cout de la solution courante : 6996
------ Solution 8 -----
-Cout de la solution courante : 7039
------ Solution 12 -----
-Cout de la solution courante : 6992
------ Solution 10 -----
-Cout de la solution courante : 6966
+Cout de la solution courante : 6794
+----- Solution 1 -----
+Cout de la solution courante : 6768
+----- Solution 0 -----
+Cout de la solution courante : 6754
+----- Solution 3 -----
+Cout de la solution courante : 6698
+----- Solution 4 -----
+Cout de la solution courante : 6778
+----- Solution 5 -----
+Cout de la solution courante : 6795
+----- Solution 2 -----
+Cout de la solution courante : 6688
 ----- Solution 6 -----
-Cout de la solution courante : 6961
------ Solution 15 -----
-Cout de la solution courante : 7081
------ Solution 13 -----
-Cout de la solution courante : 6910
------ Solution 11 -----
-Cout de la solution courante : 6947
------ Solution 14 -----
-Cout de la solution courante : 6965
+Cout de la solution courante : 6633
 
 ************************************ Bilan ************************************
 Meilleure valeure obtenue par le glouton : 1493250
 Solutions admissibles avant la recherche locale : 0 1 
-Solutions admissibles apres la recherche locale : 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 
+Solutions admissibles apres la recherche locale : 0 1 2 3 4 5 6 7 
 
 ----- Optimum local -----
-Cout de la solution courante : 6910
+Cout de la solution courante : 6633
 Affectation
-1	2	1	0	1	0	2	2	0	3	0	4	2	3	1	3	1	1	0	3	0	3	3	3	0	1	0	4	2	0	0	2	1	1	3	2	4	1	3	4	3	0	1	0	1	3	4	2	3	2	2	3	2	4	4	2	1	0	3	2	4	2	2	4	3	4	4	3	0	3	4	4	0	3	0	1	4	4	1	4	1	0	0	0	2	0	3	0	2	3	1	0	2	1	3	1	3	3	1	3	
+1	2	2	0	1	4	1	0	4	3	2	4	0	1	3	2	1	0	1	4	1	3	2	0	4	3	2	2	3	3	3	4	1	0	0	2	0	3	1	3	4	3	2	1	3	0	4	2	0	0	4	1	1	0	1	2	1	4	4	1	2	1	1	3	3	4	4	1	2	4	2	0	4	1	0	2	0	4	1	1	3	0	0	4	2	2	3	0	2	4	0	0	4	3	2	4	3	2	3	1	
 Capacites
-797	752	805	820	867	
+796	758	809	820	867	
 
 ---- Temps de calcul ----
-Temps CPU:         0.48315s
-Temps utilisateur: 0.0862279s
+Temps CPU:         0.307552s
+Temps utilisateur: 0.0638399s
 
 Well done !

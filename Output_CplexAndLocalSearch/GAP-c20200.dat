@@ -12,11 +12,11 @@ Capacites
 ************************************ Bilan ************************************
 
 ---- Recherche Cplex -----
-Temps CPU:         9.26211s
-Temps utilisateur: 1.22792s
+Temps CPU:         13.8951s
+Temps utilisateur: 1.80618s
 
 ---- Recherche locale ----
-Temps CPU:         0.005377s
-Temps utilisateur: 0.005373s
+Temps CPU:         0.246321s
+Temps utilisateur: 0.246154s
 
 Well done !

@@ -1,85 +1,53 @@
 ******************** Construction des solutions initiales *********************
------ Solution 8 -----
-Cout de la solution courante : 6564
------ Solution 6 -----
-Cout de la solution courante : 4843
------ Solution 4 -----
-Cout de la solution courante : 11025
------ Solution 5 -----
-Cout de la solution courante : 4502
 ----- Solution 2 -----
-Cout de la solution courante : 2696
+Cout de la solution courante : 3328
 ----- Solution 7 -----
-Cout de la solution courante : 5277
+Cout de la solution courante : 4411
+----- Solution 6 -----
+Cout de la solution courante : 5720
 ----- Solution 3 -----
-Cout de la solution courante : 6563
------ Solution 9 -----
-Cout de la solution courante : 6412
------ Solution 10 -----
-Cout de la solution courante : 6050
------ Solution 11 -----
-Cout de la solution courante : 7435
------ Solution 12 -----
-Cout de la solution courante : 7758
------ Solution 14 -----
-Cout de la solution courante : 3802
------ Solution 13 -----
-Cout de la solution courante : 5908
------ Solution 15 -----
-Cout de la solution courante : 4471
+Cout de la solution courante : 3883
+----- Solution 5 -----
+Cout de la solution courante : 3891
+----- Solution 4 -----
+Cout de la solution courante : 5366
 ----- Solution 0 -----
 Cout de la solution courante : 3139
 ----- Solution 1 -----
 Cout de la solution courante : 1333
 
 ****************************** Recherche Locale *******************************
------ Solution 1 -----
-Cout de la solution courante : 1326
 ----- Solution 2 -----
-Cout de la solution courante : 1313
------ Solution 5 -----
-Cout de la solution courante : 1254
------ Solution 6 -----
-Cout de la solution courante : 1295
------ Solution 3 -----
-Cout de la solution courante : 1298
------ Solution 9 -----
-Cout de la solution courante : 1300
------ Solution 4 -----
-Cout de la solution courante : 1276
------ Solution 0 -----
-Cout de la solution courante : 1250
------ Solution 8 -----
-Cout de la solution courante : 1227
------ Solution 7 -----
 Cout de la solution courante : 1241
------ Solution 12 -----
-Cout de la solution courante : 1382
------ Solution 10 -----
-Cout de la solution courante : 1301
------ Solution 11 -----
-Cout de la solution courante : 1251
------ Solution 13 -----
-Cout de la solution courante : 1272
------ Solution 14 -----
-Cout de la solution courante : 1231
------ Solution 15 -----
-Cout de la solution courante : 1421
+----- Solution 1 -----
+Cout de la solution courante : 1239
+----- Solution 4 -----
+Cout de la solution courante : 1240
+----- Solution 6 -----
+Cout de la solution courante : 1240
+----- Solution 5 -----
+Cout de la solution courante : 1216
+----- Solution 7 -----
+Cout de la solution courante : 1199
+----- Solution 0 -----
+Cout de la solution courante : 1200
+----- Solution 3 -----
+Cout de la solution courante : 1203
 
 ************************************ Bilan ************************************
 Meilleure valeure obtenue par le glouton : 2961700
-Solutions admissibles avant la recherche locale : 1 0 
-Solutions admissibles apres la recherche locale : 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 
+Solutions admissibles avant la recherche locale : 0 1 
+Solutions admissibles apres la recherche locale : 0 1 2 3 4 5 6 7 
 
 ----- Optimum local -----
-Cout de la solution courante : 1227
+Cout de la solution courante : 1199
 Affectation
-11	0	12	15	12	12	0	19	7	9	5	6	4	13	8	11	10	17	17	19	15	3	9	4	18	14	2	0	16	14	2	19	16	5	0	2	14	6	11	16	1	9	5	6	19	7	15	1	4	9	17	10	6	3	9	5	12	10	2	15	3	1	14	0	1	0	13	10	11	15	10	3	11	7	13	8	8	5	13	16	18	4	14	10	11	12	3	13	7	2	4	17	7	8	17	5	6	18	18	8	
+11	2	12	7	17	18	12	19	7	2	5	6	4	12	8	11	10	17	17	18	15	3	0	4	15	14	2	0	16	18	4	16	19	1	0	5	14	6	6	16	1	9	8	6	19	7	15	1	4	9	11	3	0	0	9	5	12	5	13	15	3	5	14	17	1	0	13	10	7	2	10	7	4	9	13	8	8	5	13	16	18	6	8	10	11	12	11	13	7	2	14	5	1	19	17	5	3	17	18	14	
 Capacites
-66	63	64	60	57	66	68	61	65	62	63	62	59	59	63	64	57	41	66	57	
+66	67	66	59	68	67	61	68	68	48	38	50	62	64	55	43	64	68	65	61	
 
 ---- Temps de calcul ----
-Temps CPU:         0.874132s
-Temps utilisateur: 0.172249s
+Temps CPU:         0.366214s
+Temps utilisateur: 0.0872591s
 
 Well done !

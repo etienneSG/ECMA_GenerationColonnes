@@ -1,32 +1,16 @@
 ******************** Construction des solutions initiales *********************
------ Solution 6 -----
-Cout de la solution courante : 12856
------ Solution 5 -----
-Cout de la solution courante : 15251
------ Solution 4 -----
-Cout de la solution courante : 14156
------ Solution 8 -----
-Cout de la solution courante : 15945
------ Solution 2 -----
-Cout de la solution courante : 5870
------ Solution 3 -----
-Cout de la solution courante : 12065
 ----- Solution 7 -----
-Cout de la solution courante : 11968
------ Solution 9 -----
-Cout de la solution courante : 17882
------ Solution 11 -----
-Cout de la solution courante : 7113
------ Solution 10 -----
-Cout de la solution courante : 12441
------ Solution 12 -----
-Cout de la solution courante : 12432
------ Solution 14 -----
-Cout de la solution courante : 14716
------ Solution 13 -----
-Cout de la solution courante : 12348
------ Solution 15 -----
-Cout de la solution courante : 5972
+Cout de la solution courante : 13884
+----- Solution 5 -----
+Cout de la solution courante : 11717
+----- Solution 6 -----
+Cout de la solution courante : 17340
+----- Solution 4 -----
+Cout de la solution courante : 14346
+----- Solution 2 -----
+Cout de la solution courante : 6172
+----- Solution 3 -----
+Cout de la solution courante : 9938
 ----- Solution 0 -----
 Cout de la solution courante : 5703
 ----- Solution 1 -----
@@ -34,52 +18,36 @@ Cout de la solution courante : 3329
 
 ****************************** Recherche Locale *******************************
 ----- Solution 1 -----
-Cout de la solution courante : 3253
------ Solution 2 -----
-Cout de la solution courante : 3251
------ Solution 6 -----
-Cout de la solution courante : 3238
------ Solution 3 -----
-Cout de la solution courante : 3242
------ Solution 4 -----
-Cout de la solution courante : 3239
------ Solution 0 -----
-Cout de la solution courante : 3237
------ Solution 5 -----
-Cout de la solution courante : 3238
------ Solution 8 -----
-Cout de la solution courante : 3239
------ Solution 9 -----
-Cout de la solution courante : 3237
------ Solution 10 -----
-Cout de la solution courante : 3240
------ Solution 7 -----
-Cout de la solution courante : 3239
------ Solution 11 -----
-Cout de la solution courante : 3238
------ Solution 14 -----
-Cout de la solution courante : 3240
------ Solution 15 -----
-Cout de la solution courante : 3237
------ Solution 12 -----
-Cout de la solution courante : 3238
------ Solution 13 -----
 Cout de la solution courante : 3243
+----- Solution 2 -----
+Cout de la solution courante : 3235
+----- Solution 6 -----
+Cout de la solution courante : 3236
+----- Solution 7 -----
+Cout de la solution courante : 3241
+----- Solution 0 -----
+Cout de la solution courante : 3235
+----- Solution 4 -----
+Cout de la solution courante : 3235
+----- Solution 3 -----
+Cout de la solution courante : 3235
+----- Solution 5 -----
+Cout de la solution courante : 3235
 
 ************************************ Bilan ************************************
 Meilleure valeure obtenue par le glouton : 1508500
-Solutions admissibles avant la recherche locale : 0 1 
-Solutions admissibles apres la recherche locale : 0 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15 
+Solutions admissibles avant la recherche locale : 1 0 
+Solutions admissibles apres la recherche locale : 0 1 2 3 4 5 6 7 
 
 ----- Optimum local -----
-Cout de la solution courante : 3237
+Cout de la solution courante : 3235
 Affectation
-2	4	2	4	1	2	0	4	0	3	3	1	4	0	4	0	4	3	0	2	0	0	1	0	1	2	4	3	3	4	1	3	0	4	2	3	0	0	2	1	1	1	2	4	3	0	1	2	0	3	1	4	1	2	3	4	0	1	3	4	2	1	0	3	3	1	0	2	2	2	4	4	2	3	2	4	4	1	1	0	3	1	0	0	3	1	3	4	0	2	1	4	3	1	4	4	4	0	1	4	3	2	0	3	0	1	0	0	0	3	0	4	1	0	0	4	2	0	2	4	2	1	4	1	3	4	1	0	0	0	1	0	3	4	2	1	3	1	1	0	2	0	2	3	0	2	4	3	0	3	2	4	2	3	3	0	1	1	2	2	2	0	3	0	4	1	4	3	1	2	2	4	3	4	1	2	4	3	3	3	4	3	2	1	0	4	3	1	2	2	2	0	3	2	3	3	1	0	4	4	
+2	4	2	4	1	2	0	4	0	3	3	1	0	0	4	0	4	3	0	2	0	0	1	3	1	2	4	3	3	4	1	3	0	4	2	0	0	0	2	1	1	1	2	4	3	0	1	2	0	3	1	4	1	2	3	4	0	1	3	4	2	1	0	3	3	1	0	2	2	2	4	4	2	3	2	4	4	1	1	0	3	1	0	0	3	1	3	4	0	2	1	4	3	1	4	4	4	0	1	4	3	2	0	3	0	1	0	0	0	3	0	4	1	0	0	4	2	0	2	4	2	1	4	1	3	4	1	0	0	0	1	0	3	4	2	1	3	1	1	0	2	0	2	3	0	2	4	3	0	3	2	4	2	3	3	0	1	1	2	2	2	0	3	0	4	1	4	3	1	2	2	4	3	4	1	2	4	3	3	3	4	3	2	1	0	4	3	1	2	2	2	0	3	2	3	3	1	4	4	4	
 Capacites
-661	595	539	537	623	
+669	595	539	551	611	
 
 ---- Temps de calcul ----
-Temps CPU:         0.515229s
-Temps utilisateur: 0.0964701s
+Temps CPU:         0.300647s
+Temps utilisateur: 0.0666749s
 
 Well done !

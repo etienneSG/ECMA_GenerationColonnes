@@ -1,22 +1,22 @@
 ************************** Cplex et recherche locale **************************
 Cplex trouve une solution admissible en moins de 7 secondes.
-Cout de la solution courante : 12451
+Cout de la solution courante : 12450
 
 Solution trouvee en cherchant localement depuis la precedente :
-Cout de la solution courante : 12451
+Cout de la solution courante : 12450
 Affectation
-7	0	7	7	0	4	8	1	8	3	4	0	8	4	0	8	4	7	9	2	0	3	6	0	7	3	3	9	8	0	1	5	7	3	6	2	8	2	5	8	0	3	8	0	2	7	5	1	7	0	8	1	9	5	3	0	1	2	7	7	2	7	1	9	9	2	4	6	6	7	4	1	7	3	6	3	9	8	0	6	5	0	1	0	1	5	0	3	6	1	0	9	5	5	6	5	1	5	4	2	5	5	8	2	3	1	3	8	5	4	2	2	1	9	5	3	5	5	9	8	4	2	8	3	6	6	0	3	1	6	9	4	1	3	6	3	2	2	7	1	3	6	1	2	0	7	9	7	9	6	9	5	9	3	6	6	9	3	4	4	2	8	1	4	2	5	4	6	0	4	4	8	1	2	2	4	0	7	8	5	5	0	7	6	9	4	8	5	3	8	8	4	7	2	1	6	6	3	8	3	
+7	0	7	7	0	4	8	9	8	2	4	0	8	4	0	8	4	7	5	2	0	3	6	0	7	1	3	9	8	0	1	5	7	3	6	2	3	2	5	8	0	3	8	0	2	7	5	6	4	0	8	1	9	5	9	3	1	2	4	7	2	7	1	7	9	2	4	8	5	7	4	1	7	9	6	3	9	8	0	6	1	0	1	0	1	5	0	3	6	1	0	9	5	5	6	5	1	5	4	2	5	5	8	5	3	1	3	8	5	4	2	8	9	4	5	3	5	5	9	8	9	2	8	3	6	6	0	3	1	3	9	4	1	3	6	3	2	2	7	1	5	6	1	2	0	7	9	7	9	6	9	5	0	2	6	6	3	3	4	4	2	8	1	9	2	5	1	6	0	4	4	8	1	2	2	4	0	7	0	3	5	0	7	6	4	4	6	5	6	8	8	4	7	2	9	1	6	3	9	3	
 Capacites
-794	816	758	772	791	791	803	804	832	893	
+794	816	756	776	791	791	805	803	833	892	
 
 ************************************ Bilan ************************************
 
 ---- Recherche Cplex -----
-Temps CPU:         51.9728s
-Temps utilisateur: 7.00576s
+Temps CPU:         54.6993s
+Temps utilisateur: 7.00527s
 
 ---- Recherche locale ----
-Temps CPU:         0.002698s
-Temps utilisateur: 0.00270391s
+Temps CPU:         0.208818s
+Temps utilisateur: 0.208678s
 
 Well done !

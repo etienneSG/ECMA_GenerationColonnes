@@ -1,85 +1,53 @@
 ******************** Construction des solutions initiales *********************
------ Solution 3 -----
-Cout de la solution courante : 124499
------ Solution 2 -----
-Cout de la solution courante : 133731
------ Solution 7 -----
-Cout de la solution courante : 140384
------ Solution 9 -----
-Cout de la solution courante : 102646
------ Solution 8 -----
-Cout de la solution courante : 136563
 ----- Solution 5 -----
-Cout de la solution courante : 133698
------ Solution 6 -----
-Cout de la solution courante : 99385
+Cout de la solution courante : 149816
+----- Solution 3 -----
+Cout de la solution courante : 103447
 ----- Solution 4 -----
-Cout de la solution courante : 136527
------ Solution 11 -----
-Cout de la solution courante : 140013
------ Solution 10 -----
-Cout de la solution courante : 137533
------ Solution 12 -----
-Cout de la solution courante : 120989
------ Solution 13 -----
-Cout de la solution courante : 160833
------ Solution 15 -----
-Cout de la solution courante : 165866
------ Solution 14 -----
-Cout de la solution courante : 107767
+Cout de la solution courante : 88242
+----- Solution 2 -----
+Cout de la solution courante : 136579
+----- Solution 7 -----
+Cout de la solution courante : 125331
+----- Solution 6 -----
+Cout de la solution courante : 133166
 ----- Solution 0 -----
 Cout de la solution courante : 7410
 ----- Solution 1 -----
 Cout de la solution courante : 7142
 
 ****************************** Recherche Locale *******************************
------ Solution 1 -----
-Cout de la solution courante : 7133
------ Solution 0 -----
-Cout de la solution courante : 7103
------ Solution 6 -----
-Cout de la solution courante : 6963
 ----- Solution 2 -----
-Cout de la solution courante : 7249
+Cout de la solution courante : 6811
+----- Solution 1 -----
+Cout de la solution courante : 6811
 ----- Solution 4 -----
-Cout de la solution courante : 6970
------ Solution 3 -----
-Cout de la solution courante : 6933
+Cout de la solution courante : 6806
 ----- Solution 5 -----
-Cout de la solution courante : 6950
------ Solution 9 -----
-Cout de la solution courante : 6963
------ Solution 8 -----
-Cout de la solution courante : 6905
+Cout de la solution courante : 6849
 ----- Solution 7 -----
-Cout de la solution courante : 6890
------ Solution 10 -----
-Cout de la solution courante : 7124
------ Solution 11 -----
-Cout de la solution courante : 7058
------ Solution 12 -----
-Cout de la solution courante : 6899
------ Solution 13 -----
-Cout de la solution courante : 6906
------ Solution 15 -----
-Cout de la solution courante : 7030
------ Solution 14 -----
-Cout de la solution courante : 6973
+Cout de la solution courante : 6769
+----- Solution 3 -----
+Cout de la solution courante : 6719
+----- Solution 6 -----
+Cout de la solution courante : 6790
+----- Solution 0 -----
+Cout de la solution courante : 6686
 
 ************************************ Bilan ************************************
 Meilleure valeure obtenue par le glouton : 6025950
-Solutions admissibles avant la recherche locale : 1 0 
-Solutions admissibles apres la recherche locale : 0 1 3 5 6 7 8 9 13 14 15 
+Solutions admissibles avant la recherche locale : 0 1 
+Solutions admissibles apres la recherche locale : 0 1 2 3 4 5 6 7 
 
 ----- Optimum local -----
-Cout de la solution courante : 6890
+Cout de la solution courante : 6686
 Affectation
-11	13	15	2	3	7	9	7	6	14	1	19	5	0	12	11	6	5	15	16	17	3	11	3	9	1	19	6	4	13	4	0	17	18	14	2	11	17	5	17	17	15	14	2	7	14	10	8	13	5	18	14	4	7	13	12	0	8	1	9	10	8	7	4	5	5	15	5	9	18	1	2	6	10	4	3	11	8	13	9	17	18	19	18	5	12	19	6	0	10	16	5	16	15	4	2	8	13	0	16	
+1	11	3	18	18	1	8	13	16	4	7	14	3	5	9	4	2	16	1	19	7	1	13	12	12	11	1	17	7	1	16	9	19	5	14	17	19	0	13	2	18	9	15	19	14	17	4	13	17	3	4	6	16	11	13	12	19	8	3	0	19	8	15	1	5	0	5	14	4	15	6	9	12	0	8	2	15	10	18	11	12	6	3	1	10	10	2	2	8	16	10	3	1	7	19	11	3	12	2	18	
 Capacites
-203	204	195	189	189	190	208	203	219	207	193	192	207	182	214	186	211	180	201	206	
+203	204	195	191	188	192	218	202	217	208	189	194	207	179	209	193	209	187	199	211	
 
 ---- Temps de calcul ----
-Temps CPU:         0.921959s
-Temps utilisateur: 0.171171s
+Temps CPU:         0.436348s
+Temps utilisateur: 0.094816s
 
 Well done !

@@ -1,22 +1,22 @@
 ************************** Cplex et recherche locale **************************
 Cplex trouve une solution admissible en moins de 7 secondes.
-Cout de la solution courante : 6252
+Cout de la solution courante : 6217
 
 Solution trouvee en cherchant localement depuis la precedente :
-Cout de la solution courante : 6252
+Cout de la solution courante : 6216
 Affectation
-3	16	3	11	14	0	8	7	6	18	2	13	3	16	1	8	12	15	11	6	14	19	6	3	4	11	9	3	2	10	14	16	4	16	0	19	4	13	2	3	11	14	10	12	15	6	5	14	17	10	8	18	15	1	13	17	9	11	7	7	18	9	19	15	13	7	5	7	4	10	15	9	12	18	8	13	11	0	13	1	12	0	7	5	16	10	8	6	16	7	10	15	14	17	4	2	12	19	5	6	
+3	18	5	11	4	1	14	16	7	18	2	13	6	16	5	0	12	15	18	6	7	2	0	3	11	11	3	18	2	15	14	8	4	16	0	19	4	13	9	3	11	14	10	3	1	6	5	10	17	14	9	12	15	6	13	17	0	12	12	14	19	9	19	15	13	7	5	8	4	16	15	1	19	18	8	6	15	0	13	1	11	2	7	4	16	10	8	9	16	7	10	5	1	17	4	2	15	19	5	1	
 Capacites
-205	204	192	188	188	200	215	202	207	206	196	195	205	180	198	194	205	181	198	204	
+201	204	195	191	183	198	219	203	218	202	196	194	202	177	217	192	211	181	200	209	
 
 ************************************ Bilan ************************************
 
 ---- Recherche Cplex -----
-Temps CPU:         52.7653s
-Temps utilisateur: 7.00557s
+Temps CPU:         52.7679s
+Temps utilisateur: 7.00714s
 
 ---- Recherche locale ----
-Temps CPU:         0.003053s
-Temps utilisateur: 0.00305486s
+Temps CPU:         0.065152s
+Temps utilisateur: 0.0651219s
 
 Well done !

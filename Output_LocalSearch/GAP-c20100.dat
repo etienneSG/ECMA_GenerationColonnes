@@ -1,32 +1,16 @@
 ******************** Construction des solutions initiales *********************
 ----- Solution 5 -----
-Cout de la solution courante : 11480
------ Solution 7 -----
-Cout de la solution courante : 13095
------ Solution 4 -----
-Cout de la solution courante : 14113
------ Solution 6 -----
-Cout de la solution courante : 13626
------ Solution 9 -----
-Cout de la solution courante : 13583
+Cout de la solution courante : 8968
 ----- Solution 3 -----
-Cout de la solution courante : 12556
+Cout de la solution courante : 16470
 ----- Solution 2 -----
-Cout de la solution courante : 9400
------ Solution 8 -----
-Cout de la solution courante : 13825
------ Solution 11 -----
-Cout de la solution courante : 11986
------ Solution 10 -----
-Cout de la solution courante : 11337
------ Solution 12 -----
-Cout de la solution courante : 11597
------ Solution 13 -----
-Cout de la solution courante : 12432
------ Solution 15 -----
-Cout de la solution courante : 14105
------ Solution 14 -----
-Cout de la solution courante : 12249
+Cout de la solution courante : 9926
+----- Solution 4 -----
+Cout de la solution courante : 14417
+----- Solution 6 -----
+Cout de la solution courante : 14726
+----- Solution 7 -----
+Cout de la solution courante : 10532
 ----- Solution 0 -----
 Cout de la solution courante : 1285
 ----- Solution 1 -----
@@ -34,52 +18,36 @@ Cout de la solution courante : 1263
 
 ****************************** Recherche Locale *******************************
 ----- Solution 1 -----
-Cout de la solution courante : 1263
+Cout de la solution courante : 1250
 ----- Solution 0 -----
-Cout de la solution courante : 1285
+Cout de la solution courante : 1261
 ----- Solution 2 -----
-Cout de la solution courante : 1545
------ Solution 5 -----
-Cout de la solution courante : 1824
------ Solution 6 -----
-Cout de la solution courante : 1923
------ Solution 7 -----
-Cout de la solution courante : 1951
+Cout de la solution courante : 1354
 ----- Solution 4 -----
-Cout de la solution courante : 2418
------ Solution 10 -----
-Cout de la solution courante : 1645
+Cout de la solution courante : 1332
+----- Solution 7 -----
+Cout de la solution courante : 1330
+----- Solution 5 -----
+Cout de la solution courante : 1354
 ----- Solution 3 -----
-Cout de la solution courante : 1620
------ Solution 9 -----
-Cout de la solution courante : 2047
------ Solution 8 -----
-Cout de la solution courante : 1661
------ Solution 11 -----
-Cout de la solution courante : 1935
------ Solution 13 -----
-Cout de la solution courante : 2479
------ Solution 14 -----
-Cout de la solution courante : 2335
------ Solution 15 -----
-Cout de la solution courante : 2063
------ Solution 12 -----
-Cout de la solution courante : 1634
+Cout de la solution courante : 1346
+----- Solution 6 -----
+Cout de la solution courante : 1300
 
 ************************************ Bilan ************************************
 Meilleure valeure obtenue par le glouton : 3007900
 Solutions admissibles avant la recherche locale : 1 0 
-Solutions admissibles apres la recherche locale : 0 1 2 3 5 6 7 8 10 11 12 15 
+Solutions admissibles apres la recherche locale : 0 1 2 3 4 5 6 7 
 
 ----- Optimum local -----
-Cout de la solution courante : 1263
+Cout de la solution courante : 1250
 Affectation
-5	12	13	0	0	8	4	11	6	8	8	14	3	15	7	18	4	14	3	3	3	16	16	17	13	14	3	19	0	17	5	12	6	1	2	13	9	17	10	12	15	0	4	10	16	16	9	2	10	6	15	19	7	7	6	8	13	12	12	19	9	11	16	9	10	17	10	19	15	12	1	2	6	4	2	7	5	4	18	1	2	11	5	18	7	11	17	17	0	11	16	1	4	8	0	11	14	9	19	7	
+14	12	13	0	0	8	4	11	6	8	8	14	3	15	19	18	4	14	3	3	3	16	16	17	13	7	3	19	0	17	5	12	6	1	2	13	9	17	10	12	15	0	4	10	16	16	9	2	10	6	15	5	7	7	6	8	13	12	12	19	9	11	16	9	10	17	10	14	15	12	1	2	6	4	2	7	5	4	18	1	2	11	5	18	7	11	17	17	0	11	16	1	4	8	0	11	14	9	19	7	
 Capacites
-57	58	60	54	59	53	62	57	53	55	58	58	62	53	56	57	59	59	49	57	
+57	58	60	54	59	54	62	52	53	55	58	58	62	53	54	57	59	59	49	53	
 
 ---- Temps de calcul ----
-Temps CPU:         1.36372s
-Temps utilisateur: 0.429605s
+Temps CPU:         0.894177s
+Temps utilisateur: 0.32195s
 
 Well done !
