@@ -7,21 +7,24 @@ mkdir -p Output_CplexAndLocalSearch
 make Clean
 make
 
-for instance in GAP/GAP-test.dat
+echo "********************* Recherche Locale *********************"
+for instance in GAP/GAP-*.dat
 do
     echo "Recherche de l'instance" $instance
     output=${instance/GAP/Output_LocalSearch}
     ./Bin/MonExec ${instance} LocalSearch > ${output}
 done
-
-for instance in GAP/GAP-test.dat
+echo
+echo "***** Recherche locale depuis une bonne solution Cplex *****"
+for instance in GAP/GAP-*.dat
 do
     echo "Recherche de l'instance" $instance
     output=${instance/GAP/Output_CplexAndLocalSearch}
     ./Bin/MonExec ${instance} SpecificLocalSearch > ${output}
 done
-
-for instance in GAP/GAP-test.dat
+echo
+echo "****************** Generation de colonnes ******************"
+for instance in GAP/GAP-*.dat
 do
     echo "Recherche de l'instance" $instance
     output=${instance/GAP/Output_ColumnGeneration}

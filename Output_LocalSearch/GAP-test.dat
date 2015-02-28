@@ -1,42 +1,42 @@
 ******************** Construction des solutions initiales *********************
------ Solution 4 -----
-Cout de la solution courante : 1870
 ----- Solution 2 -----
-Cout de la solution courante : 123
------ Solution 7 -----
-Cout de la solution courante : 1171
+Cout de la solution courante : 1055
 ----- Solution 6 -----
-Cout de la solution courante : 1870
------ Solution 3 -----
-Cout de la solution courante : 168
+Cout de la solution courante : 1513
+----- Solution 4 -----
+Cout de la solution courante : 1096
+----- Solution 7 -----
+Cout de la solution courante : 795
 ----- Solution 5 -----
-Cout de la solution courante : 497
+Cout de la solution courante : 1137
+----- Solution 3 -----
+Cout de la solution courante : 1513
 ----- Solution 0 -----
 Cout de la solution courante : 149
 ----- Solution 1 -----
 Cout de la solution courante : 123
 
 ****************************** Recherche Locale *******************************
------ Solution 2 -----
-Cout de la solution courante : 123
 ----- Solution 1 -----
+Cout de la solution courante : 123
+----- Solution 2 -----
 Cout de la solution courante : 123
 ----- Solution 5 -----
 Cout de la solution courante : 123
 ----- Solution 3 -----
 Cout de la solution courante : 123
+----- Solution 6 -----
+Cout de la solution courante : 123
 ----- Solution 0 -----
 Cout de la solution courante : 123
 ----- Solution 4 -----
-Cout de la solution courante : 123
------ Solution 6 -----
 Cout de la solution courante : 123
 ----- Solution 7 -----
 Cout de la solution courante : 123
 
 ************************************ Bilan ************************************
-Meilleure valeure obtenue par le glouton : 123
-Solutions admissibles avant la recherche locale : 1 2 0 
+Meilleure valeure obtenue par le glouton : 14150
+Solutions admissibles avant la recherche locale : 0 1 
 Solutions admissibles apres la recherche locale : 0 1 2 3 4 5 6 7 
 
 ----- Optimum local -----
@@ -47,7 +47,7 @@ Capacites
 32	38	
 
 ---- Temps de calcul ----
-Temps CPU:         0.039241s
-Temps utilisateur: 0.018137s
+Temps CPU:         0.072131s
+Temps utilisateur: 0.021544s
 
 Well done !
