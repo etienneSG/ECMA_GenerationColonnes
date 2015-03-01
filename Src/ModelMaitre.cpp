@@ -2,7 +2,7 @@
 #include "ModelCompact.h"
 #include "ConstantsAndTypes.h"
 
-#include <vector>
+
 #include <math.h>
 #include <stdlib.h> 
 #include <../../opt/ibm/ILOG/CPLEX_Studio125/concert/include/ilconcert/iloenv.h>
@@ -70,12 +70,39 @@ void SortAffectationByReducedCost(vector<Affectation>& A, int iBegin, int iEnd)
   if (iBegin < iEnd)
   {
     pivot = partitionByReducedCost(A, iBegin, iEnd);
-    SortAffectation(A, iBegin, pivot);  
-    SortAffectation(A, pivot+1, iEnd);
+    SortAffectationByReducedCost(A, iBegin, pivot);  
+    SortAffectationByReducedCost(A, pivot+1, iEnd);
   }
 }
 
 
+// int ModelMaitre::partitionByUselessness(vector<Affectation>& A, int iBegin, int iEnd, int iMachine)
+// {
+//   int x = A[iBegin]._RC;
+//   int i = iBegin;
+//   int j;
+// 
+//   for (j = iBegin+1; j < iEnd; j++) {
+//     if (A[j]._RC >= x) {
+//       i = i+1;
+//       swap(A[i], A[j]);
+//     }
+//   }
+// 
+//   swap(A[i], A[iBegin]);
+//   return i;
+// }
+// 
+// void ModelMaitre::SortAffectationByUselessness(vector<Affectation>& A, int iBegin, int iEnd, int iMachine)
+// {
+//   int pivot;
+//   if (iBegin < iEnd)
+//   {
+//     pivot = partitionByReducedCost(A, iBegin, iEnd);
+//     SortAffectation(A, iBegin, pivot);  
+//     SortAffectation(A, pivot+1, iEnd);
+//   }
+// }
 
 
 ModelMaitre::ModelMaitre(IloEnv iEnv,  ModelCompact & iCompact)
@@ -84,8 +111,10 @@ ModelMaitre::ModelMaitre(IloEnv iEnv,  ModelCompact & iCompact)
   _CoutColonne(iEnv),
   _IsTacheInColonne(iEnv),
   _pCompact(&iCompact),
+  _SuppRate((iCompact._n+iCompact._m)*2),
   _Colonnes(iEnv),
-  _ObjValue(_pCompact->_ActualCost)
+//   _ComptColonnes(iCompact._m, vector<int>(1,0)),
+  _ObjValue(iCompact._ActualCost)
 {
   for (int i = 0; i < iCompact._m; i++)
   {
@@ -113,9 +142,6 @@ ModelMaitre::~ModelMaitre()
 
 void ModelMaitre::RemoveColumn(const IloCplex & iCplex)
 {
-  // Taux de suppression des colonnes inutilisees
-  int SuppRate = (_pCompact->_n+_pCompact->_m)*2;
-  
   vector<Affectation> UselessColumn;
   for (int j = 0; j < _pCompact->_m; j++)
   {
@@ -124,12 +150,16 @@ void ModelMaitre::RemoveColumn(const IloCplex & iCplex)
     int NbColumn = vals.getSize();
     for (int i = 0; i < NbColumn-1; i++) {
       double RC = iCplex.getReducedCost(_Colonnes[j][i]);
+//       if (fabs(vals[i]) < CST_EPS)
+//         _ComptColonnes[j][i]+=1;
+//       else
+//         _ComptColonnes[j][i]=0;
       if (fabs(vals[i]) < CST_EPS && RC >= 0)
         UselessColumn.push_back(Affectation(j,i,RC));
     }
   }
   int NbUseless = UselessColumn.size();
-  int NbToRemove = UselessColumn.size() / SuppRate;
+  int NbToRemove = UselessColumn.size() / _SuppRate;
   if (NbToRemove > 0)
   {
     SortAffectationByReducedCost(UselessColumn, 0, NbUseless);
@@ -138,7 +168,7 @@ void ModelMaitre::RemoveColumn(const IloCplex & iCplex)
     for (int k = NbToRemove-1; k >= 0; k--) {
       _Colonnes[ UselessColumn[k]._j ][ UselessColumn[k]._i ].end();
       _Colonnes[ UselessColumn[k]._j ].remove( UselessColumn[k]._i );
-      
-    }
+//      _ComptColonnes[ UselessColumn[k]._j ].erase(_ComptColonnes[ UselessColumn[k]._j ].begin()+ UselessColumn[k]._i );
+   }
   }
 }

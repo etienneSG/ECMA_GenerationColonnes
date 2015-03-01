@@ -1,6 +1,15 @@
 *************************** Generation de colonnes ****************************
 
 ----- Iterations et valeur de l'objectif -----
+
+---------- Resolution approchee des programmes auxiliaires ----------
+Valeur de l'optimum obtenu par generation de colonnes : 123
+Machine 0
+1	0	0	0	0	
+Machine 1
+1	0	0	0	0	0	0	
+
+----------- Resolution exacte des programmes auxiliaires ------------
 Valeur de l'optimum obtenu par generation de colonnes : 123
 Machine 0
 1	0	0	0	0	
@@ -8,7 +17,7 @@ Machine 1
 1	0	0	0	0	0	0	
 
 -------------- Temps de calcul ---------------
-Temps CPU:	0.013114s
-Temps utilisateur:	0.012254s
+Temps CPU:	0.049507s
+Temps utilisateur:	0.01267s
 
 Well done !

@@ -12,6 +12,7 @@
 
 class ModelCompact;
 
+#include <vector>
 #include "ConstantsAndTypes.h"
 #include <ilcplex/ilocplex.h>
 
@@ -40,9 +41,11 @@ public:
   IntMatrix _CoutColonne;         // Cout des colonnes du probleme maitre
   IntMatrix3d _IsTacheInColonne;  // Matrice permettant du dire si une tache se trouve dans une colonne
   ModelCompact * _pCompact;       // Modele compact associe au modele maitre
+  int _SuppRate;                  // Taux de suppression des colonnes inutilisees
   
   /** Variables */
   NumVarMatrix _Colonnes;
+//   std::vector< std::vector<int> > _ComptColonnes;
   double _ObjValue;               // Valeur courante de l'objectif
   
   /** Objectif et contraintes */
@@ -52,6 +55,13 @@ public:
   
 private:
   ModelMaitre(){};
+  
+//   void SortAffectationByReducedCost(vector<Affectation>& A, int iBegin, int iEnd);
+//   int partitionByReducedCost(vector<Affectation>& A, int iBegin, int iEnd);
+
+//   void SortAffectationByUselessness(vector<Affectation>& A, int iBegin, int iEnd, int iMachine);
+//   int partitionByUselessness(vector<Affectation>& A, int iBegin, int iEnd, int iMachine);
+  
 };
 
 
