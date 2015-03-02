@@ -12,7 +12,7 @@ for instance in GAP/GAP-*.dat
 do
     echo "Recherche de l'instance" $instance
     output=${instance/GAP/Output_LocalSearch}
-    #./Bin/MonExec ${instance} LocalSearch > ${output}
+    ./Bin/MonExec ${instance} LocalSearch > ${output}
 done
 echo
 echo "***** Recherche locale depuis une bonne solution Cplex *****"
@@ -20,22 +20,10 @@ for instance in GAP/GAP-*.dat
 do
     echo "Recherche de l'instance" $instance
     output=${instance/GAP/Output_CplexAndLocalSearch}
-    #./Bin/MonExec ${instance} SpecificLocalSearch > ${output}
+    ./Bin/MonExec ${instance} SpecificLocalSearch > ${output}
 done
 echo
 echo "****************** Generation de colonnes ******************"
-echo "Recherche de l'instance GAP/GAP-a05100.dat"
-./Bin/MonExec GAP/GAP-a05100.dat ColumnGen > Output_ColumnGeneration/GAP-a05100.dat
-echo "Recherche de l'instance GAP/GAP-a10100.dat"
-./Bin/MonExec GAP/GAP-a10100.dat ColumnGen > Output_ColumnGeneration/GAP-a10100.dat
-echo "Recherche de l'instance GAP/GAP-a20100.dat"
-./Bin/MonExec GAP/GAP-a20100.dat ColumnGen > Output_ColumnGeneration/GAP-a20100.dat
-echo "Recherche de l'instance GAP/GAP-b05100.dat"
-./Bin/MonExec GAP/GAP-b05100.dat ColumnGen > Output_ColumnGeneration/GAP-b05100.dat
-echo "Recherche de l'instance GAP/GAP-b10100.dat"
-./Bin/MonExec GAP/GAP-b10100.dat ColumnGen > Output_ColumnGeneration/GAP-b10100.dat
-echo "Recherche de l'instance GAP/GAP-b20100.dat"
-./Bin/MonExec GAP/GAP-b20100.dat ColumnGen > Output_ColumnGeneration/GAP-b20100.dat
 for instance in GAP/GAP-*.dat
 do
     echo "Recherche de l'instance" $instance

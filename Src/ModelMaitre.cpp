@@ -76,35 +76,6 @@ void SortAffectationByReducedCost(vector<Affectation>& A, int iBegin, int iEnd)
 }
 
 
-// int ModelMaitre::partitionByUselessness(vector<Affectation>& A, int iBegin, int iEnd, int iMachine)
-// {
-//   int x = A[iBegin]._RC;
-//   int i = iBegin;
-//   int j;
-// 
-//   for (j = iBegin+1; j < iEnd; j++) {
-//     if (A[j]._RC >= x) {
-//       i = i+1;
-//       swap(A[i], A[j]);
-//     }
-//   }
-// 
-//   swap(A[i], A[iBegin]);
-//   return i;
-// }
-// 
-// void ModelMaitre::SortAffectationByUselessness(vector<Affectation>& A, int iBegin, int iEnd, int iMachine)
-// {
-//   int pivot;
-//   if (iBegin < iEnd)
-//   {
-//     pivot = partitionByReducedCost(A, iBegin, iEnd);
-//     SortAffectation(A, iBegin, pivot);  
-//     SortAffectation(A, pivot+1, iEnd);
-//   }
-// }
-
-
 ModelMaitre::ModelMaitre(IloEnv iEnv,  ModelCompact & iCompact)
 : _Env(iEnv),
   _Model(iEnv),
@@ -113,7 +84,6 @@ ModelMaitre::ModelMaitre(IloEnv iEnv,  ModelCompact & iCompact)
   _pCompact(&iCompact),
   _SuppRate((iCompact._n+iCompact._m)*2),
   _Colonnes(iEnv),
-//   _ComptColonnes(iCompact._m, vector<int>(1,0)),
   _ObjValue(iCompact._ActualCost)
 {
   for (int i = 0; i < iCompact._m; i++)
@@ -150,10 +120,6 @@ void ModelMaitre::RemoveColumn(const IloCplex & iCplex)
     int NbColumn = vals.getSize();
     for (int i = 0; i < NbColumn-1; i++) {
       double RC = iCplex.getReducedCost(_Colonnes[j][i]);
-//       if (fabs(vals[i]) < CST_EPS)
-//         _ComptColonnes[j][i]+=1;
-//       else
-//         _ComptColonnes[j][i]=0;
       if (fabs(vals[i]) < CST_EPS && RC >= 0)
         UselessColumn.push_back(Affectation(j,i,RC));
     }
@@ -168,7 +134,6 @@ void ModelMaitre::RemoveColumn(const IloCplex & iCplex)
     for (int k = NbToRemove-1; k >= 0; k--) {
       _Colonnes[ UselessColumn[k]._j ][ UselessColumn[k]._i ].end();
       _Colonnes[ UselessColumn[k]._j ].remove( UselessColumn[k]._i );
-//      _ComptColonnes[ UselessColumn[k]._j ].erase(_ComptColonnes[ UselessColumn[k]._j ].begin()+ UselessColumn[k]._i );
    }
   }
 }

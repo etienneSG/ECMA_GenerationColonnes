@@ -94,7 +94,6 @@ void ApproxResolutionOfAuxPrograms(ModelMaitre & iMaster, ModelCompact & iCompac
         #pragma omp critical
         {
           iMaster._Colonnes[Idx].add(IloNumVar( iMaster._Objectif(Cout) + iMaster._ConstrEqual(vals) + iMaster._ConstrInequal[Idx](1) ));
-//           iMaster._ComptColonnes[Idx].push_back(0);
         }
       }
       else

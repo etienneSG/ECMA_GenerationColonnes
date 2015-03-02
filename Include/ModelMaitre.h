@@ -45,7 +45,6 @@ public:
   
   /** Variables */
   NumVarMatrix _Colonnes;
-//   std::vector< std::vector<int> > _ComptColonnes;
   double _ObjValue;               // Valeur courante de l'objectif
   
   /** Objectif et contraintes */
@@ -55,13 +54,7 @@ public:
   
 private:
   ModelMaitre(){};
-  
-//   void SortAffectationByReducedCost(vector<Affectation>& A, int iBegin, int iEnd);
-//   int partitionByReducedCost(vector<Affectation>& A, int iBegin, int iEnd);
 
-//   void SortAffectationByUselessness(vector<Affectation>& A, int iBegin, int iEnd, int iMachine);
-//   int partitionByUselessness(vector<Affectation>& A, int iBegin, int iEnd, int iMachine);
-  
 };
 
 
