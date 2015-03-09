@@ -44,7 +44,7 @@ void LocalSearchAlgorithm(ModelCompact & iModelCompact)
       {
       case 1:
         aCompact[0].FindFeasableSolution(1);
-        aCompact[1].FindFeasableSolution(2);
+        aCompact[1].FindFeasableSolution(0);
         #pragma omp critical
         {
           cout << "----- Solution " << 0 << " -----\n";
