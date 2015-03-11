@@ -17,9 +17,9 @@ void ColumnGenerationAlgorithm(ModelMaitre & iMaster, ModelCompact & iCompact)
   cplexMaster.setOut(iMaster._Env.getNullStream());
   cplexMaster.setParam(IloCplex::CutUp, iCompact._ActualCost + CST_EPS);
 
-  ApproxResolutionOfAuxPrograms(iMaster, iCompact, cplexMaster);
+  ResolutionOfAuxProgramsByDynProg(iMaster, iCompact, cplexMaster);
   
-  ExactResolutionOfAuxPrograms(iMaster, iCompact, cplexMaster);
+  //ResolutionOfAuxProgramsByCplex(iMaster, iCompact, cplexMaster);
 }
 
 
@@ -42,15 +42,18 @@ void ColumnGeneration(ModelMaitre & iMaster, ModelCompact & iCompact)
 }
 
 
-void ApproxResolutionOfAuxPrograms(ModelMaitre & iMaster, ModelCompact & iCompact, IloCplex & iCplexMaster)
+void ResolutionOfAuxProgramsByDynProg(ModelMaitre & iMaster, ModelCompact & iCompact, IloCplex & iCplexMaster)
 {
-  cout << "\n---------- Resolution approchee des programmes auxiliaires ----------\n";
+  cout << "\n---- Resolution des programmes auxiliaires par programmation dynamique ----\n";
   
   // Modele auxiliaire
   vector< vector<int> > a( iCompact._m, vector<int>(iCompact._n, 0) );  // Vecteurs des coefficients des contraintes
   for (int j = 0; j < iCompact._m; j++)
     for (int i = 0; i < iCompact._n; i++)
       a[j][i] = iCompact._a[j][i];
+  vector<int> b( iCompact._m, 0);
+  for (int j = 0; j < iCompact._m; j++) // Vecteur des capacites des machines
+    b[j] = iCompact._b[j];
 
   int NbOfIterations = 0;
   while(true)
@@ -80,12 +83,15 @@ void ApproxResolutionOfAuxPrograms(ModelMaitre & iMaster, ModelCompact & iCompac
     {
       int Idx = j;
 
-      vector<int> CoefConstrAux(iCompact._n, 0);  // Vecteur des couts de l'objectif
+      vector<double> CoefConstrAux(iCompact._n, 0);  // Vecteur des couts de l'objectif
       for (int i = 0; i < iCompact._n; i++)
-        CoefConstrAux[i] = static_cast<int>(valDualEqual[i]) - iCompact._c[Idx][i];
+        CoefConstrAux[i] = valDualEqual[i] - iCompact._c[Idx][i];
       IloNumArray vals(env, iCompact._n);
-      int ObjAuxOpt = knapSack(iCompact._b[Idx], a[Idx], CoefConstrAux, iCompact._n, vals);
-      if (-ObjAuxOpt < valDualInequal[Idx])
+      vector<int> Solution(iCompact._n, 0);
+      double ObjAuxOpt = knapSack<double>(b[Idx], a[Idx], CoefConstrAux, iCompact._n, Solution);
+      for (int i = 0; i < iCompact._n; i++)
+        vals[i] = Solution[i];
+      if (-ObjAuxOpt < valDualInequal[Idx] - CST_EPS)
       {
         IloInt Cout(0);
         for (int i = 0; i < iCompact._n; i++){
@@ -128,9 +134,9 @@ void ApproxResolutionOfAuxPrograms(ModelMaitre & iMaster, ModelCompact & iCompac
 }
 
 
-void ExactResolutionOfAuxPrograms(ModelMaitre & iMaster, ModelCompact & iCompact, IloCplex & iCplexMaster)
+void ResolutionOfAuxProgramsByCplex(ModelMaitre & iMaster, ModelCompact & iCompact, IloCplex & iCplexMaster)
 {
-  cout << "\n----------- Resolution exacte des programmes auxiliaires ------------\n";
+  cout << "\n---------- Resolution des programmes auxiliaires par Cplex -----------\n";
   
   // Modele auxiliaire
   IloModel ModelAux(iMaster._Env);

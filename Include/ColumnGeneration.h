@@ -30,21 +30,21 @@ void ColumnGenerationAlgorithm(ModelMaitre & iMaster, ModelCompact & iCompact);
 
 /**
  * Effectue une recherche par generation de colonnes
- * en resolvant de maniere approchee les programmes auxiliaires
+ * en resolvant les programmes auxiliaires a l'aide de la programmation dynamique
  * @param iMaster:      Model maitre contenant les colonnes creees
  * @param iCompact:     Model compact contenant les donnees du probleme
  * @param icplexMaster: Solveur associe au programme maitre
  */
-void ApproxResolutionOfAuxPrograms(ModelMaitre & iMaster, ModelCompact & iCompact, IloCplex & iCplexMaster);
+void ResolutionOfAuxProgramsByDynProg(ModelMaitre & iMaster, ModelCompact & iCompact, IloCplex & iCplexMaster);
 
 /**
  * Effectue une recherche par generation de colonnes
- * en resolvant de maniere approchee les programmes auxiliaires
+ * en resolvant les programmes auxiliaires avec CPlex
  * @param iMaster:      Model maitre contenant les colonnes creees
  * @param iCompact:     Model compact contenant les donnees du probleme
  * @param icplexMaster: Solveur associe au programme maitre
  */
-void ExactResolutionOfAuxPrograms(ModelMaitre & iMaster, ModelCompact & iCompact, IloCplex & iCplexMaster);
+void ResolutionOfAuxProgramsByCplex(ModelMaitre & iMaster, ModelCompact & iCompact, IloCplex & iCplexMaster);
 
 
 #endif
